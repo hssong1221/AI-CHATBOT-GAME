@@ -5,16 +5,15 @@
 - Member : 호감도 2~4레벨 (Member, Intimate, More, Boyfriend)에서 쓰이는 이미지 : 24개 (이중 5, 6번 / 7, 10, 27번 / 15, 18번은 동일이미지. 나중에 최적화 하고 싶으면 지우면 될듯 )
 *** Member에선 1~24, Intimate에선 1~25, More/Boyfriend에선 1~27 사용
 
-##event (각 이벤트씬에서 나오는 이미지)
+## Event (각 이벤트씬에서 나오는 이미지)
 
 - Intruder : 2개
-- Suspicion : 
-- Member : 
-- Intimate : 
-- More :
-- Boyfriend : 
+- Suspicion : 4개
+- Member : 4개
+- Intimate : 2개
+- More :4개
 
-##pat ('쓰다듬기' 선택시 나오는 이미지) : 7개
+## Pat ('쓰다듬기' 선택시 나오는 이미지) : 7개
 
 
-##twt ('트위터' 선택시 나오는 이미지)
+## twt ('트위터' 선택시 나오는 이미지) : 40개
