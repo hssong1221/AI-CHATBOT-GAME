@@ -24,6 +24,9 @@ public class DataManger : MonoBehaviour
         }
     }
 
+    private Dictionary<string, SheetData> sheetsData;
+    bool isEOF;
+
 
     void Awake()
     {
@@ -40,18 +43,46 @@ public class DataManger : MonoBehaviour
 
     void Start()
     {
+        isEOF = false;
         ReadExcelFile();
+        PrintSheetData();
     }
 
     private void ReadExcelFile()
     {
         string filePath = "./Assets/Data/dialogue.xlsx";
+
+        sheetsData = new Dictionary<string, SheetData>();
+
         using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
                 var result = reader.AsDataSet();
 
+                foreach(DataTable table in result.Tables)
+                {
+                    var sheetData = new SheetData(table.TableName);
+
+                    for(int i = 1; i < table.Rows.Count; i++)
+                    {
+                        var row = new Dictionary<string, string>();
+                        for(int j = 0; j < table.Columns.Count; j++)
+                        {
+                            string columnName = table.Columns[j].ColumnName;
+                            string cellValue = table.Rows[i][j].ToString();
+                            if(cellValue.Equals("EOF"))
+                                isEOF = true;
+                            row[columnName] = cellValue;
+                        }
+                        if (isEOF)
+                            break;
+                        sheetData.AddData(row);
+                    }
+                    sheetsData[table.TableName] = sheetData;
+                }
+                
+                /*
                 // 첫 번째 시트의 데이터를 읽습니다.
                 DataTable table = result.Tables[0];
 
@@ -68,13 +99,18 @@ public class DataManger : MonoBehaviour
                     string column3 = table.Rows[i][2].ToString();
                     int column4 = int.Parse(table.Rows[i][3].ToString());
                     string column5 = table.Rows[i][4].ToString();
-
-                    
-
                     Debug.Log($"Column1: {column1}, Column2: {column2}, Column3: {column3}, Column4: {column4}, Column5: {column5}" );
                 }
+                */
             }
         }
-
+    }
+    public void PrintSheetData()
+    {
+        foreach (var sheet in sheetsData)
+        {
+            Debug.Log($"Sheet: {sheet.Key}");
+            sheet.Value.PrintData();
+        }
     }
 }
