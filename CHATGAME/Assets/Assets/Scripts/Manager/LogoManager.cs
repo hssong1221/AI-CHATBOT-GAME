@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LogoManager : MonoBehaviour
 {
 
-    private void Update()
+    void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
