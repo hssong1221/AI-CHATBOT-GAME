@@ -28,7 +28,8 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI dialogueText;
 
     DataManager dataManager;
-    SheetData sheet;
+    SheetData diaSheet;
+    SheetData ImgSheet;
 
     public int Idx = 0;
 
@@ -49,7 +50,8 @@ public class UI : MonoBehaviour
     void Start()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
-        sheet = dataManager.GetSheetData("Sheet1");
+        diaSheet = dataManager.GetSheetData("Dialogue");
+        ImgSheet = dataManager.GetSheetData("ImgPath");
 
         nameText.text = "name";
         affectionText.text = "0";
@@ -59,10 +61,16 @@ public class UI : MonoBehaviour
 
     public void SetUI()
     {
-        var data = sheet.GetData(Idx);
-
+        var data = diaSheet.GetData(Idx);
+        var pdata = ImgSheet.GetData(0);
         if (data == null)
             return;
+
+        string imgPath = "";
+        if(pdata.TryGetValue("id", out var path))
+            imgPath = path;
+
+        
 
         if(data.TryGetValue("id", out var id))
             nameText.text = id;
