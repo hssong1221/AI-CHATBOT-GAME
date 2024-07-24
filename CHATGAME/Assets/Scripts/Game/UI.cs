@@ -56,22 +56,30 @@ public class UI : MonoBehaviour
         nameText.text = "name";
         affectionText.text = "0";
         dialogueText.text = "dialogue";
+
+        OnClickNextBtn();
+    }
+
+    public void SetMainImg()
+    {
+        /* 
+         * img sheet로 만들었을 때
+        var pdata = ImgSheet.GetData(0);
+        string imgPath = "";
+
+        if (pdata.TryGetValue("id", out var path))
+            imgPath = path;
+        */
     }
 
 
     public void SetUI()
     {
         var data = diaSheet.GetData(Idx);
-        var pdata = ImgSheet.GetData(0);
         if (data == null)
             return;
 
-        string imgPath = "";
-        if(pdata.TryGetValue("id", out var path))
-            imgPath = path;
-
         
-
         if(data.TryGetValue("id", out var id))
             nameText.text = id;
 
@@ -81,11 +89,24 @@ public class UI : MonoBehaviour
         if (data.TryGetValue("text", out var txt))
             dialogueText.text = txt;
 
+        // 대충 호감도 시스템 만들어질거 예상해서 만들어놨음 
+        string storypath = "Poke";
+        string affectionState = "Intruder";
+        int progressState = Idx;
+
+        string imgPath = $"image/{storypath}/{affectionState}/{Idx + 1}";
+        Sprite sprite = Resources.Load<Sprite>(imgPath);
+        if (sprite != null)
+            mainImg.sprite = sprite;
+        else
+            Debug.LogWarning("경로에 사진 없음");
+
         Idx++;
     }
 
     public void OnClickNextBtn()
     {
+        SetMainImg();
         SetUI();
     }
 }
