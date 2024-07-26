@@ -79,7 +79,6 @@ public class UI : MonoBehaviour
         if (data == null)
             return;
 
-        
         if(data.TryGetValue("id", out var id))
             nameText.text = id;
 
@@ -102,6 +101,24 @@ public class UI : MonoBehaviour
             Debug.LogWarning("경로에 사진 없음");
 
         Idx++;
+    }
+
+    public void OnClickPokeBtn()
+    {
+        SetMainImg();
+        SetUI();
+    }
+
+    public void OnClickTwtBtn()
+    {
+        SetMainImg();
+        SetUI();
+    }
+
+    public void OnClickPatBtn()
+    {
+        SetMainImg();
+        SetUI();
     }
 
     public void OnClickNextBtn()
