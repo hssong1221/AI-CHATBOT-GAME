@@ -52,13 +52,17 @@ public class UI : MonoBehaviour
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
         diaSheet = dataManager.GetSheetData("Dialogue");
-        ImgSheet = dataManager.GetSheetData("ImgPath");
+        //ImgSheet = dataManager.GetSheetData("ImgPath");
 
         nameText.text = "name";
         affectionText.text = "0";
         dialogueText.text = "dialogue";
 
-        OnClickNextBtn();
+        DataSheetSetting(0, "Poke");
+
+        GameManager.CheckProgAction?.Invoke();
+        SetMainImg();
+        SetText();
     }
 
     public void SetMainImg()
@@ -71,10 +75,36 @@ public class UI : MonoBehaviour
         if (pdata.TryGetValue("id", out var path))
             imgPath = path;
         */
+
+        var data = diaSheet.GetData(Idx);
+
+        string category = "";   // 버튼 종류 + event
+        string affState = "";   // 호감도 상태
+        int number = 0;         // 텍스트 순서
+        
+        if (data.TryGetValue("category", out var cat))
+            category = cat;
+
+        // waifu의 affectioncompare 를 사용할 것
+        if (data.TryGetValue("affection", out var aff))
+            affState = aff.ToString();
+
+       
+
+        if (data.TryGetValue("number", out var num))
+            number = int.Parse(num);
+
+
+        string imgPath = $"image/{category}/Intruder/{number}";
+        Sprite sprite = Resources.Load<Sprite>(imgPath);
+        if (sprite != null)
+            mainImg.sprite = sprite;
+        else
+            Debug.LogWarning("경로에 사진 없음");
     }
 
 
-    public void SetUI()
+    public void SetText()
     {
         var data = diaSheet.GetData(Idx);
         if (data == null)
@@ -88,44 +118,61 @@ public class UI : MonoBehaviour
 
         if (data.TryGetValue("text", out var txt))
             dialogueText.text = txt;
-
-        // 대충 호감도 시스템 만들어질거 예상해서 만들어놨음 
-        string storypath = "Poke";
-        string affectionState = "Intruder";
-        int progressState = Idx;
-
-        string imgPath = $"image/{storypath}/{affectionState}/{Idx + 1}";
-        Sprite sprite = Resources.Load<Sprite>(imgPath);
-        if (sprite != null)
-            mainImg.sprite = sprite;
-        else
-            Debug.LogWarning("경로에 사진 없음");
-
-        Idx++;
     }
 
     public void OnClickPokeBtn()
     {
         GameManager.CheckProgAction?.Invoke();
         SetMainImg();
-        SetUI();
+        SetText();
+        Idx++;
     }
 
     public void OnClickTwtBtn()
     {
         SetMainImg();
-        SetUI();
+        SetText();
     }
 
     public void OnClickPatBtn()
     {
         SetMainImg();
-        SetUI();
+        SetText();
     }
-
-    public void OnClickNextBtn()
+        public void OnClickNextBtn()
     {
         SetMainImg();
-        SetUI();
+        SetText();
+    }
+
+
+    /// <summary>
+    /// 파라미터 받아서 알맞게 데이터시트 가공
+    /// </summary>
+    /// <param name="affection">호감도 상태</param>
+    /// <param name="category">버튼 종류</param>
+    /// <returns></returns>
+    public List<Dictionary<string , string>> DataSheetSetting(int affection, string category)
+    {
+        List<Dictionary<string, string>> partialData = new List<Dictionary<string, string>>();
+
+        var data = diaSheet.Data;
+        var iter = data.GetEnumerator();
+        while(iter.MoveNext())
+        {
+            var cur = iter.Current;
+            /*
+            var iter2 = cur.GetEnumerator();
+            while(iter2.MoveNext())
+            {
+                var cur2 = iter2.Current.Value;
+                Debug.Log($"{cur2}");
+            }
+            */
+            if (cur["affection"].Equals(affection.ToString()) && cur["category"].Equals(category))
+                partialData.Add(cur);
+        }
+
+        return partialData;
     }
 }

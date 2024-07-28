@@ -156,7 +156,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -71}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &257033556
@@ -727,7 +727,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b55dbac4a3390914591d82fdf2c8e049, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  excelFile: {fileID: 11500000, guid: b55dbac4a3390914591d82fdf2c8e049, type: 3}
 --- !u!4 &563629457
 Transform:
   m_ObjectHideFlags: 0
