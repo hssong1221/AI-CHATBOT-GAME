@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -79,7 +80,6 @@ public class UI : MonoBehaviour
         if (data == null)
             return;
 
-        
         if(data.TryGetValue("id", out var id))
             nameText.text = id;
 
@@ -102,6 +102,25 @@ public class UI : MonoBehaviour
             Debug.LogWarning("경로에 사진 없음");
 
         Idx++;
+    }
+
+    public void OnClickPokeBtn()
+    {
+        GameManager.CheckProgAction?.Invoke();
+        SetMainImg();
+        SetUI();
+    }
+
+    public void OnClickTwtBtn()
+    {
+        SetMainImg();
+        SetUI();
+    }
+
+    public void OnClickPatBtn()
+    {
+        SetMainImg();
+        SetUI();
     }
 
     public void OnClickNextBtn()

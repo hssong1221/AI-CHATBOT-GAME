@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SheetData : MonoBehaviour
+public class SheetData
 {
     public string SheetName;
     public List<Dictionary<string, string>> Data;

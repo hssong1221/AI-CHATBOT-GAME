@@ -19,6 +19,7 @@ public class DataManager : MonoBehaviour
                 _instance = singletonObject.AddComponent<DataManager>();
                 singletonObject.name = typeof(DataManager).ToString() + " (Singleton)";
                 SingletonManager.Instance.RegisterSingleton(_instance);
+                DontDestroyOnLoad(_instance);
             }
             return _instance;
         }
@@ -34,6 +35,7 @@ public class DataManager : MonoBehaviour
         {
             _instance = this as DataManager;
             SingletonManager.Instance.RegisterSingleton(_instance);
+            DontDestroyOnLoad(_instance);
         }
         else
         {
@@ -50,8 +52,8 @@ public class DataManager : MonoBehaviour
 
     private void ReadExcelFile()
     {
-        //string filePath = "./Assets/Data/dialogue.xlsx";
-        string filePath = "../dialogue.xlsx";
+        string filePath = "./Assets/Data/dialogue.xlsx";
+        //string filePath = "../dialogue.xlsx";
 
         sheetsData = new Dictionary<string, SheetData>();
 
@@ -119,7 +121,7 @@ public class DataManager : MonoBehaviour
 
     public Dictionary<string, SheetData> GetAllSheetData()
     {
-        return sheetsData;
+        return sheetsData; 
     }
 
     public SheetData GetSheetData(string sheetName)
