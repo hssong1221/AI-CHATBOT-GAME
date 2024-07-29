@@ -23,6 +23,8 @@ public class Waifu : MonoBehaviour
 
     public static int affection;//singletone 에서 관리할 호감도 수치
     public static string affection_status;//singletone 에서 관리할 호감도 상태
+    DataManager dataManager;
+    SheetData affSheet;
 
     void Awake()
     {
@@ -37,21 +39,27 @@ public class Waifu : MonoBehaviour
         }
     }
 
-    public void affection_ascend()
+    void Start()
+    {
+        dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
+        affSheet = dataManager.GetSheetData("Dialogue");
+    }
+
+    public void Affection_ascend()
     {
         affection++;
     }
-    public void affection_descend()
+    public void Affection_descend()
     {
         affection--;
     }
 
-    public string affection_transport()//UI로 호감도 수치를 전달함
+    public string Affection_transport()//UI로 호감도 수치를 전달함
     {
         return affection.ToString();
     }
 
-    public void affection_compare()
+    public void Affection_compare()
     {
         if (affection < 0)//excel 파일에서 호감도 경로를 불러와 비교함
         {
