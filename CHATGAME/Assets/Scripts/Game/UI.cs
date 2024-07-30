@@ -29,10 +29,22 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI dialogueText;
 
     DataManager dataManager;
-    SheetData diaSheet;
-    SheetData ImgSheet;
+    Waifu waifu;
 
-    public int Idx = 0;
+    SheetData diaSheet;
+    //SheetData ImgSheet;
+
+    public enum ButtonState
+    {
+        Poke,
+        Twt,
+        Pat,
+        Next,
+    }
+    public ButtonState buttonState;
+
+    [SerializeField]
+    int Idx = 0;
 
     void Awake()
     {
@@ -51,6 +63,8 @@ public class UI : MonoBehaviour
     void Start()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
+        waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+
         diaSheet = dataManager.GetSheetData("Dialogue");
         //ImgSheet = dataManager.GetSheetData("ImgPath");
 
@@ -63,6 +77,9 @@ public class UI : MonoBehaviour
         GameManager.CheckProgAction?.Invoke();
         SetMainImg();
         SetText();
+
+        waifu.Affection_ascend();
+        waifu.aff_idx += 1;
     }
 
     public void SetMainImg()
@@ -76,26 +93,17 @@ public class UI : MonoBehaviour
             imgPath = path;
         */
 
-        var data = diaSheet.GetData(Idx);
-
         string category = "";   // 버튼 종류 + event
         string affState = "";   // 호감도 상태
         int number = 0;         // 텍스트 순서
-        
-        if (data.TryGetValue("category", out var cat))
-            category = cat;
 
-        // waifu의 affectioncompare 를 사용할 것
-        if (data.TryGetValue("affection", out var aff))
-            affState = aff.ToString();
+        category = buttonState.ToString();        
+        affState = waifu.Affection_compare();
+        number = waifu.affection_exp;
 
-       
+        string imgPath = $"image/{category}/{affState}/{number + 1}";
+        Debug.Log($"현재 이미지 경로 : {imgPath}");
 
-        if (data.TryGetValue("number", out var num))
-            number = int.Parse(num);
-
-
-        string imgPath = $"image/{category}/Intruder/{number}";
         Sprite sprite = Resources.Load<Sprite>(imgPath);
         if (sprite != null)
             mainImg.sprite = sprite;
@@ -106,7 +114,7 @@ public class UI : MonoBehaviour
 
     public void SetText()
     {
-        var data = diaSheet.GetData(Idx);
+        var data = diaSheet.GetData(waifu.aff_idx);
         if (data == null)
             return;
 
@@ -123,26 +131,45 @@ public class UI : MonoBehaviour
     public void OnClickPokeBtn()
     {
         GameManager.CheckProgAction?.Invoke();
+
+        buttonState = ButtonState.Poke;
+
         SetMainImg();
         SetText();
-        Idx++;
+
+        waifu.Affection_ascend();
+        waifu.aff_idx += 1;
     }
 
     public void OnClickTwtBtn()
     {
+        buttonState = ButtonState.Twt;
+
         SetMainImg();
         SetText();
-    }
 
+        waifu.Affection_ascend();
+        waifu.aff_idx += 1;
+    }
     public void OnClickPatBtn()
     {
+        buttonState = ButtonState.Pat;
+
         SetMainImg();
         SetText();
+
+        waifu.Affection_ascend();
+        waifu.aff_idx += 1;
     }
-        public void OnClickNextBtn()
+    public void OnClickNextBtn()
     {
+        buttonState = ButtonState.Next;
+
         SetMainImg();
         SetText();
+
+        waifu.Affection_ascend();
+        waifu.aff_idx += 1;
     }
 
 

@@ -1980,6 +1980,7 @@ MonoBehaviour:
   nameText: {fileID: 1368138232}
   affectionText: {fileID: 1666628755}
   dialogueText: {fileID: 1892052392}
+  buttonState: 0
   Idx: 0
 --- !u!1 &2056843564
 GameObject:

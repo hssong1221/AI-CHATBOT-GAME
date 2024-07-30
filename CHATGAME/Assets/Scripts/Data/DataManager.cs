@@ -126,6 +126,9 @@ public class DataManager : MonoBehaviour
 
     public SheetData GetSheetData(string sheetName)
     {
+        if (sheetsData == null)
+            return null;
+
         if (sheetsData.TryGetValue(sheetName, out var result))
             return result;
         else
