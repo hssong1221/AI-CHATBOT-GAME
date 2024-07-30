@@ -85,13 +85,13 @@ public class Waifu : MonoBehaviour
         return affection_lv.ToString();
     }
 
-    public void Affection_compare()
+    public string Affection_compare()
     {
         var data = affSheet.GetData(aff_idx);
 
         if(data == null )
         {
-            return;
+            return "empty";//юс╫ц
         }
 
         if(data.TryGetValue("affection",out var aff))
@@ -114,5 +114,7 @@ public class Waifu : MonoBehaviour
             //suspicious
             affection_status = "member";
         }
+
+        return affection_status;
     }
 }
