@@ -30,13 +30,14 @@ public class Waifu : MonoBehaviour
     {
         get { return _aff_idx; }
         set { _aff_idx = value; }
-    } 
+    }
 
-    public int affection_exp;//호감도 경험치
+    public int affection_exp;/*호감도 경험치*/
     public int affection_lv;//호감도 레벨
-    public int affection_barrel;//호감도 레벨업 필요 경험치
+    public int affection_barrel;//*호감도 레벨업 필요 경험치*/
     public string affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
     public string affection_restore;//엑셀에서 받아온 호감도를 저장
+    //public string _category;//Event 발생 감지
     DataManager dataManager;
     SheetData affSheet;
 
@@ -61,7 +62,7 @@ public class Waifu : MonoBehaviour
 
         aff_idx = 0;
 
-        affection_barrel = 5;
+        affection_barrel = 7;
 
         Affection_compare();
     }
@@ -88,8 +89,8 @@ public class Waifu : MonoBehaviour
         if(affection_exp >= affection_barrel)
         {
             affection_lv++;
-            affection_barrel = affection_barrel * 2 - (affection_lv % 5);//임시
-            //affection_exp = 0;
+            affection_barrel = affection_barrel * 2 - (affection_lv * 3);//임시
+            affection_exp = 0;
         }
     }
 
@@ -110,27 +111,69 @@ public class Waifu : MonoBehaviour
             return "empty";//임시
         }
 
-        if(data.TryGetValue("affection",out var aff))
+        if(data.TryGetValue("affection",out var aff))//excel 파일에서 호감도 경로를 불러와 비교함
         {
             affection_restore = aff.ToString();
         }
 
-        if (affection_lv < int.Parse(affection_restore) )//excel 파일에서 호감도 경로를 불러와 비교함
+        if (affection_lv <= int.Parse(affection_restore) )
         {
             //intruder
             affection_status = "Intruder";
         }
-        else if (affection_lv == int.Parse(affection_restore))
-        {
-            //member
-            affection_status = "Suspicious";
-        }
-        else if (affection_lv > int.Parse(affection_restore))
+        else if (affection_lv > int.Parse(affection_restore) && affection_lv <= int.Parse(affection_restore) + 1)
         {
             //suspicious
+            affection_status = "Suspicious";
+        }
+        else if (affection_lv > int.Parse(affection_restore) + 1 && affection_lv <= int.Parse(affection_restore) + 2)
+        {
+            //member
             affection_status = "Member";
+        }
+        else if(affection_lv > int.Parse(affection_restore) + 2 && affection_lv <= int.Parse(affection_restore) + 3)
+        {
+            //intimate
+            affection_status = "Intimate";
+        }
+        else if (affection_lv > int.Parse(affection_restore) + 3 && affection_lv <= int.Parse(affection_restore) + 5)
+        {
+            //more
+            affection_status = "More";
+        }
+        else if (affection_lv > int.Parse(affection_restore) + 5 && affection_lv <= int.Parse(affection_restore) + 8)
+        {
+            //boyfriend
+            affection_status = "Boyfriend";
         }
 
         return affection_status;
     }
+    /*
+    public void Event_manage()
+    {
+        if (affSheet == null)
+            return ;
+
+        var data = affSheet.GetData(_aff_idx);
+
+        if (data == null)
+        {
+            return ;
+        }
+
+        if (data.TryGetValue("category", out var eve))
+        {
+            _category = eve.ToString();
+        }
+
+        if(_category == "Event")
+        {
+
+        }
+        else
+        {
+
+        }
+    }*/
 }
