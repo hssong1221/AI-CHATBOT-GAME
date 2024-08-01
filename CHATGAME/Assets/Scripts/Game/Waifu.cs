@@ -61,8 +61,7 @@ public class Waifu : MonoBehaviour
 
         aff_idx = 0;
 
-        affection_barrel = new int[] { Affection_sheet(0, "Poke"), Affection_sheet(1, "Poke"), Affection_sheet(2, "Poke"), Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke"), Affection_sheet(5, "Poke") };
-        Debug.Log("What Happened? "+Affection_sheet(0, "Poke"));
+        affection_barrel = new int[] { Affection_sheet(0, "Poke") + Affection_sheet(0, "Event"), Affection_sheet(1, "Poke") + Affection_sheet(1, "Event"), Affection_sheet(2, "Poke") + Affection_sheet(2, "Event"), Affection_sheet(3, "Poke") + Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke") + Affection_sheet(4, "Event"), Affection_sheet(5, "Poke") + Affection_sheet(5, "Event") };
         affection_status = new string[] { "Intruder", "Suspicious", "Member", "Intimate", "More", "Boyfriend" };
 
         Affection_compare();
