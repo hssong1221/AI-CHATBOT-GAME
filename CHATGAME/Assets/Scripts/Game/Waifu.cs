@@ -31,12 +31,12 @@ public class Waifu : MonoBehaviour
     {
         get { return _aff_idx; }
         set { _aff_idx = value; }
-    } 
+    }
 
-    public int affection_exp;//호감도 경험치
+    public int affection_exp;/*호감도 경험치*/
     public int affection_lv;//호감도 레벨
-    public int affection_barrel;//호감도 레벨업 필요 경험치
-    public string affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
+    private int[] affection_barrel;//*호감도 레벨업 필요 경험치*/
+    public string[] affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
     public string affection_restore;//엑셀에서 받아온 호감도를 저장
     DataManager dataManager;
     SheetData affSheet;
@@ -64,7 +64,9 @@ public class Waifu : MonoBehaviour
 
         aff_idx = 0;
 
-        affection_barrel = 5;
+        affection_barrel = new int[] { Affection_sheet(0, "Poke"), Affection_sheet(1, "Poke"), Affection_sheet(2, "Poke"), Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke"), Affection_sheet(5, "Poke") };
+        Debug.Log("What Happened? "+Affection_sheet(0, "Poke"));
+        affection_status = new string[] { "Intruder", "Suspicious", "Member", "Intimate", "More", "Boyfriend" };
 
         SheetLoadAction += SetSheetData;
 
@@ -96,11 +98,10 @@ public class Waifu : MonoBehaviour
 
     public void Affection_level_calculate()
     {
-        if(affection_exp >= affection_barrel)
+        if(affection_exp >= affection_barrel[affection_lv])
         {
             affection_lv++;
-            affection_barrel = affection_barrel * 2 - (affection_lv % 5);//임시
-            //affection_exp = 0;
+            affection_exp = 0;
         }
     }
 
@@ -111,7 +112,7 @@ public class Waifu : MonoBehaviour
 
     public string Affection_compare()
     {
-        if (affSheet == null)
+/*        if (affSheet == null)
             return "ERROR";
 
         var data = affSheet.GetData(_aff_idx);
@@ -121,27 +122,61 @@ public class Waifu : MonoBehaviour
             return "empty";//임시
         }
 
-        if(data.TryGetValue("affection",out var aff))
+        if(data.TryGetValue("affection",out var aff))//excel 파일에서 호감도 경로를 불러와 비교함
         {
             affection_restore = aff.ToString();
         }
 
-        if (affection_lv < int.Parse(affection_restore) )//excel 파일에서 호감도 경로를 불러와 비교함
+        
+        if (affection_lv <= int.Parse(affection_restore) )
         {
             //intruder
             affection_status = "Intruder";
         }
-        else if (affection_lv == int.Parse(affection_restore))
-        {
-            //member
-            affection_status = "Suspicious";
-        }
-        else if (affection_lv > int.Parse(affection_restore))
+        else if (affection_lv > int.Parse(affection_restore) && affection_lv <= int.Parse(affection_restore) + 1)
         {
             //suspicious
+            affection_status = "Suspicious";
+        }
+        else if (affection_lv > int.Parse(affection_restore) + 1 && affection_lv <= int.Parse(affection_restore) + 2)
+        {
+            //member
             affection_status = "Member";
         }
+        else if(affection_lv > int.Parse(affection_restore) + 2 && affection_lv <= int.Parse(affection_restore) + 3)
+        {
+            //intimate
+            affection_status = "Intimate";
+        }
+        else if (affection_lv > int.Parse(affection_restore) + 3 && affection_lv <= int.Parse(affection_restore) + 5)
+        {
+            //more
+            affection_status = "More";
+        }
+        else if (affection_lv > int.Parse(affection_restore) + 5 && affection_lv <= int.Parse(affection_restore) + 8)
+        {
+            //boyfriend
+            affection_status = "Boyfriend";
+        }*/
 
-        return affection_status;
+        return affection_status[affection_lv];
+    }
+    
+    public int Affection_sheet(int _aff_level, string _category)
+    {
+        int _aff_sheet = 0;
+
+        var data = affSheet.Data;
+        var iter = data.GetEnumerator();
+        while (iter.MoveNext())
+        {
+            var cur = iter.Current;
+
+            if (cur["affection"].Equals(_aff_level.ToString()) && cur["category"].Equals(_category))
+            {
+                _aff_sheet++;
+            }
+        }
+        return _aff_sheet;
     }
 }
