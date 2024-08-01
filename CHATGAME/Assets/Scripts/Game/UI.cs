@@ -43,9 +43,6 @@ public class UI : MonoBehaviour
     }
     public ButtonState buttonState;
 
-    [SerializeField]
-    int Idx = 0;
-
     void Awake()
     {
         if (_instance == null)
@@ -202,4 +199,6 @@ public class UI : MonoBehaviour
 
         return partialData;
     }
+
+
 }
