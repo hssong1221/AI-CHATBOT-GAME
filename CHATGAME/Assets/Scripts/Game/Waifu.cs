@@ -60,16 +60,13 @@ public class Waifu : MonoBehaviour
     void Start()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
-        //affSheet = dataManager.GetSheetData("Dialogue");
-
+        SheetLoadAction += SetSheetData;
+        affSheet = dataManager.GetSheetData("Dialogue");
         aff_idx = 0;
 
         affection_barrel = new int[] { Affection_sheet(0, "Poke"), Affection_sheet(1, "Poke"), Affection_sheet(2, "Poke"), Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke"), Affection_sheet(5, "Poke") };
         Debug.Log("What Happened? "+Affection_sheet(0, "Poke"));
         affection_status = new string[] { "Intruder", "Suspicious", "Member", "Intimate", "More", "Boyfriend" };
-
-        SheetLoadAction += SetSheetData;
-
         Affection_compare();
     }
 
