@@ -34,10 +34,9 @@ public class Waifu : MonoBehaviour
 
     public int affection_exp;/*호감도 경험치*/
     public int affection_lv;//호감도 레벨
-    public int affection_barrel;//*호감도 레벨업 필요 경험치*/
-    public string affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
+    private int[] affection_barrel;//*호감도 레벨업 필요 경험치*/
+    public string[] affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
     public string affection_restore;//엑셀에서 받아온 호감도를 저장
-    //public string _category;//Event 발생 감지
     DataManager dataManager;
     SheetData affSheet;
 
@@ -62,7 +61,9 @@ public class Waifu : MonoBehaviour
 
         aff_idx = 0;
 
-        affection_barrel = 7;
+        affection_barrel = new int[] { Affection_sheet(0, "Poke"), Affection_sheet(1, "Poke"), Affection_sheet(2, "Poke"), Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke"), Affection_sheet(5, "Poke") };
+        Debug.Log("What Happened? "+Affection_sheet(0, "Poke"));
+        affection_status = new string[] { "Intruder", "Suspicious", "Member", "Intimate", "More", "Boyfriend" };
 
         Affection_compare();
     }
@@ -86,10 +87,9 @@ public class Waifu : MonoBehaviour
 
     public void Affection_level_calculate()
     {
-        if(affection_exp >= affection_barrel)
+        if(affection_exp >= affection_barrel[affection_lv])
         {
             affection_lv++;
-            affection_barrel = affection_barrel * 2 - (affection_lv * 3);//임시
             affection_exp = 0;
         }
     }
@@ -101,7 +101,7 @@ public class Waifu : MonoBehaviour
 
     public string Affection_compare()
     {
-        if (affSheet == null)
+/*        if (affSheet == null)
             return "ERROR";
 
         var data = affSheet.GetData(_aff_idx);
@@ -116,6 +116,7 @@ public class Waifu : MonoBehaviour
             affection_restore = aff.ToString();
         }
 
+        
         if (affection_lv <= int.Parse(affection_restore) )
         {
             //intruder
@@ -145,35 +146,26 @@ public class Waifu : MonoBehaviour
         {
             //boyfriend
             affection_status = "Boyfriend";
-        }
+        }*/
 
-        return affection_status;
+        return affection_status[affection_lv];
     }
-    /*
-    public void Event_manage()
+    
+    public int Affection_sheet(int _aff_level, string _category)
     {
-        if (affSheet == null)
-            return ;
+        int _aff_sheet = 0;
 
-        var data = affSheet.GetData(_aff_idx);
-
-        if (data == null)
+        var data = affSheet.Data;
+        var iter = data.GetEnumerator();
+        while (iter.MoveNext())
         {
-            return ;
-        }
+            var cur = iter.Current;
 
-        if (data.TryGetValue("category", out var eve))
-        {
-            _category = eve.ToString();
+            if (cur["affection"].Equals(_aff_level.ToString()) && cur["category"].Equals(_category))
+            {
+                _aff_sheet++;
+            }
         }
-
-        if(_category == "Event")
-        {
-
-        }
-        else
-        {
-
-        }
-    }*/
+        return _aff_sheet;
+    }
 }
