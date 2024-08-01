@@ -54,6 +54,6 @@ public class GameManager : MonoBehaviour
     // 호감도 시스템이랑 연동 될 곳
     public void CheckProgress()
     {
-        Debug.Log("progress check");
+        //Debug.Log("progress check");
     }
 }

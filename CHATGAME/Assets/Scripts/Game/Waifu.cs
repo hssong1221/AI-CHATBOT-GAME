@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// 호감도 시스템 로직을 담당
@@ -40,6 +41,8 @@ public class Waifu : MonoBehaviour
     DataManager dataManager;
     SheetData affSheet;
 
+    public static Action SheetLoadAction;
+
     void Awake()
     {
         if( _Instance == null )
@@ -57,12 +60,20 @@ public class Waifu : MonoBehaviour
     void Start()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
-        affSheet = dataManager.GetSheetData("Dialogue");
+        //affSheet = dataManager.GetSheetData("Dialogue");
 
         aff_idx = 0;
 
         affection_barrel = 5;
 
+        SheetLoadAction += SetSheetData;
+
+        Affection_compare();
+    }
+
+    public void SetSheetData()
+    {
+        affSheet = dataManager.GetSheetData("Dialogue");
         Affection_compare();
     }
 
