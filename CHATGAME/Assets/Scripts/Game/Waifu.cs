@@ -72,7 +72,7 @@ public class Waifu : MonoBehaviour
     public void SetSheetData()
     {
         affSheet = dataManager.GetSheetData("Dialogue");
-        Affection_compare();
+        //Affection_compare();
     }
 
     public void Affection_ascend()
@@ -158,6 +158,11 @@ public class Waifu : MonoBehaviour
         return affection_status[affection_lv];
     }
     
+    public double Affection_Percentage()//호감도 UI 경험치 배율 전달
+    {
+        return affection_exp / affection_barrel[affection_lv] * 100;
+    }
+
     public int Affection_sheet(int _aff_level, string _category)
     {
         int _aff_sheet = 0;
