@@ -42,6 +42,8 @@ public class UI : MonoBehaviour
         Next,
     }
     public ButtonState buttonState;
+    [SerializeField]
+    bool isBtn = false;
 
     void Awake()
     {
@@ -56,7 +58,6 @@ public class UI : MonoBehaviour
         }
     }
 
-
     void Start()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
@@ -65,6 +66,7 @@ public class UI : MonoBehaviour
         diaSheet = dataManager.GetSheetData("Dialogue");
         //ImgSheet = dataManager.GetSheetData("ImgPath");
 
+        isBtn = false;
         nameText.text = "name";
         affectionText.text = "0";
         dialogueText.text = "dialogue";
@@ -77,6 +79,29 @@ public class UI : MonoBehaviour
 
         waifu.Affection_ascend();
         waifu.aff_idx += 1;
+    }
+
+    void Update()
+    {
+#if UNITY_EDITOR
+      
+
+#elif UNITY_ANDROID
+        if(Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (isBtn)
+                return;
+
+            if (touch.phase == TouchPhase.Began)
+                isBtn = true;
+            else if (touch.phase == TouchPhase.Ended)
+                isBtn = false;
+
+            OnClickPokeBtn();
+        }
+#endif
     }
 
     public void SetMainImg()
