@@ -71,9 +71,10 @@ public class UI : MonoBehaviour
         affectionText.text = "0";
         dialogueText.text = "dialogue";
 
-        DataSheetSetting(0, "Poke");
+        //DataSheetSetting(0, "Poke");
 
         GameManager.CheckProgAction?.Invoke();
+
         SetMainImg();
         SetText();
 
@@ -81,12 +82,9 @@ public class UI : MonoBehaviour
         waifu.aff_idx += 1;
     }
 
-    void Update()
+    /*void Update()
     {
-#if UNITY_EDITOR
-      
 
-#elif UNITY_ANDROID
         if(Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -101,8 +99,8 @@ public class UI : MonoBehaviour
 
             OnClickPokeBtn();
         }
-#endif
-    }
+
+    }*/
 
     public void SetMainImg()
     {
@@ -161,6 +159,8 @@ public class UI : MonoBehaviour
 
         waifu.Affection_ascend();
         waifu.aff_idx += 1;
+
+        ButtonAction.CheckUnlockAction?.Invoke();
     }
 
     public void OnClickTwtBtn()
