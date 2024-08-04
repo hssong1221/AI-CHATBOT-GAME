@@ -35,7 +35,7 @@ public class Waifu : MonoBehaviour
 
     public int affection_exp;/*호감도 경험치*/
     public int affection_lv;//호감도 레벨
-    private int[] affection_barrel;//*호감도 레벨업 필요 경험치*/
+    public int[] affection_barrel;//*호감도 레벨업 필요 경험치*/
     public string[] affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
     public string affection_restore;//엑셀에서 받아온 호감도를 저장
     DataManager dataManager;
@@ -77,7 +77,31 @@ public class Waifu : MonoBehaviour
 
     public void Affection_ascend()
     {
-        affection_exp++;
+        if (affSheet == null)
+            return ;
+
+        var data = affSheet.GetData(_aff_idx);
+
+        if (data == null)
+        {
+            return ;
+        }
+        
+        if (data.TryGetValue("category", out var cate))//excel 파일에서 호감도 경로를 불러와 비교함
+        {
+            affection_restore = cate.ToString();
+        }
+        //Debug.Log("category : "+affection_restore);
+
+        if(affection_restore == "Poke")
+        {
+            affection_exp++;
+        }
+        else if(affection_restore == "Event" || affection_restore == "Twt" || affection_restore == "Pat" || affection_restore == "Date")
+        {
+            affection_exp+=2;
+        }
+        
         Affection_level_calculate();
         Affection_compare();
     }
