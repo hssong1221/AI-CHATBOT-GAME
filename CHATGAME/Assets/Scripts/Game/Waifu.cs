@@ -36,6 +36,7 @@ public class Waifu : MonoBehaviour
     public int affection_exp;/*호감도 경험치*/
     public int affection_lv;//호감도 레벨
     public int[] affection_barrel;//*호감도 레벨업 필요 경험치*/
+    private int[] affection_increase;//category 종류별 제공 경험치 { Poke, Event, Twt, Pat, Date }
     public string[] affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
     public string affection_restore;//엑셀에서 받아온 호감도를 저장
     DataManager dataManager;
@@ -63,8 +64,16 @@ public class Waifu : MonoBehaviour
         SheetLoadAction += SetSheetData;
         affSheet = dataManager.GetSheetData("Dialogue");
         aff_idx = 0;
+        int _cnt = 0;
 
-        affection_barrel = new int[] { Affection_sheet(0, "Poke") + Affection_sheet(0, "Event"), Affection_sheet(1, "Poke") + Affection_sheet(1, "Event"), Affection_sheet(2, "Poke") + Affection_sheet(2, "Event"), Affection_sheet(3, "Poke") + Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke") + Affection_sheet(4, "Event"), Affection_sheet(5, "Poke") + Affection_sheet(5, "Event") };
+        affection_increase = new int[] { 1, 2, 2, 2, 2 };
+        affection_barrel = new int[] { 0, 0, 0, 0, 0, 0 };
+        while( _cnt < 6)
+        {
+            affection_barrel[_cnt] = Affection_sheet(_cnt, "Poke") * affection_increase[0] + Affection_sheet(_cnt, "Event") * affection_increase[1];
+            _cnt++;
+        }
+        //affection_barrel = new int[] { Affection_sheet(0, "Poke") + Affection_sheet(0, "Event"), Affection_sheet(1, "Poke") + Affection_sheet(1, "Event"), Affection_sheet(2, "Poke") + Affection_sheet(2, "Event"), Affection_sheet(3, "Poke") + Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke") + Affection_sheet(4, "Event"), Affection_sheet(5, "Poke") + Affection_sheet(5, "Event") };
         affection_status = new string[] { "Intruder", "Suspicious", "Member", "Intimate", "More", "Boyfriend" };
         Affection_compare();
     }
@@ -95,11 +104,11 @@ public class Waifu : MonoBehaviour
 
         if(affection_restore == "Poke")
         {
-            affection_exp++;
+            affection_exp += affection_increase[0];
         }
         else if(affection_restore == "Event" || affection_restore == "Twt" || affection_restore == "Pat" || affection_restore == "Date")
         {
-            affection_exp+=2;
+            affection_exp += affection_increase[1];
         }
         
         Affection_level_calculate();
