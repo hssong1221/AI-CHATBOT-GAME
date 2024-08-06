@@ -33,21 +33,25 @@ public class UI : MonoBehaviour
     Coroutine typingCoroutine;
     string saveLastText;
 
+    [Header("호감도 Gauge")]
+    public Image guageImg;
+
     DataManager dataManager;
     Waifu waifu;
 
     SheetData diaSheet;
     //SheetData ImgSheet;
 
-    public enum ButtonState
+    public enum CategoryState
     {
         Poke,
-        Twt,
+        Event,
+        Twitter,
         Pat,
         Next,
     }
-    [Header("버튼 상태")]
-    public ButtonState buttonState;
+    [Header("현재 카테고리 상태")]
+    public CategoryState categoryState;
     
     public enum TextUIState
     {
@@ -57,6 +61,8 @@ public class UI : MonoBehaviour
     }
     [Header("현재 Text UI 상태")]
     public TextUIState textState;
+
+    private Action SettingAction;
 
     void Awake()
     {
@@ -88,8 +94,11 @@ public class UI : MonoBehaviour
 
         GameManager.CheckProgAction?.Invoke();
 
-        SetMainImg();
-        SetText();
+        SettingAction += SetMainImg;
+        SettingAction += SetGauge;
+        SettingAction += SetText;
+
+        SettingAction?.Invoke();
 
         waifu.Affection_ascend();
         waifu.aff_idx += 1;
@@ -115,6 +124,8 @@ public class UI : MonoBehaviour
 
     }*/
 
+    #region UI data setting
+
     public void SetMainImg()
     {
         /* 
@@ -130,7 +141,7 @@ public class UI : MonoBehaviour
         string affState = "";   // 호감도 상태
         int number = 0;         // 텍스트 순서
 
-        category = buttonState.ToString();
+        category = categoryState.ToString();
         affState = waifu.Affection_compare();
         number = waifu.affection_exp;
 
@@ -144,6 +155,11 @@ public class UI : MonoBehaviour
             Debug.LogWarning("경로에 사진 없음");
     }
 
+    public void SetGauge()
+    {
+        float ratio = waifu.Affection_Percentage();
+        guageImg.fillAmount = ratio;
+    }
 
     public void SetText()
     {
@@ -169,14 +185,13 @@ public class UI : MonoBehaviour
     // dialogue text 타이핑 효과
     IEnumerator TypingEffect(string txt)
     {
-        for(int i = 0; i < txt.Length;i++)
+        for (int i = 0; i < txt.Length; i++)
         {
             dialogueText.text = txt.Substring(0, i);
             yield return new WaitForSeconds(TextDelayTime);
         }
         textState = TextUIState.End;
     }
-
     // 타이핑 효과 멈추고 즉시 전체 노출
     public void StopTypingEffect()
     {
@@ -185,6 +200,12 @@ public class UI : MonoBehaviour
         dialogueText.text = saveLastText;
         textState = TextUIState.End;
     }
+
+    
+
+    #endregion
+
+    #region 버튼들
 
     public void OnClickPokeBtn()
     {
@@ -196,10 +217,14 @@ public class UI : MonoBehaviour
         {
             GameManager.CheckProgAction?.Invoke();
 
-            buttonState = ButtonState.Poke;
+            string temp = waifu.Check_Category();
 
-            SetMainImg();
-            SetText();
+            if (temp.Equals("Poke"))
+                SetCategoryState(CategoryState.Poke);
+            else if (temp.Equals("Event"))
+                SetCategoryState(CategoryState.Event);
+
+            SettingAction?.Invoke();
 
             waifu.Affection_ascend();
             waifu.aff_idx += 1;
@@ -207,38 +232,45 @@ public class UI : MonoBehaviour
             ButtonAction.CheckUnlockAction?.Invoke();
         }
     }
-
     public void OnClickTwtBtn()
     {
-        buttonState = ButtonState.Twt;
+        categoryState = CategoryState.Twitter;
 
-        SetMainImg();
-        SetText();
+        SettingAction?.Invoke();
 
         waifu.Affection_ascend();
         waifu.aff_idx += 1;
     }
     public void OnClickPatBtn()
     {
-        buttonState = ButtonState.Pat;
+        categoryState = CategoryState.Pat;
 
-        SetMainImg();
-        SetText();
+        SettingAction?.Invoke();
 
         waifu.Affection_ascend();
         waifu.aff_idx += 1;
     }
     public void OnClickNextBtn()
     {
-        buttonState = ButtonState.Next;
+        //categoryState = CategoryState.Next;
 
-        SetMainImg();
-        SetText();
+        SettingAction?.Invoke();
 
         waifu.Affection_ascend();
         waifu.aff_idx += 1;
     }
 
+    #endregion
+
+    public void SetCategoryState(CategoryState state)
+    {
+        categoryState = state;
+    }
+
+    public void SetCategoryState(string state)
+    {
+        categoryState = (CategoryState)Enum.ToObject(typeof(CategoryState), state);
+    }
 
     /// <summary>
     /// 파라미터 받아서 알맞게 데이터시트 가공
@@ -269,6 +301,4 @@ public class UI : MonoBehaviour
 
         return partialData;
     }
-
-
 }

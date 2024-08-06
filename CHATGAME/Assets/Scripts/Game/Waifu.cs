@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
 
 /// <summary>
 /// 호감도 시스템 로직을 담당
@@ -37,7 +36,9 @@ public class Waifu : MonoBehaviour
     public int affection_exp;//호감도 경험치
     public int affection_lv;//호감도 레벨
     public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
-    public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 2 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
+
+    // ------------------------------------------------------------- event 임시로 1로 바꿔놓음 보고 바꾸기 -----------------------------------------------
+    public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     
     public enum Affection_status
     {
@@ -103,12 +104,15 @@ public class Waifu : MonoBehaviour
             return ;
         }
         
-        if (data.TryGetValue("category", out var cate))//excel 파일에서 호감도 경로를 불러와 비교함
+        if (data.TryGetValue("category", out var cate))//excel 파일에서 호감도 경로를 불러와 비교함 - dialogue datasheet 클래스에서 가져오는 것이에요
         {
             category_restore = cate.ToString();
         }
 
+        
+
         affection_exp += affection_increase[category_restore];
+
         
         Affection_level_calculate();
     }
@@ -142,9 +146,25 @@ public class Waifu : MonoBehaviour
         return _affection_status.ToString();
     }
     
-    public double Affection_Percentage()//호감도 UI 경험치 배율 전달
+    public float Affection_Percentage()//호감도 UI 경험치 배율 전달
     {
-        return affection_exp / affection_barrel[affection_lv] * 100;
+        return (float)affection_exp / (float)affection_barrel[affection_lv];
+    }
+
+
+    // -------------------------------- 임시로 만든 카테고리 확인 함수--------------------------------
+    public string Check_Category()
+    {
+        var data = affSheet.GetData(_aff_idx);
+        if (data.TryGetValue("category", out var cate))
+        {
+            if (cate.Equals("Event") && affection_exp == 6)
+            {
+                affection_exp = 0;
+            }
+            return cate;
+        }
+        return "Error";
     }
 
     public int Affection_sheet(int _aff_level, string _category)
