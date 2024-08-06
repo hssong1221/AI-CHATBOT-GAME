@@ -23,10 +23,15 @@ public class UI : MonoBehaviour
         }
     }
 
+    [Header("텍스트 박스 UI")]
     public Image mainImg;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI affectionText;
     public TextMeshProUGUI dialogueText;
+    [SerializeField]
+    float TextDelayTime;
+    Coroutine typingCoroutine;
+    string saveLastText;
 
     DataManager dataManager;
     Waifu waifu;
@@ -41,9 +46,17 @@ public class UI : MonoBehaviour
         Pat,
         Next,
     }
+    [Header("버튼 상태")]
     public ButtonState buttonState;
-    [SerializeField]
-    bool isBtn = false;
+    
+    public enum TextUIState
+    {
+        Before,
+        Typing,
+        End
+    }
+    [Header("현재 Text UI 상태")]
+    public TextUIState textState;
 
     void Awake()
     {
@@ -66,11 +79,11 @@ public class UI : MonoBehaviour
         diaSheet = dataManager.GetSheetData("Dialogue");
         //ImgSheet = dataManager.GetSheetData("ImgPath");
 
-        isBtn = false;
         nameText.text = "name";
         affectionText.text = "0";
         dialogueText.text = "dialogue";
 
+        TextDelayTime = 0.05f;
         //DataSheetSetting(0, "Poke");
 
         GameManager.CheckProgAction?.Invoke();
@@ -117,7 +130,7 @@ public class UI : MonoBehaviour
         string affState = "";   // 호감도 상태
         int number = 0;         // 텍스트 순서
 
-        category = buttonState.ToString();        
+        category = buttonState.ToString();
         affState = waifu.Affection_compare();
         number = waifu.affection_exp;
 
@@ -138,29 +151,61 @@ public class UI : MonoBehaviour
         if (data == null)
             return;
 
-        if(data.TryGetValue("id", out var id))
+        if (data.TryGetValue("id", out var id))
             nameText.text = id;
 
         if (data.TryGetValue("affection", out var aff))
             affectionText.text = aff.ToString();
 
         if (data.TryGetValue("text", out var txt))
-            dialogueText.text = txt;
+        {
+            //dialogueText.text = txt;
+            textState = TextUIState.Typing;
+            saveLastText = txt;
+            typingCoroutine = StartCoroutine(TypingEffect(txt));
+        }
+    }
+
+    // dialogue text 타이핑 효과
+    IEnumerator TypingEffect(string txt)
+    {
+        for(int i = 0; i < txt.Length;i++)
+        {
+            dialogueText.text = txt.Substring(0, i);
+            yield return new WaitForSeconds(TextDelayTime);
+        }
+        textState = TextUIState.End;
+    }
+
+    // 타이핑 효과 멈추고 즉시 전체 노출
+    public void StopTypingEffect()
+    {
+        StopCoroutine(typingCoroutine);
+        typingCoroutine = null;
+        dialogueText.text = saveLastText;
+        textState = TextUIState.End;
     }
 
     public void OnClickPokeBtn()
     {
-        GameManager.CheckProgAction?.Invoke();
+        if(textState == TextUIState.Typing)
+        {
+            StopTypingEffect();
+        }
+        else
+        {
+            GameManager.CheckProgAction?.Invoke();
 
-        buttonState = ButtonState.Poke;
+            buttonState = ButtonState.Poke;
 
-        SetMainImg();
-        SetText();
+            SetMainImg();
+            SetText();
 
-        waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+            waifu.Affection_ascend();
+            waifu.aff_idx += 1;
 
-        ButtonAction.CheckUnlockAction?.Invoke();
+            ButtonAction.CheckUnlockAction?.Invoke();
+        }
     }
 
     public void OnClickTwtBtn()
