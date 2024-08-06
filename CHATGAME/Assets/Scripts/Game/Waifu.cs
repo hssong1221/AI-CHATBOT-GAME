@@ -35,7 +35,7 @@ public class Waifu : MonoBehaviour
 
     public int affection_exp;/*호감도 경험치*/
     public int affection_lv;//호감도 레벨
-    public int[] affection_barrel;//*호감도 레벨업 필요 경험치*/
+    public List<int> affection_barrel = new List<int>();//*호감도 레벨업 필요 경험치*/
     private int[] affection_increase;//category 종류별 제공 경험치 { Poke, Event, Twt, Pat, Date }
     public string[] affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
     public string affection_restore;//엑셀에서 받아온 호감도를 저장
@@ -67,10 +67,10 @@ public class Waifu : MonoBehaviour
         int _cnt = 0;
 
         affection_increase = new int[] { 1, 2, 2, 2, 2 };
-        affection_barrel = new int[] { 0, 0, 0, 0, 0, 0 };
+        //affection_barrel = new int[] { 0, 0, 0, 0, 0, 0 };
         while( _cnt < 6)
         {
-            affection_barrel[_cnt] = Affection_sheet(_cnt, "Poke") * affection_increase[0] + Affection_sheet(_cnt, "Event") * affection_increase[1];
+            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase[0] + Affection_sheet(_cnt, "Event") * affection_increase[1]);
             _cnt++;
         }
         //affection_barrel = new int[] { Affection_sheet(0, "Poke") + Affection_sheet(0, "Event"), Affection_sheet(1, "Poke") + Affection_sheet(1, "Event"), Affection_sheet(2, "Poke") + Affection_sheet(2, "Event"), Affection_sheet(3, "Poke") + Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke") + Affection_sheet(4, "Event"), Affection_sheet(5, "Poke") + Affection_sheet(5, "Event") };
