@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 /// <summary>
 /// 호감도 시스템 로직을 담당
@@ -33,12 +34,24 @@ public class Waifu : MonoBehaviour
         set { _aff_idx = value; }
     }
 
-    public int affection_exp;/*호감도 경험치*/
+    public int affection_exp;//호감도 경험치
     public int affection_lv;//호감도 레벨
-    public List<int> affection_barrel = new List<int>();//*호감도 레벨업 필요 경험치*/
-    private int[] affection_increase;//category 종류별 제공 경험치 { Poke, Event, Twt, Pat, Date }
-    public string[] affection_status;//호감도 상태( intruder, suspicious, member, intimate, more, boyfriend )
-    public string affection_restore;//엑셀에서 받아온 호감도를 저장
+    public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
+    public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 2 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
+    
+    public enum Affection_status
+    {
+        Intruder,
+        Suspicious,
+        Member,
+        Intimate,
+        More,
+        Boyfriend
+    }
+    [Header("호감도 상태")]
+    public Affection_status _affection_status;
+    
+    public string category_restore;//엑셀에서 받아온 호감도를 저장
     DataManager dataManager;
     SheetData affSheet;
 
@@ -66,22 +79,16 @@ public class Waifu : MonoBehaviour
         aff_idx = 0;
         int _cnt = 0;
 
-        affection_increase = new int[] { 1, 2, 2, 2, 2 };
-        //affection_barrel = new int[] { 0, 0, 0, 0, 0, 0 };
-        while( _cnt < 6)
+        while ( _cnt < 6)
         {
-            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase[0] + Affection_sheet(_cnt, "Event") * affection_increase[1]);
+            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"] + Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
-        //affection_barrel = new int[] { Affection_sheet(0, "Poke") + Affection_sheet(0, "Event"), Affection_sheet(1, "Poke") + Affection_sheet(1, "Event"), Affection_sheet(2, "Poke") + Affection_sheet(2, "Event"), Affection_sheet(3, "Poke") + Affection_sheet(3, "Poke"), Affection_sheet(4, "Poke") + Affection_sheet(4, "Event"), Affection_sheet(5, "Poke") + Affection_sheet(5, "Event") };
-        affection_status = new string[] { "Intruder", "Suspicious", "Member", "Intimate", "More", "Boyfriend" };
-        Affection_compare();
     }
 
     public void SetSheetData()
     {
         affSheet = dataManager.GetSheetData("Dialogue");
-        //Affection_compare();
     }
 
     public void Affection_ascend()
@@ -98,21 +105,12 @@ public class Waifu : MonoBehaviour
         
         if (data.TryGetValue("category", out var cate))//excel 파일에서 호감도 경로를 불러와 비교함
         {
-            affection_restore = cate.ToString();
+            category_restore = cate.ToString();
         }
-        //Debug.Log("category : "+affection_restore);
 
-        if(affection_restore == "Poke")
-        {
-            affection_exp += affection_increase[0];
-        }
-        else if(affection_restore == "Event" || affection_restore == "Twt" || affection_restore == "Pat" || affection_restore == "Date")
-        {
-            affection_exp += affection_increase[1];
-        }
+        affection_exp += affection_increase[category_restore];
         
         Affection_level_calculate();
-        Affection_compare();
     }
 
     public void Affection_descend()
@@ -122,7 +120,6 @@ public class Waifu : MonoBehaviour
             affection_exp--; 
         }
         Affection_level_calculate();
-        Affection_compare();
     }
 
     public void Affection_level_calculate()
@@ -141,54 +138,8 @@ public class Waifu : MonoBehaviour
 
     public string Affection_compare()
     {
-/*        if (affSheet == null)
-            return "ERROR";
-
-        var data = affSheet.GetData(_aff_idx);
-
-        if(data == null )
-        {
-            return "empty";//임시
-        }
-
-        if(data.TryGetValue("affection",out var aff))//excel 파일에서 호감도 경로를 불러와 비교함
-        {
-            affection_restore = aff.ToString();
-        }
-
-        
-        if (affection_lv <= int.Parse(affection_restore) )
-        {
-            //intruder
-            affection_status = "Intruder";
-        }
-        else if (affection_lv > int.Parse(affection_restore) && affection_lv <= int.Parse(affection_restore) + 1)
-        {
-            //suspicious
-            affection_status = "Suspicious";
-        }
-        else if (affection_lv > int.Parse(affection_restore) + 1 && affection_lv <= int.Parse(affection_restore) + 2)
-        {
-            //member
-            affection_status = "Member";
-        }
-        else if(affection_lv > int.Parse(affection_restore) + 2 && affection_lv <= int.Parse(affection_restore) + 3)
-        {
-            //intimate
-            affection_status = "Intimate";
-        }
-        else if (affection_lv > int.Parse(affection_restore) + 3 && affection_lv <= int.Parse(affection_restore) + 5)
-        {
-            //more
-            affection_status = "More";
-        }
-        else if (affection_lv > int.Parse(affection_restore) + 5 && affection_lv <= int.Parse(affection_restore) + 8)
-        {
-            //boyfriend
-            affection_status = "Boyfriend";
-        }*/
-
-        return affection_status[affection_lv];
+        _affection_status = (Affection_status)Enum.ToObject(typeof(Affection_status), affection_lv);
+        return _affection_status.ToString();
     }
     
     public double Affection_Percentage()//호감도 UI 경험치 배율 전달
