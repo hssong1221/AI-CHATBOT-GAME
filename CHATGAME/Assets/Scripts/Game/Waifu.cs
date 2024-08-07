@@ -52,7 +52,7 @@ public class Waifu : MonoBehaviour
     [Header("호감도 상태")]
     public Affection_status _affection_status;
     
-    public string category_restore;//엑셀에서 받아온 호감도를 저장
+    public string category_restore;
     DataManager dataManager;
     SheetData affSheet;
 
@@ -82,7 +82,9 @@ public class Waifu : MonoBehaviour
 
         while ( _cnt < 6)
         {
-            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"] + Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
+            //affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"] + Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
+            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"]);
+            affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
     }
@@ -104,27 +106,16 @@ public class Waifu : MonoBehaviour
             return ;
         }
         
-        if (data.TryGetValue("category", out var cate))//excel 파일에서 호감도 경로를 불러와 비교함 - dialogue datasheet 클래스에서 가져오는 것이에요
+        if (data.TryGetValue("category", out var cate))//- dialogue datasheet 클래스에서 호감도 경로를 불러와 비교함
         {
             category_restore = cate.ToString();
         }
 
-        
-
         affection_exp += affection_increase[category_restore];
-
         
         Affection_level_calculate();
     }
 
-    public void Affection_descend()
-    {
-        if( affection_exp > 0 )
-        {
-            affection_exp--; 
-        }
-        Affection_level_calculate();
-    }
 
     public void Affection_level_calculate()
     {
@@ -135,20 +126,26 @@ public class Waifu : MonoBehaviour
         }
     }
 
-    public string Affection_transport()//UI로 호감도 수치를 전달함
-    {
-        return affection_lv.ToString();
-    }
-
     public string Affection_compare()
     {
-        _affection_status = (Affection_status)Enum.ToObject(typeof(Affection_status), affection_lv);
+        _affection_status = (Affection_status)Enum.ToObject(typeof(Affection_status), affection_lv/2);
         return _affection_status.ToString();
     }
     
     public float Affection_Percentage()//호감도 UI 경험치 배율 전달
     {
-        return (float)affection_exp / (float)affection_barrel[affection_lv];
+        string _cate_str = Check_Category();
+        float aff_percent = 0;
+        if(_cate_str == "Event")
+        {
+            aff_percent = 1.0f;
+        }
+        else
+        {
+            aff_percent = (float)affection_exp / (float)affection_barrel[affection_lv];
+        }
+
+        return aff_percent;
     }
 
 
@@ -156,15 +153,17 @@ public class Waifu : MonoBehaviour
     public string Check_Category()
     {
         var data = affSheet.GetData(_aff_idx);
-        if (data.TryGetValue("category", out var cate))
+        data.TryGetValue("category", out var cate);
+        /*if (data.TryGetValue("category", out var cate))
         {
-            if (cate.Equals("Event") && affection_exp == 6)
+            if (cate.Equals("Event") && affection_exp >= affection_barrel[affection_lv])
             {
                 affection_exp = 0;
             }
             return cate;
         }
-        return "Error";
+        return "Error";*/
+        return cate.ToString();
     }
 
     public int Affection_sheet(int _aff_level, string _category)
