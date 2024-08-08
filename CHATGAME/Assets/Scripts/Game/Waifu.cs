@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// 호감도 시스템 로직을 담당
@@ -36,7 +37,7 @@ public class Waifu : MonoBehaviour
     public int affection_exp;//호감도 경험치
     public int affection_lv;//호감도 레벨
     public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
-
+    private List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
     // ------------------------------------------------------------- event 임시로 1로 바꿔놓음 보고 바꾸기 -----------------------------------------------
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     
@@ -148,10 +149,19 @@ public class Waifu : MonoBehaviour
 
     public void Affection_level_calculate()
     {
+        int _cnt = 1;
+
         if(affection_exp >= affection_barrel[affection_lv])
         {
             affection_lv++;
             affection_exp = 0;
+            affection_interact.Clear();
+
+            while(_cnt <= affection_barrel[affection_lv])
+            {
+                affection_interact.Add(_cnt);//임의의 대사 인덱스를 전달하기 위한 작업
+                _cnt++;
+            }
         }
     }
 
@@ -177,42 +187,41 @@ public class Waifu : MonoBehaviour
         return aff_percent;
     }
 
-    public int Affection_interaction_path()//상호작용 경로 번호 찾기
+    public int Affection_Poke_Interaction_Path()//Poke 상호작용 경로 번호 찾기
     {
         int interact_path_number = 0;
 
-        if(affection_lv < 3)
+        if(affection_lv < 4 || Check_Category() == "Event")//호감도 상태가 Member 미만이거나 카테고리가 이벤트인 경우
         {
             interact_path_number = affection_exp;
         }
-        else if(affection_lv >= 3)
+        else if(affection_lv >= 4)//호감도 상태가 Member 이상인 경우 임의의 중복되지 않는 대사 인덱스를 전달함
         {
-            interact_path_number = 0;
+            interact_path_number = affection_interact[UnityEngine.Random.Range(0, affection_interact.Count)];
+            affection_interact.Remove(interact_path_number);
         }
 
         return interact_path_number;
     }
 
-    // -------------------------------- 임시로 만든 카테고리 확인 함수--------------------------------
-    public string Check_Category()
+    
+    public string Check_Category()//카테고리 확인
     {
         if (dialogueData.Count == 0)
             return "Error";
         var data = dialogueData[_aff_idx];
-        data.TryGetValue("category", out var cate);
-        /*if (data.TryGetValue("category", out var cate))
+        
+        if (data.TryGetValue("category", out var cate))
         {
-            if (cate.Equals("Event") && affection_exp >= affection_barrel[affection_lv])
-            {
-                affection_exp = 0;
-            }
-            return cate;
+            return cate.ToString();
         }
-        return "Error";*/
-        return cate.ToString();
+        else
+        {
+            return "Error";
+        }
     }
 
-    public int Affection_sheet(int _aff_level, string _category)
+    public int Affection_sheet(int _aff_level, string _category)//특정 호감도 레벨에서 특정 상호작용의 수
     {
         int _aff_sheet = 0;
 
