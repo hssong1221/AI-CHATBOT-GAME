@@ -56,6 +56,11 @@ public class Waifu : MonoBehaviour
     DataManager dataManager;
     SheetData affSheet;
 
+    List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
+    List<Dictionary<string, string>> patData = new List<Dictionary<string, string>>();
+    List<Dictionary<string, string>> twtData = new List<Dictionary<string, string>>();
+
+
     public static Action SheetLoadAction;
 
     void Awake()
@@ -70,13 +75,12 @@ public class Waifu : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        SheetLoadAction += SetSheetData;
     }
 
     void Start()
     {
-        dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
-        SheetLoadAction += SetSheetData;
-        affSheet = dataManager.GetSheetData("Dialogue");
         aff_idx = 0;
         int _cnt = 0;
 
@@ -91,20 +95,45 @@ public class Waifu : MonoBehaviour
 
     public void SetSheetData()
     {
+        dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
         affSheet = dataManager.GetSheetData("Dialogue");
+
+        SheetData_Categorize();
+    }
+
+    void SheetData_Categorize()
+    {
+        var iter = affSheet.Data.GetEnumerator();
+        while(iter.MoveNext() )
+        {
+            var cur = iter.Current;
+            if (cur["category"].Equals("Poke") || cur["category"].Equals("Event"))
+                dialogueData.Add(cur);
+            else if (cur["category"].Equals("Pat"))
+                patData.Add(cur);
+            else if (cur["category"].Equals("Twt"))
+                twtData.Add(cur);
+        }
+    }
+
+    public List<Dictionary<string, string>> GetDataList(string name)
+    {
+        switch (name)
+        {
+            case "Poke":
+                return dialogueData;
+            case "Pat":
+                return patData;
+            case "Twt":
+                return twtData;
+            default:
+                return dialogueData;
+        }
     }
 
     public void Affection_ascend()
     {
-        if (affSheet == null)
-            return ;
-
-        var data = affSheet.GetData(_aff_idx);
-
-        if (data == null)
-        {
-            return ;
-        }
+        var data = dialogueData[_aff_idx];
         
         if (data.TryGetValue("category", out var cate))//- dialogue datasheet 클래스에서 호감도 경로를 불러와 비교함
         {
@@ -167,7 +196,9 @@ public class Waifu : MonoBehaviour
     // -------------------------------- 임시로 만든 카테고리 확인 함수--------------------------------
     public string Check_Category()
     {
-        var data = affSheet.GetData(_aff_idx);
+        if (dialogueData.Count == 0)
+            return "Error";
+        var data = dialogueData[_aff_idx];
         data.TryGetValue("category", out var cate);
         /*if (data.TryGetValue("category", out var cate))
         {
@@ -185,7 +216,7 @@ public class Waifu : MonoBehaviour
     {
         int _aff_sheet = 0;
 
-        var data = affSheet.Data;
+        var data = dialogueData;
         var iter = data.GetEnumerator();
         while (iter.MoveNext())
         {
