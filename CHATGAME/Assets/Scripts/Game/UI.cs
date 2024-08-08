@@ -98,10 +98,19 @@ public class UI : MonoBehaviour
         SettingAction += SetGauge;
         SettingAction += SetText;
 
+        StartCoroutine(Init());
+    }
+
+    IEnumerator Init()
+    {
+        yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
+
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
         waifu.aff_idx += 1;
+
+        yield return null;
     }
 
     /*void Update()
@@ -163,15 +172,14 @@ public class UI : MonoBehaviour
 
     public void SetText()
     {
-        var data = diaSheet.GetData(waifu.aff_idx);
+        var data = waifu.GetDataList(categoryState.ToString())[waifu.aff_idx];
         if (data == null)
             return;
 
-        if (data.TryGetValue("id", out var id))
-            nameText.text = id;
+        nameText.text = "리코 (고양이)";
 
-        if (data.TryGetValue("affection", out var aff))
-            affectionText.text = aff.ToString();
+        /*if (data.TryGetValue("affection", out var aff))
+            affectionText.text = aff.ToString();*/
 
         if (data.TryGetValue("text", out var txt))
         {

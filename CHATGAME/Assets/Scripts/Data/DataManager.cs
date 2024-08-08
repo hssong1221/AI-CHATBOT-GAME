@@ -147,6 +147,7 @@ public class DataManager : MonoBehaviour
                     */
                 }
             }
+            Waifu.SheetLoadAction?.Invoke();
         }
     }
 
