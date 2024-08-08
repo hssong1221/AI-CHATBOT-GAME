@@ -148,6 +148,21 @@ public class Waifu : MonoBehaviour
         return aff_percent;
     }
 
+    public int Affection_interaction_path()//상호작용 경로 번호 찾기
+    {
+        int interact_path_number = 0;
+
+        if(affection_lv < 3)
+        {
+            interact_path_number = affection_exp;
+        }
+        else if(affection_lv >= 3)
+        {
+            interact_path_number = 0;
+        }
+
+        return interact_path_number;
+    }
 
     // -------------------------------- 임시로 만든 카테고리 확인 함수--------------------------------
     public string Check_Category()
