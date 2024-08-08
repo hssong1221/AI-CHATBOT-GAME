@@ -137,24 +137,15 @@ public class UI : MonoBehaviour
 
     public void SetMainImg()
     {
-        /* 
-         * img sheet로 만들었을 때
-        var pdata = ImgSheet.GetData(0);
-        string imgPath = "";
-
-        if (pdata.TryGetValue("id", out var path))
-            imgPath = path;
-        */
-
         string category = "";   // 버튼 종류 + event
         string affState = "";   // 호감도 상태
-        int number = 0;         // 텍스트 순서
+        int imgFileName = 0;         // 이미지 파일 이름
 
         category = categoryState.ToString();
         affState = waifu.Affection_compare();
-        number = waifu.affection_exp;
+        imgFileName = waifu.affection_exp;
 
-        string imgPath = $"image/{category}/{affState}/{number + 1}";
+        string imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
         Debug.Log($"현재 이미지 경로 : {imgPath}");
 
         Sprite sprite = Resources.Load<Sprite>(imgPath);
@@ -172,14 +163,14 @@ public class UI : MonoBehaviour
 
     public void SetText()
     {
-        var data = waifu.GetDataList(categoryState.ToString())[waifu.aff_idx];
+        // waifu aff_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
+        var Idx = waifu.aff_idx;
+
+        var data = waifu.GetDataList(categoryState.ToString())[Idx];
         if (data == null)
             return;
 
-        nameText.text = "리코 (고양이)";
-
-        /*if (data.TryGetValue("affection", out var aff))
-            affectionText.text = aff.ToString();*/
+        nameText.text = "리코 (이모티콘)";
 
         if (data.TryGetValue("text", out var txt))
         {

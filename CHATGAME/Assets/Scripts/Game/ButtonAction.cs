@@ -24,7 +24,7 @@ public class ButtonAction : MonoBehaviour
     // юс╫ц 
     public void CheckLockNumber()
     {
-        if (Waifu.Instance.affection_exp >= unlockNumber)
+        if (Waifu.Instance.affection_lv >= unlockNumber)
             EnableBtn();
         else
             DisableBtn();
