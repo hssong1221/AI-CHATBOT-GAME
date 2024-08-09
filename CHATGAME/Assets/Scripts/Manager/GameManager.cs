@@ -30,6 +30,14 @@ public class GameManager : MonoBehaviour
         }
     }*/
 
+    public enum Language
+    {
+        Kor,
+        Eng,
+        China,
+    }
+    public Language language;
+
     public static Action CheckProgAction; 
 
     private void Awake()
@@ -56,4 +64,36 @@ public class GameManager : MonoBehaviour
     {
         //Debug.Log("progress check");
     }
+
+
+    public void SetLanguage(Language language)
+    {
+        this.language = language;
+    }
+
+    public string GetText(Dictionary<string , string> data)
+    {
+        string selecter;
+        switch (language)
+        {
+            case Language.Kor:
+                selecter = "text";
+                break;
+            case Language.Eng:
+                selecter = "entext";
+                break;
+            case Language.China:
+                selecter = "china";
+                break;
+            default:
+                selecter = "text";
+                break;
+        }
+        if (data.TryGetValue(selecter, out var result))
+            return result;
+        else
+            return "...";
+    }
+
+    
 }

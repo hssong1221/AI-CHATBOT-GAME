@@ -135,6 +135,11 @@ public class UI : MonoBehaviour
 
     #region UI data setting
 
+    public void ReLoad()
+    {
+        SettingAction?.Invoke();
+    }
+
     public void SetMainImg()
     {
         string category = "";   // 버튼 종류 + event
@@ -171,15 +176,13 @@ public class UI : MonoBehaviour
         if (data == null)
             return;
 
-        nameText.text = "리코 (이모티콘)";
+        nameText.text = "리코";
 
-        if (data.TryGetValue("text", out var txt))
-        {
-            //dialogueText.text = txt;
-            textState = TextUIState.Typing;
-            saveLastText = txt;
-            typingCoroutine = StartCoroutine(TypingEffect(txt));
-        }
+        var txt = GameManager.Instance.GetText(data);
+
+        textState = TextUIState.Typing;
+        saveLastText = txt;
+        typingCoroutine = StartCoroutine(TypingEffect(txt));
     }
 
     // dialogue text 타이핑 효과
@@ -187,7 +190,7 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < txt.Length; i++)
         {
-            dialogueText.text = txt.Substring(0, i);
+            dialogueText.text = txt.Substring(0, i + 1);
             yield return new WaitForSeconds(TextDelayTime);
         }
         textState = TextUIState.End;
@@ -261,6 +264,17 @@ public class UI : MonoBehaviour
         //waifu.aff_poke_event_idx += 1;
     }
 
+
+    // temp version
+    public void OnclickLanBtn()
+    {
+        if (GameManager.Instance.language == GameManager.Language.Kor)
+            GameManager.Instance.SetLanguage(GameManager.Language.Eng);
+        else if (GameManager.Instance.language == GameManager.Language.Eng)
+            GameManager.Instance.SetLanguage(GameManager.Language.Kor);
+
+        UI.Instance.ReLoad();
+    }
     #endregion
 
     public void SetCategoryState(CategoryState state)
