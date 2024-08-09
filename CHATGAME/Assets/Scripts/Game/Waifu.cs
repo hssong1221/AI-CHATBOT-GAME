@@ -27,11 +27,18 @@ public class Waifu : MonoBehaviour
     }
 
 
-    private int _aff_idx = 0;//DialogueSheet 행 Idx
-    public int aff_idx
+    private int _aff_poke_event_idx = 0;//DialogueSheet 행 Idx
+    public int aff_poke_event_idx
     {
-        get { return _aff_idx; }
-        set { _aff_idx = value; }
+        get { return _aff_poke_event_idx; }
+        set { _aff_poke_event_idx = value; }
+    }
+
+    private int _interact_path_number;//상호작용시 반환할 텍스트, 이미지 위치 번호
+    public int interact_path_number
+    {
+        get { return _interact_path_number; }
+        set { _interact_path_number = value; }
     }
 
     public int affection_exp;//호감도 경험치
@@ -82,7 +89,8 @@ public class Waifu : MonoBehaviour
 
     void Start()
     {
-        aff_idx = 0;
+        aff_poke_event_idx = 0;
+        _interact_path_number = 0;
         int _cnt = 0;
 
         while ( _cnt < 6)
@@ -134,7 +142,8 @@ public class Waifu : MonoBehaviour
 
     public void Affection_ascend()
     {
-        var data = dialogueData[_aff_idx];
+        //var data = dialogueData[_aff_poke_event_idx];
+        var data = dialogueData[_aff_poke_event_idx];
         
         if (data.TryGetValue("category", out var cate))//- dialogue datasheet 클래스에서 호감도 경로를 불러와 비교함
         {
@@ -153,6 +162,7 @@ public class Waifu : MonoBehaviour
 
         if(affection_exp >= affection_barrel[affection_lv])
         {
+            _interact_path_number += affection_barrel[affection_lv];
             affection_lv++;
             affection_exp = 0;
             affection_interact.Clear();
@@ -187,21 +197,24 @@ public class Waifu : MonoBehaviour
         return aff_percent;
     }
 
-    public int Affection_Poke_Interaction_Path()//Poke 상호작용 경로 번호 찾기
+    public void Affection_Poke_Interaction_Path()//Poke 상호작용 경로 번호 찾기
     {
-        int interact_path_number = 0;
+        int _I_P_N = _interact_path_number;
+        int _restore_rand = 0;
 
-        if(affection_lv < 4 || Check_Category() == "Event")//호감도 상태가 Member 미만이거나 카테고리가 이벤트인 경우
+        if(affection_lv < 4 || affection_lv%2 == 1)//호감도 상태가 Member 미만이거나 category 가 Event 인 경우
         {
-            interact_path_number = affection_exp;
+            _I_P_N += affection_exp;
         }
-        else if(affection_lv >= 4)//호감도 상태가 Member 이상인 경우 임의의 중복되지 않는 대사 인덱스를 전달함
+        else if(affection_lv >= 4 && affection_lv%2 == 0)//호감도 상태가 Member 이상인 경우 임의의 중복되지 않는 대사 인덱스를 전달함
         {
-            interact_path_number = affection_interact[UnityEngine.Random.Range(0, affection_interact.Count)];
-            affection_interact.Remove(interact_path_number);
+            _restore_rand = affection_interact[UnityEngine.Random.Range(0, affection_interact.Count)];
+            Debug.Log("index? : "+_restore_rand);
+            affection_interact.Remove(_restore_rand);
+            _I_P_N += _restore_rand;
         }
 
-        return interact_path_number;
+        _aff_poke_event_idx = _I_P_N;
     }
 
     
@@ -209,7 +222,9 @@ public class Waifu : MonoBehaviour
     {
         if (dialogueData.Count == 0)
             return "Error";
-        var data = dialogueData[_aff_idx];
+        //var data = dialogueData[_aff_poke_event_idx];
+
+        var data = dialogueData[_aff_poke_event_idx];
         
         if (data.TryGetValue("category", out var cate))
         {

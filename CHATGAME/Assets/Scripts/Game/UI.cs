@@ -108,7 +108,7 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+        //waifu.aff_poke_event_idx += 1;
 
         yield return null;
     }
@@ -143,7 +143,8 @@ public class UI : MonoBehaviour
 
         category = categoryState.ToString();
         affState = waifu.Affection_compare();
-        imgFileName = waifu.affection_exp;
+        //imgFileName = waifu.affection_exp;
+        imgFileName = waifu.aff_poke_event_idx - waifu.interact_path_number;
 
         string imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
         Debug.Log($"현재 이미지 경로 : {imgPath}");
@@ -163,8 +164,8 @@ public class UI : MonoBehaviour
 
     public void SetText()
     {
-        // waifu aff_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
-        var Idx = waifu.aff_idx;
+        // waifu aff_poke_event_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
+        var Idx = waifu.aff_poke_event_idx;
 
         var data = waifu.GetDataList(categoryState.ToString())[Idx];
         if (data == null)
@@ -226,7 +227,8 @@ public class UI : MonoBehaviour
             SettingAction?.Invoke();
 
             waifu.Affection_ascend();
-            waifu.aff_idx += 1;
+            waifu.Affection_Poke_Interaction_Path();
+            //waifu.aff_poke_event_idx += 1;
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }
@@ -238,7 +240,7 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+        //waifu.aff_poke_event_idx += 1;
     }
     public void OnClickPatBtn()
     {
@@ -247,7 +249,7 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+        //waifu.aff_poke_event_idx += 1;
     }
     public void OnClickNextBtn()
     {
@@ -256,7 +258,7 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+        //waifu.aff_poke_event_idx += 1;
     }
 
     #endregion
