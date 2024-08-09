@@ -108,6 +108,7 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
+        waifu.Affection_Poke_Interaction_Path();
         //waifu.aff_poke_event_idx += 1;
 
         yield return null;
