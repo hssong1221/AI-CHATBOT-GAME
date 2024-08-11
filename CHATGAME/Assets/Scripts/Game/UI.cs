@@ -276,6 +276,11 @@ public class UI : MonoBehaviour
 
         UI.Instance.ReLoad();
     }
+
+    public void OnclickSaveBtn()
+    {
+        Waifu.Instance.CreatePlayerData(true);
+    }
     #endregion
 
     public void SetCategoryState(CategoryState state)

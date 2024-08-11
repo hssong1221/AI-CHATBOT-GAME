@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System;
+using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +24,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public PlayerData playerData;
+
     /*private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -38,9 +42,9 @@ public class GameManager : MonoBehaviour
     }
     public Language language;
 
-    public static Action CheckProgAction; 
+    public static Action CheckProgAction;
 
-    private void Awake()
+    void Awake()
     {
         if (_instance == null)
         {
@@ -52,9 +56,14 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        if (PlayerPrefs.HasKey("PlayerData"))
+            LoadData();
+        else
+            playerData = new PlayerData();
     }
 
-    private void Start()
+    void Start()
     {
         CheckProgAction += CheckProgress;
     }
@@ -65,13 +74,14 @@ public class GameManager : MonoBehaviour
         //Debug.Log("progress check");
     }
 
+    #region Language
 
     public void SetLanguage(Language language)
     {
         this.language = language;
     }
 
-    public string GetText(Dictionary<string , string> data)
+    public string GetText(Dictionary<string, string> data)
     {
         string selecter;
         switch (language)
@@ -95,5 +105,33 @@ public class GameManager : MonoBehaviour
             return "...";
     }
 
-    
+    #endregion
+
+    #region Data SAVE LOAD
+
+    public void SaveData(PlayerData data)
+    {
+        string json = JsonConvert.SerializeObject(data);
+        PlayerPrefs.SetString("PlayerData", json);
+        PlayerPrefs.Save();
+    }
+
+    public PlayerData LoadData()
+    {
+        string json = PlayerPrefs.GetString("PlayerData", "{}");
+        playerData = JsonConvert.DeserializeObject<PlayerData>(json);
+        return playerData;
+    }
+
+#if UNITY_EDITOR
+    [MenuItem("MyTools/Delete PlayerPrefs")]
+    private static void DeleteAll()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("EXECUTE");
+    }
+#endif
+
+    #endregion
+
 }
