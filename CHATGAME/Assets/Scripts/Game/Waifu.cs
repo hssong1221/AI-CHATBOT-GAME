@@ -28,6 +28,8 @@ public class Waifu : MonoBehaviour
 
 
     private int _aff_poke_event_idx = 0;//DialogueSheet 행 Idx
+    private int _aff_twt_idx = 0;//Twtdata 행 Idx
+    private int _aff_pat_idx = 0;//Patdata 행 Idx
     public int aff_poke_event_idx
     {
         get { return _aff_poke_event_idx; }
@@ -45,6 +47,8 @@ public class Waifu : MonoBehaviour
     public int affection_lv;//호감도 레벨
     public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
     private List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
+    private List<int> twt_interact = new List<int>();
+    private List<int> pat_interact = new List<int>();
     // ------------------------------------------------------------- event 임시로 1로 바꿔놓음 보고 바꾸기 -----------------------------------------------
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     
@@ -217,6 +221,15 @@ public class Waifu : MonoBehaviour
         _aff_poke_event_idx = _I_P_N;
     }
 
+    public void Affection_Twt_interaction_Path()
+    {
+
+    }
+
+    public void Affection_Pat_interaction_Path()
+    {
+
+    }
     
     public string Check_Category()//카테고리 확인
     {
