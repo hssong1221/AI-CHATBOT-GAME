@@ -65,7 +65,6 @@ public class GameManager : MonoBehaviour
         //Debug.Log("progress check");
     }
 
-
     public void SetLanguage(Language language)
     {
         this.language = language;
