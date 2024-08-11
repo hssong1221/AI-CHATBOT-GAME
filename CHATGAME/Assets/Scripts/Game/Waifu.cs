@@ -44,6 +44,7 @@ public class Waifu : MonoBehaviour
     public int affection_exp;//호감도 경험치
     public int affection_lv;//호감도 레벨
     public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
+    [SerializeField]
     private List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
     // ------------------------------------------------------------- event 임시로 1로 바꿔놓음 보고 바꾸기 -----------------------------------------------
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
@@ -100,8 +101,11 @@ public class Waifu : MonoBehaviour
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+
+        LoadPlayerData();
     }
 
+    #region EXCEL Data
     public void SetSheetData()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
@@ -139,6 +143,30 @@ public class Waifu : MonoBehaviour
                 return dialogueData;
         }
     }
+
+    #endregion
+
+    #region Player Data
+
+    //플레이어 데이터 생성하는 곳 - 본인이 넣어야 하는 위치 찾아서 넣기
+    public void CreatePlayerData(bool isSave = false)
+    {
+        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact);
+        
+        if(isSave)
+            GameManager.Instance.SaveData(data);
+    }
+
+    // 플레이어 데이터 받아서 로드하는 곳 - 데이터 저장 후에 로딩까지는 되는데 너가 초기 값 잡고 한번 돌려주는게 없는듯 함
+    void LoadPlayerData()
+    {
+        PlayerData data = GameManager.Instance.LoadData();
+        affection_exp = data.affection_exp;
+        affection_lv = data.affection_lv;
+        affection_interact = new List<int>(data.affection_interact);
+    }
+
+    #endregion
 
     public void Affection_ascend()
     {
