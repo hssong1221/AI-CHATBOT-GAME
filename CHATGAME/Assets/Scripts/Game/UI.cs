@@ -150,7 +150,7 @@ public class UI : MonoBehaviour
         category = categoryState.ToString();
         affState = waifu.Affection_compare();
         //imgFileName = waifu.affection_exp;
-        imgFileName = waifu.aff_poke_event_idx - waifu.interact_path_number;
+        imgFileName = waifu.Interact_idx - waifu.Correction_number;
 
         string imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
         Debug.Log($"현재 이미지 경로 : {imgPath}");
@@ -171,7 +171,7 @@ public class UI : MonoBehaviour
     public void SetText()
     {
         // waifu aff_poke_event_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
-        var Idx = waifu.aff_poke_event_idx;
+        var Idx = waifu.Interact_idx;
 
         var data = waifu.GetDataList(categoryState.ToString())[Idx];
         if (data == null)
@@ -230,8 +230,8 @@ public class UI : MonoBehaviour
 
             SettingAction?.Invoke();
 
-            waifu.Affection_ascend();
             waifu.Affection_Poke_Interaction_Path();
+            waifu.Affection_ascend();
             //waifu.aff_poke_event_idx += 1;
 
             ButtonAction.CheckUnlockAction?.Invoke();
@@ -243,6 +243,7 @@ public class UI : MonoBehaviour
 
         SettingAction?.Invoke();
 
+        waifu.Twt_Interaction_Path(categoryState.ToString());
         waifu.Affection_ascend();
         //waifu.aff_poke_event_idx += 1;
     }
@@ -252,6 +253,7 @@ public class UI : MonoBehaviour
 
         SettingAction?.Invoke();
 
+        waifu.Pat_Interaction_Path(categoryState.ToString());
         waifu.Affection_ascend();
         //waifu.aff_poke_event_idx += 1;
     }
