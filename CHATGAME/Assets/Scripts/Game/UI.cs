@@ -80,7 +80,9 @@ public class UI : MonoBehaviour
     void Start()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
-        waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+        //waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+        //waifu = SingletonManager.Instance.GetSingleton<AffectionPokeEvent>();
+        waifu = new AffectionPokeEvent();
 
         diaSheet = dataManager.GetSheetData("Dialogue");
         //ImgSheet = dataManager.GetSheetData("ImgPath");
@@ -108,8 +110,7 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        waifu.Affection_Poke_Interaction_Path();
-        //waifu.aff_poke_event_idx += 1;
+        //waifu.Affection_Poke_Interaction_Path();
 
         yield return null;
     }
@@ -148,8 +149,7 @@ public class UI : MonoBehaviour
         int imgFileName = 0;         // 이미지 파일 이름
 
         category = categoryState.ToString();
-        affState = waifu.Affection_compare();
-        //imgFileName = waifu.affection_exp;
+        //affState = waifu.Affection_compare();
         imgFileName = waifu.Interact_idx - waifu.Correction_number;
 
         string imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
@@ -164,7 +164,7 @@ public class UI : MonoBehaviour
 
     public void SetGauge()
     {
-        float ratio = waifu.Affection_Percentage();
+        float ratio = 0f;//waifu.Affection_Percentage();
         guageImg.fillAmount = ratio;
     }
 
@@ -230,9 +230,8 @@ public class UI : MonoBehaviour
 
             SettingAction?.Invoke();
 
-            waifu.Affection_Poke_Interaction_Path();
             waifu.Affection_ascend();
-            //waifu.aff_poke_event_idx += 1;
+//            waifu.Affection_Poke_Interaction_Path();
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }
@@ -243,7 +242,7 @@ public class UI : MonoBehaviour
 
         SettingAction?.Invoke();
 
-        waifu.Twt_Interaction_Path(categoryState.ToString());
+        //waifu.Twt_Interaction_Path(categoryState.ToString());
         waifu.Affection_ascend();
         //waifu.aff_poke_event_idx += 1;
     }
@@ -253,7 +252,7 @@ public class UI : MonoBehaviour
 
         SettingAction?.Invoke();
 
-        waifu.Pat_Interaction_Path(categoryState.ToString());
+        //waifu.Pat_Interaction_Path(categoryState.ToString());
         waifu.Affection_ascend();
         //waifu.aff_poke_event_idx += 1;
     }
