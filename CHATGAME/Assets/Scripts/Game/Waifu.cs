@@ -50,12 +50,11 @@ public class Waifu : MonoBehaviour
     public string category_restore;//현재 카테고리
     [SerializeField]
     private List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
-    [SerializeField]
     private List<int> twt_interact = new List<int>();
     [SerializeField]
     private List<int> pat_interact = new List<int>();
     
-    public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
+    public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     
     public enum Affection_status
     {
@@ -164,7 +163,7 @@ public class Waifu : MonoBehaviour
     //플레이어 데이터 생성하는 곳 - 본인이 넣어야 하는 위치 찾아서 넣기
     public void CreatePlayerData(bool isSave = false)
     {
-        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact);
+        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact, twt_interact, pat_interact);
         
         if(isSave)
             GameManager.Instance.SaveData(data);
@@ -351,9 +350,22 @@ public class Waifu : MonoBehaviour
     public int Affection_sheet(int _aff_level, string _category)//특정 호감도 레벨에서 특정 상호작용의 수
     {
         int _aff_sheet = 0;
+        List<Dictionary<string, string>> _data = new List<Dictionary<string, string>>();
 
-        var data = dialogueData;
-        var iter = data.GetEnumerator();
+        if(_category == "Poke" || _category == "Event")
+        {
+            _data = dialogueData;
+        }
+        else if(_category == "Twt")
+        {
+            _data = twtData;
+        }
+        else if(_category == "Pat")
+        {
+            _data = patData;
+        }
+        
+        var iter = _data.GetEnumerator();
         while (iter.MoveNext())
         {
             var cur = iter.Current;
