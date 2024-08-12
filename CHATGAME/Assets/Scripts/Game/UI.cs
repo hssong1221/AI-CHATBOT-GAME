@@ -37,7 +37,9 @@ public class UI : MonoBehaviour
     public Image guageImg;
 
     DataManager dataManager;
-    Waifu waifu;
+    //Waifu waifu;
+    ICategory waifu;
+   
 
     SheetData diaSheet;
     //SheetData ImgSheet;
@@ -82,7 +84,8 @@ public class UI : MonoBehaviour
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
         //waifu = SingletonManager.Instance.GetSingleton<Waifu>();
         //waifu = SingletonManager.Instance.GetSingleton<AffectionPokeEvent>();
-        waifu = new AffectionPokeEvent();
+        waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+
 
         diaSheet = dataManager.GetSheetData("Dialogue");
         //ImgSheet = dataManager.GetSheetData("ImgPath");
@@ -110,7 +113,7 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        //waifu.Affection_Poke_Interaction_Path();
+        waifu.Interaction_Path();
 
         yield return null;
     }
@@ -149,7 +152,7 @@ public class UI : MonoBehaviour
         int imgFileName = 0;         // 이미지 파일 이름
 
         category = categoryState.ToString();
-        //affState = waifu.Affection_compare();
+        affState = waifu.Affection_compare();
         imgFileName = waifu.Interact_idx - waifu.Correction_number;
 
         string imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
@@ -164,7 +167,7 @@ public class UI : MonoBehaviour
 
     public void SetGauge()
     {
-        float ratio = 0f;//waifu.Affection_Percentage();
+        float ratio = waifu.Affection_Percentage();
         guageImg.fillAmount = ratio;
     }
 
@@ -231,7 +234,7 @@ public class UI : MonoBehaviour
             SettingAction?.Invoke();
 
             waifu.Affection_ascend();
-//            waifu.Affection_Poke_Interaction_Path();
+            waifu.Interaction_Path();
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }

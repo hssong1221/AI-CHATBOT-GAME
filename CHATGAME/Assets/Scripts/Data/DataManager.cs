@@ -147,7 +147,7 @@ public class DataManager : MonoBehaviour
                     */
                 }
             }
-            Waifu.SheetLoadAction?.Invoke();
+            Waifu.Instance.SheetLoadAction?.Invoke();
         }
     }
 
@@ -201,7 +201,7 @@ public class DataManager : MonoBehaviour
                 }
             }
         }
-        Waifu.SheetLoadAction?.Invoke();
+        Waifu.Instance.SheetLoadAction?.Invoke();
     }
 
     public Dictionary<string, SheetData> GetAllSheetData()
