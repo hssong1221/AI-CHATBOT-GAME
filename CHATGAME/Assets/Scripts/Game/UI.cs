@@ -37,7 +37,9 @@ public class UI : MonoBehaviour
     public Image guageImg;
 
     DataManager dataManager;
-    Waifu waifu;
+    //Waifu waifu;
+    ICategory waifu;
+   
 
     SheetData diaSheet;
     //SheetData ImgSheet;
@@ -80,7 +82,10 @@ public class UI : MonoBehaviour
     void Start()
     {
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
+        //waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+        //waifu = SingletonManager.Instance.GetSingleton<AffectionPokeEvent>();
         waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+
 
         diaSheet = dataManager.GetSheetData("Dialogue");
         //ImgSheet = dataManager.GetSheetData("ImgPath");
@@ -92,16 +97,23 @@ public class UI : MonoBehaviour
         TextDelayTime = 0.05f;
         //DataSheetSetting(0, "Poke");
 
-        GameManager.CheckProgAction?.Invoke();
-
         SettingAction += SetMainImg;
         SettingAction += SetGauge;
         SettingAction += SetText;
 
+        StartCoroutine(Init());
+    }
+
+    IEnumerator Init()
+    {
+        yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
+
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+        waifu.Interaction_Path();
+
+        yield return null;
     }
 
     /*void Update()
@@ -126,26 +138,27 @@ public class UI : MonoBehaviour
 
     #region UI data setting
 
+    public void ReLoad()
+    {
+        SettingAction?.Invoke();
+    }
+
     public void SetMainImg()
     {
-        /* 
-         * img sheet로 만들었을 때
-        var pdata = ImgSheet.GetData(0);
-        string imgPath = "";
-
-        if (pdata.TryGetValue("id", out var path))
-            imgPath = path;
-        */
-
         string category = "";   // 버튼 종류 + event
         string affState = "";   // 호감도 상태
-        int number = 0;         // 텍스트 순서
-
+        int imgFileName = 0;         // 이미지 파일 이름
+        
         category = categoryState.ToString();
         affState = waifu.Affection_compare();
-        number = waifu.affection_exp;
+        imgFileName = waifu.Interact_img_path();
 
-        string imgPath = $"image/{category}/{affState}/{number + 1}";
+        string imgPath = "";
+        if (category.Equals("Poke") || category.Equals("Event"))
+            imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
+        else
+            imgPath = $"image/{category}/{imgFileName + 1}";
+        
         Debug.Log($"현재 이미지 경로 : {imgPath}");
 
         Sprite sprite = Resources.Load<Sprite>(imgPath);
@@ -163,23 +176,20 @@ public class UI : MonoBehaviour
 
     public void SetText()
     {
-        var data = diaSheet.GetData(waifu.aff_idx);
+        // waifu aff_poke_event_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
+        var Idx = waifu.Interact_idx;
+
+        var data = waifu.GetDataList(categoryState.ToString())[Idx];
         if (data == null)
             return;
 
-        if (data.TryGetValue("id", out var id))
-            nameText.text = id;
+        nameText.text = "리코";
 
-        if (data.TryGetValue("affection", out var aff))
-            affectionText.text = aff.ToString();
+        var txt = GameManager.Instance.GetText(data);
 
-        if (data.TryGetValue("text", out var txt))
-        {
-            //dialogueText.text = txt;
-            textState = TextUIState.Typing;
-            saveLastText = txt;
-            typingCoroutine = StartCoroutine(TypingEffect(txt));
-        }
+        textState = TextUIState.Typing;
+        saveLastText = txt;
+        typingCoroutine = StartCoroutine(TypingEffect(txt));
     }
 
     // dialogue text 타이핑 효과
@@ -187,7 +197,7 @@ public class UI : MonoBehaviour
     {
         for (int i = 0; i < txt.Length; i++)
         {
-            dialogueText.text = txt.Substring(0, i);
+            dialogueText.text = txt.Substring(0, i + 1);
             yield return new WaitForSeconds(TextDelayTime);
         }
         textState = TextUIState.End;
@@ -209,14 +219,12 @@ public class UI : MonoBehaviour
 
     public void OnClickPokeBtn()
     {
-        if(textState == TextUIState.Typing)
-        {
+        waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+
+        if (textState == TextUIState.Typing)
             StopTypingEffect();
-        }
         else
         {
-            GameManager.CheckProgAction?.Invoke();
-
             string temp = waifu.Check_Category();
 
             if (temp.Equals("Poke"))
@@ -227,28 +235,53 @@ public class UI : MonoBehaviour
             SettingAction?.Invoke();
 
             waifu.Affection_ascend();
-            waifu.aff_idx += 1;
+            waifu.Interaction_Path();
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }
     }
     public void OnClickTwtBtn()
     {
-        categoryState = CategoryState.Twitter;
+        waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
 
-        SettingAction?.Invoke();
+        if (textState == TextUIState.Typing)
+            StopTypingEffect();
+        else
+        {
+            string temp = waifu.Check_Category();
+            if (temp.Equals("Twt"))
+                SetCategoryState(CategoryState.Twitter);
 
-        waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+
+            SettingAction?.Invoke();
+
+            waifu.Affection_ascend();
+            waifu.Interaction_Path();
+
+            ButtonAction.CheckUnlockAction?.Invoke();
+        }
     }
     public void OnClickPatBtn()
     {
-        categoryState = CategoryState.Pat;
+        waifu = SingletonManager.Instance.GetSingleton<AffectionPat>();
 
-        SettingAction?.Invoke();
+        if (textState == TextUIState.Typing)
+        {
+            StopTypingEffect();
+        }
+        else
+        {
+            string temp = waifu.Check_Category();
+            if (temp.Equals("Pat"))
+                SetCategoryState(CategoryState.Pat);
 
-        waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+            SettingAction?.Invoke();
+
+            waifu.Affection_ascend();
+            waifu.Interaction_Path();
+
+            ButtonAction.CheckUnlockAction?.Invoke();
+        }        
     }
     public void OnClickNextBtn()
     {
@@ -257,48 +290,37 @@ public class UI : MonoBehaviour
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
-        waifu.aff_idx += 1;
+        //waifu.aff_poke_event_idx += 1;
     }
 
+
+    // temp version
+    public void OnclickLanBtn()
+    {
+        if (GameManager.Instance.language == GameManager.Language.Kor)
+            GameManager.Instance.SetLanguage(GameManager.Language.Eng);
+        else if (GameManager.Instance.language == GameManager.Language.Eng)
+            GameManager.Instance.SetLanguage(GameManager.Language.Kor);
+
+        UI.Instance.ReLoad();
+    }
+
+    public void OnclickSaveBtn()
+    {
+        //Waifu.Instance.CreatePlayerData(true);
+    }
     #endregion
 
     public void SetCategoryState(CategoryState state)
     {
+        // 상태 변경
         categoryState = state;
+        // 플레이어 데이터 저장
+        //Waifu.Instance.CreatePlayerData();
     }
 
     public void SetCategoryState(string state)
     {
         categoryState = (CategoryState)Enum.ToObject(typeof(CategoryState), state);
-    }
-
-    /// <summary>
-    /// 파라미터 받아서 알맞게 데이터시트 가공
-    /// </summary>
-    /// <param name="affection">호감도 상태</param>
-    /// <param name="category">버튼 종류</param>
-    /// <returns></returns>
-    public List<Dictionary<string , string>> DataSheetSetting(int affection, string category)
-    {
-        List<Dictionary<string, string>> partialData = new List<Dictionary<string, string>>();
-
-        var data = diaSheet.Data;
-        var iter = data.GetEnumerator();
-        while(iter.MoveNext())
-        {
-            var cur = iter.Current;
-            /*
-            var iter2 = cur.GetEnumerator();
-            while(iter2.MoveNext())
-            {
-                var cur2 = iter2.Current.Value;
-                Debug.Log($"{cur2}");
-            }
-            */
-            if (cur["affection"].Equals(affection.ToString()) && cur["category"].Equals(category))
-                partialData.Add(cur);
-        }
-
-        return partialData;
     }
 }

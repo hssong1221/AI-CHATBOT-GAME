@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Text;
@@ -28,7 +29,7 @@ public class DataManager : MonoBehaviour
 
     private Dictionary<string, SheetData> sheetsData;
     bool isEOF;
-
+    bool fileReadEnd;
 
     void Awake()
     {
@@ -47,6 +48,7 @@ public class DataManager : MonoBehaviour
     void Start()
     {
         isEOF = false;
+        fileReadEnd = false;
         ReadExcelFile();
         //PrintSheetData();
     }
@@ -147,6 +149,8 @@ public class DataManager : MonoBehaviour
                     */
                 }
             }
+            Waifu.Instance.SheetLoadAction?.Invoke();
+            fileReadEnd = true;
         }
     }
 
@@ -200,7 +204,15 @@ public class DataManager : MonoBehaviour
                 }
             }
         }
-        Waifu.SheetLoadAction?.Invoke();
+        Waifu.Instance.SheetLoadAction?.Invoke();
+        fileReadEnd = true;
+    }
+
+
+    public IEnumerator WaitDataLoading(Action action)
+    {
+        yield return new WaitUntil(() => fileReadEnd == true);
+        action?.Invoke();
     }
 
     public Dictionary<string, SheetData> GetAllSheetData()

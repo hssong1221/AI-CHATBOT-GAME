@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// 호감도 시스템 로직을 담당
 /// </summary>
-public class Waifu : MonoBehaviour
+public class Waifu : MonoBehaviour, ICategory
 {
     private static Waifu _Instance;
 
@@ -25,20 +26,27 @@ public class Waifu : MonoBehaviour
         }
     }
 
-
-    private int _aff_idx = 0;//DialogueSheet 행 Idx
-    public int aff_idx
+    private int _aff_poke_event_idx = 0;//DialogueSheet 행 Idx
+    //private int _aff_twt_idx = 0;//Twtdata 행 Idx
+    //private int _aff_pat_idx = 0;//Patdata 행 Idx
+    private int _interact_idx = 0;
+    public int Interact_idx
     {
-        get { return _aff_idx; }
-        set { _aff_idx = value; }
+        get { return _interact_idx; }
+        set { _interact_idx = value; }
     }
 
-    public int affection_exp;//호감도 경험치
-    public int affection_lv;//호감도 레벨
-    public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
+    private int _correction_number;//경로 위치 보정
+    public int Correction_number
+    {
+        get { return _correction_number; }
+        set { _correction_number = value; }
+    }
 
-    // ------------------------------------------------------------- event 임시로 1로 바꿔놓음 보고 바꾸기 -----------------------------------------------
-    public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twt", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
+    public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
+    public string category_restore;//현재 카테고리
+    
+    public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     
     public enum Affection_status
     {
@@ -50,13 +58,15 @@ public class Waifu : MonoBehaviour
         Boyfriend
     }
     [Header("호감도 상태")]
-    public Affection_status _affection_status;
-    
-    public string category_restore;
+    public Affection_status affection_status;
+
+    GameManager gameManager;
     DataManager dataManager;
     SheetData affSheet;
 
-    public static Action SheetLoadAction;
+    List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
+
+    public Action SheetLoadAction { get; set; }
 
     void Awake()
     {
@@ -70,14 +80,17 @@ public class Waifu : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        SheetLoadAction += SetSheetData;
     }
 
     void Start()
     {
-        dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
-        SheetLoadAction += SetSheetData;
-        affSheet = dataManager.GetSheetData("Dialogue");
-        aff_idx = 0;
+        Interact_idx = 0;
+        _correction_number = 0;
+        category_restore = "Poke";
+        gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
+        
         int _cnt = 0;
 
         while ( _cnt < 6)
@@ -87,91 +100,207 @@ public class Waifu : MonoBehaviour
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+        
+        //LoadPlayerData();
+        Interact_Init();
     }
 
+    #region EXCEL Data
     public void SetSheetData()
     {
+        dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
         affSheet = dataManager.GetSheetData("Dialogue");
+
+        SheetData_Categorize();
     }
 
+    public void SheetData_Categorize()
+    {
+        var iter = affSheet.Data.GetEnumerator();
+        while(iter.MoveNext() )
+        {
+            var cur = iter.Current;
+            if (cur["category"].Equals("Poke") || cur["category"].Equals("Event"))
+                dialogueData.Add(cur);
+        }
+    }
+
+    public List<Dictionary<string, string>> GetDataList(string name)
+    {
+        switch (name)
+        {
+            case "Poke":
+                return dialogueData;
+            default:
+                return dialogueData;
+        }
+    }
+
+    #endregion
+
+    #region Player Data
+
+    //플레이어 데이터 생성하는 곳 - 본인이 넣어야 하는 위치 찾아서 넣기
+    /*
+    public void CreatePlayerData(bool isSave = false)
+    {
+        //PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact, twt_interact, pat_interact);
+        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact);
+        if (isSave)
+            GameManager.Instance.SaveData(data);
+    }
+    */
+    // 플레이어 데이터 받아서 로드하는 곳 - 데이터 저장 후에 로딩까지는 되는데 너가 초기 값 잡고 한번 돌려주는게 없는듯 함
+    /*
+    void LoadPlayerData()
+    {
+        PlayerData data = GameManager.Instance.LoadData();
+        GameManager.affection_exp = data.affection_exp;
+        affection_lv = data.affection_lv;
+        affection_interact = new List<int>(data.affection_interact);
+    }*/
+
+    #endregion
     public void Affection_ascend()
     {
-        if (affSheet == null)
-            return ;
+        gameManager.affection_exp += affection_increase[category_restore];
 
-        var data = affSheet.GetData(_aff_idx);
-
-        if (data == null)
-        {
-            return ;
-        }
-        
-        if (data.TryGetValue("category", out var cate))//- dialogue datasheet 클래스에서 호감도 경로를 불러와 비교함
-        {
-            category_restore = cate.ToString();
-        }
-
-        affection_exp += affection_increase[category_restore];
-        
         Affection_level_calculate();
     }
 
-
     public void Affection_level_calculate()
     {
-        if(affection_exp >= affection_barrel[affection_lv])
+        int _cnt = 0;
+
+        if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            affection_lv++;
-            affection_exp = 0;
+            _correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.affection_lv++;
+            gameManager.affection_exp = 0;
+            gameManager.affection_interact.Clear();
+
+            while (_cnt < affection_barrel[gameManager.affection_lv])
+            {
+                gameManager.affection_interact.Add(_cnt);//임의의 대사 인덱스를 전달하기 위한 작업
+                _cnt++;
+            }
         }
     }
 
-    public string Affection_compare()
+    public void Interaction_Path()//Poke 상호작용 경로 번호 찾기
     {
-        _affection_status = (Affection_status)Enum.ToObject(typeof(Affection_status), affection_lv/2);
-        return _affection_status.ToString();
+        int _I_P_N = _correction_number;
+        int _restore_rand = 0;
+        category_restore = "Poke";
+
+        if (gameManager.affection_lv < 4)//호감도 상태가 Member 미만인 경우
+        {
+            _I_P_N += gameManager.affection_exp;
+        }
+        else if (gameManager.affection_lv % 2 == 1)//Event 인 경우
+        {
+            _I_P_N += gameManager.affection_exp;
+            category_restore = "Event";
+        }
+        else if (gameManager.affection_lv >= 4 && gameManager.affection_lv % 2 == 0)//호감도 상태가 Member 이상인 경우 임의의 중복되지 않는 대사 인덱스를 전달함
+        {
+            _restore_rand = gameManager.affection_interact[UnityEngine.Random.Range(0, gameManager.affection_interact.Count)];
+            gameManager.affection_interact.Remove(_restore_rand);
+            _I_P_N += _restore_rand;
+        }
+
+        _aff_poke_event_idx = _I_P_N;
+        Interact_compare();
+    }
+
+    public void Interact_Init()
+    {
+        int _cnt = 0;
+
+        while (_cnt < Affection_sheet(0, "Poke"))
+        {
+            gameManager.affection_interact.Add(_cnt);
+            _cnt++;
+        }
+    }
+    /*
+    private void Twt_Interaction_Init()
+    {
+        int _cnt = 0;
+
+        while(_cnt < Affection_sheet(2,"Twt"))
+        {
+            twt_interact.Add(_cnt);
+            _cnt += 1;
+        }
     }
     
-    public float Affection_Percentage()//호감도 UI 경험치 배율 전달
+    public void Twt_Interaction_Path(string _aff_stat)
     {
-        string _cate_str = Check_Category();
-        float aff_percent = 0;
-        if(_cate_str == "Event")
+        int _restore_rand = twt_interact[UnityEngine.Random.Range(0,twt_interact.Count)];
+        twt_interact.Remove(_restore_rand);
+        _aff_twt_idx = _restore_rand;
+        category_restore=_aff_stat;
+        Interact_compare();
+    }
+
+    private void Pat_Interaction_Init()
+    {
+        int _cnt = 0;
+
+        while (_cnt < Affection_sheet(3, "Pat"))
         {
-            aff_percent = 1.0f;
+            twt_interact.Add(_cnt);
+            _cnt += 1;
+        }
+    }
+
+    public void Pat_Interaction_Path(string _aff_stat)
+    {
+        int _restore_rand = pat_interact[UnityEngine.Random.Range(0, pat_interact.Count)];
+        pat_interact.Remove(_restore_rand);
+        _aff_pat_idx = _restore_rand;
+        category_restore = _aff_stat;
+        Interact_compare();
+    }
+    */
+    public void Interact_compare()
+    {
+        if (category_restore == "Poke" || category_restore == "Event")
+        {
+            _interact_idx = _aff_poke_event_idx;
+        }
+    }
+
+    public string Check_Category()//카테고리 확인
+    {
+        if (dialogueData.Count == 0)
+            return "Error";
+        //var data = dialogueData[_aff_poke_event_idx];
+
+        var data = dialogueData[_aff_poke_event_idx];
+
+        if (data.TryGetValue("category", out var cate))
+        {
+            return cate.ToString();
         }
         else
         {
-            aff_percent = (float)affection_exp / (float)affection_barrel[affection_lv];
+            return "Error";
         }
-
-        return aff_percent;
     }
 
-
-    // -------------------------------- 임시로 만든 카테고리 확인 함수--------------------------------
-    public string Check_Category()
-    {
-        var data = affSheet.GetData(_aff_idx);
-        data.TryGetValue("category", out var cate);
-        /*if (data.TryGetValue("category", out var cate))
-        {
-            if (cate.Equals("Event") && affection_exp >= affection_barrel[affection_lv])
-            {
-                affection_exp = 0;
-            }
-            return cate;
-        }
-        return "Error";*/
-        return cate.ToString();
-    }
-
-    public int Affection_sheet(int _aff_level, string _category)
+    public int Affection_sheet(int _aff_level, string _category)//특정 호감도 레벨에서 특정 상호작용의 수
     {
         int _aff_sheet = 0;
+        List<Dictionary<string, string>> _data = new List<Dictionary<string, string>>();
 
-        var data = affSheet.Data;
-        var iter = data.GetEnumerator();
+        if (_category == "Poke" || _category == "Event")
+        {
+            _data = dialogueData;
+        }
+
+        var iter = _data.GetEnumerator();
         while (iter.MoveNext())
         {
             var cur = iter.Current;
@@ -182,5 +311,39 @@ public class Waifu : MonoBehaviour
             }
         }
         return _aff_sheet;
+    }
+
+
+
+    public string Affection_compare()
+    {
+        affection_status = (Affection_status)Enum.ToObject(typeof(Affection_status), gameManager.affection_lv / 2);
+        return affection_status.ToString();
+    }
+
+    public float Affection_Percentage()//호감도 UI 경험치 배율 전달
+    {
+        string _cate_str = Check_Category();
+        float aff_percent = 0;
+        if (_cate_str == "Event")
+        {
+            aff_percent = 1.0f;
+        }
+        else
+        {
+            aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
+        }
+
+        return aff_percent;
+    }
+
+    public int Interact_img_path()
+    {
+        return Interact_idx - Correction_number;
+    }
+
+    public int Interact_txt_path()
+    {
+        return Interact_idx;
     }
 }
