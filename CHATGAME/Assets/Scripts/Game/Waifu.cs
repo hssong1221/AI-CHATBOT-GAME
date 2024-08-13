@@ -170,7 +170,7 @@ public class Waifu : MonoBehaviour, ICategory
 
     public void Affection_level_calculate()
     {
-        int _cnt = 1;
+        int _cnt = 0;
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
@@ -179,7 +179,7 @@ public class Waifu : MonoBehaviour, ICategory
             gameManager.affection_exp = 0;
             gameManager.affection_interact.Clear();
 
-            while (_cnt <= affection_barrel[gameManager.affection_lv])
+            while (_cnt < affection_barrel[gameManager.affection_lv])
             {
                 gameManager.affection_interact.Add(_cnt);//임의의 대사 인덱스를 전달하기 위한 작업
                 _cnt++;

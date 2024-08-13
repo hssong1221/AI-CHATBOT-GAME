@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Waifu;
 
 public class AffectionTwt : MonoBehaviour, ICategory
 {
@@ -133,6 +134,54 @@ public class AffectionTwt : MonoBehaviour, ICategory
         }
     }
 
+    public string Affection_compare()
+    {
+        return "";
+    }
+
+    public float Affection_Percentage()
+    {
+        string _cate_str = Check_Category();
+        float aff_percent = 0f;
+        if (_cate_str == "Event")
+        {
+            aff_percent = 1.0f;
+        }
+        else
+        {
+            aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
+        }
+
+        return aff_percent;
+    }
+
+    public int Affection_sheet(int _aff_level, string _category)
+    {
+        int _aff_sheet = 0;
+        List<Dictionary<string, string>> _data = new List<Dictionary<string, string>>();
+
+        if (_category == "Poke" || _category == "Event")
+        {
+            _data = dialogueData;
+        }
+        else if (_category == "Twt")
+        {
+            _data = twtData;
+        }
+
+        var iter = _data.GetEnumerator();
+        while (iter.MoveNext())
+        {
+            var cur = iter.Current;
+
+            if (cur["affection"].Equals(_aff_level.ToString()) && cur["category"].Equals(_category))
+            {
+                _aff_sheet++;
+            }
+        }
+        return _aff_sheet;
+    }
+
     public string Check_Category()
     {
         if(twtData.Count == 0)
@@ -168,49 +217,6 @@ public class AffectionTwt : MonoBehaviour, ICategory
             gameManager.twt_interact.Add(_cnt);
             _cnt++;
         }
-    }
-
-    public float Affection_Percentage()
-    {
-        string _cate_str = Check_Category();
-        float aff_percent = 0f;
-        if (_cate_str == "Event")
-        {
-            aff_percent = 1.0f;
-        }
-        else
-        {
-            aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
-        }
-
-        return aff_percent;
-    }
-
-    public int Affection_sheet(int _aff_level, string _category)
-    {
-        int _aff_sheet = 0;
-        List<Dictionary<string, string>> _data = new List<Dictionary<string, string>>();
-
-        if (_category == "Poke" || _category == "Event")
-        {
-            _data = dialogueData;
-        }
-        else if(_category == "Twt")
-        {
-            _data = twtData;
-        }
-
-        var iter = _data.GetEnumerator();
-        while (iter.MoveNext())
-        {
-            var cur = iter.Current;
-
-            if (cur["affection"].Equals(_aff_level.ToString()) && cur["category"].Equals(_category))
-            {
-                _aff_sheet++;
-            }
-        }
-        return _aff_sheet;
     }
 
     public int Interact_img_path()

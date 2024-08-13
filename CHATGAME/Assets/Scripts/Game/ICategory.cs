@@ -24,7 +24,7 @@ public interface ICategory
     public void Affection_ascend();
     public string Check_Category();
 
-    //public string Affection_compare();
+    public string Affection_compare();
     public void Interaction_Path();
 
     public float Affection_Percentage();
