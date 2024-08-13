@@ -161,7 +161,7 @@ public class Waifu : MonoBehaviour, ICategory
     public void CreatePlayerData(bool isSave = false)
     {
         //PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact, twt_interact, pat_interact);
-        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact, affection_interact, affection_interact);
+        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact);
         if (isSave)
             GameManager.Instance.SaveData(data);
     }

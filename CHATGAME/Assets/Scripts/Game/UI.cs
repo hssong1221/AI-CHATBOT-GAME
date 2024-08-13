@@ -150,7 +150,7 @@ public class UI : MonoBehaviour
         string category = "";   // 버튼 종류 + event
         string affState = "";   // 호감도 상태
         int imgFileName = 0;         // 이미지 파일 이름
-
+        
         category = categoryState.ToString();
         affState = waifu.Affection_compare();
         imgFileName = waifu.Interact_idx - waifu.Correction_number;
@@ -241,23 +241,29 @@ public class UI : MonoBehaviour
     }
     public void OnClickTwtBtn()
     {
-        categoryState = CategoryState.Twitter;
+        string temp = waifu.Check_Category();
+        if (temp.Equals("Twitter"))
+            SetCategoryState(CategoryState.Twitter);
 
         SettingAction?.Invoke();
 
-        //waifu.Twt_Interaction_Path(categoryState.ToString());
         waifu.Affection_ascend();
-        //waifu.aff_poke_event_idx += 1;
+        waifu.Interaction_Path();
+
+        ButtonAction.CheckUnlockAction?.Invoke();
     }
     public void OnClickPatBtn()
     {
-        categoryState = CategoryState.Pat;
+        string temp = waifu.Check_Category();
+        if (temp.Equals("Twitter"))
+            SetCategoryState(CategoryState.Pat);
 
         SettingAction?.Invoke();
 
-        //waifu.Pat_Interaction_Path(categoryState.ToString());
         waifu.Affection_ascend();
-        //waifu.aff_poke_event_idx += 1;
+        waifu.Interaction_Path();
+
+        ButtonAction.CheckUnlockAction?.Invoke();
     }
     public void OnClickNextBtn()
     {
@@ -289,41 +295,32 @@ public class UI : MonoBehaviour
 
     public void SetCategoryState(CategoryState state)
     {
+        // 상태 변경
         categoryState = state;
+        // 플레이어 데이터 저장
+        Waifu.Instance.CreatePlayerData();
+
+        // 인스턴스 변경
+        switch(state)
+        {
+            case CategoryState.Poke:
+            case CategoryState.Event:
+                waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+                break;
+            case CategoryState.Twitter:
+                //waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
+                break;
+            case CategoryState.Pat:
+                //waifu = SingletonManager.Instance.GetSingleton<AffectionPat>();
+                break;
+        }
+
+
+
     }
 
     public void SetCategoryState(string state)
     {
         categoryState = (CategoryState)Enum.ToObject(typeof(CategoryState), state);
-    }
-
-    /// <summary>
-    /// 파라미터 받아서 알맞게 데이터시트 가공
-    /// </summary>
-    /// <param name="affection">호감도 상태</param>
-    /// <param name="category">버튼 종류</param>
-    /// <returns></returns>
-    public List<Dictionary<string , string>> DataSheetSetting(int affection, string category)
-    {
-        List<Dictionary<string, string>> partialData = new List<Dictionary<string, string>>();
-
-        var data = diaSheet.Data;
-        var iter = data.GetEnumerator();
-        while(iter.MoveNext())
-        {
-            var cur = iter.Current;
-            /*
-            var iter2 = cur.GetEnumerator();
-            while(iter2.MoveNext())
-            {
-                var cur2 = iter2.Current.Value;
-                Debug.Log($"{cur2}");
-            }
-            */
-            if (cur["affection"].Equals(affection.ToString()) && cur["category"].Equals(category))
-                partialData.Add(cur);
-        }
-
-        return partialData;
     }
 }

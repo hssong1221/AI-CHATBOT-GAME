@@ -20,12 +20,20 @@ public class PlayerData
         pat_interact = new List<int>();
     }
 
-    public PlayerData(int affection_exp, int affection_lv, List<int> affection_interact, List<int> twt_interact, List<int> pat_interact)
+    public PlayerData(int affection_exp, int affection_lv, List<int> affection_interact)
     {
         this.affection_exp = affection_exp;
         this.affection_lv = affection_lv;
         this.affection_interact = new List<int>(affection_interact);
+    }
+
+    public void SaveTwtData(List<int> twt_interact)
+    {
         this.twt_interact = new List<int>(twt_interact);
+
+    }
+    public void SavePatData(List<int> pat_interact)
+    {
         this.pat_interact = new List<int>(pat_interact);
     }
 }
