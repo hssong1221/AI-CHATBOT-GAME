@@ -877,6 +877,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1036478821}
+  - component: {fileID: 1036478823}
+  - component: {fileID: 1036478822}
+  - component: {fileID: 1036478824}
   m_Layer: 0
   m_Name: Affection
   m_TagString: Untagged
@@ -899,6 +902,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1036478822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036478820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a5660b9b9e25f47bd296272b9a25aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  affection_barrel: 
+--- !u!114 &1036478823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036478820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88d3f128f3bc034dbf2e9d1915df544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  affection_barrel: 
+  category_restore: 
+  affection_status: 0
+--- !u!114 &1036478824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036478820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b8fbdb0afcbdd14d8f2e3fc446345b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  affection_barrel: 
 --- !u!1 &1228779123
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,6 +973,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   language: 0
+  affection_exp: 0
+  affection_lv: 0
+  affection_interact: 
+  twt_interact: 
+  pat_interact: 
 --- !u!4 &1228779125
 Transform:
   m_ObjectHideFlags: 0

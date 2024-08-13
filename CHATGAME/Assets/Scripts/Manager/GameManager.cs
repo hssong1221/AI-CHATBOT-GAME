@@ -26,14 +26,6 @@ public class GameManager : MonoBehaviour
 
     public PlayerData playerData;
 
-    /*private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            TempAction();
-        }
-    }*/
-
     public enum Language
     {
         Kor,
@@ -42,13 +34,16 @@ public class GameManager : MonoBehaviour
     }
     public Language language;
 
+    #region Affection Logic Var
+
     public int affection_exp;//호감도 경험치
     public int affection_lv;//호감도 레벨
     public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
     public List<int> twt_interact = new List<int>();
     public List<int> pat_interact = new List<int>();
 
-    public static Action CheckProgAction;
+    #endregion
+
 
     void Awake()
     {
@@ -71,16 +66,10 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        CheckProgAction += CheckProgress;
-
-        SingletonManager.Instance.RegisterSingleton(AffectionTwt.Instance);
+        //SingletonManager.Instance.RegisterSingleton(AffectionTwt.Instance);
+        //SingletonManager.Instance.RegisterSingleton(AffectionPat.Instance);
     }
 
-    // 호감도 시스템이랑 연동 될 곳
-    public void CheckProgress()
-    {
-        //Debug.Log("progress check");
-    }
 
     #region Language
 

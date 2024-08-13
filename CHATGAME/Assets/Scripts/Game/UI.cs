@@ -97,8 +97,6 @@ public class UI : MonoBehaviour
         TextDelayTime = 0.05f;
         //DataSheetSetting(0, "Poke");
 
-        GameManager.CheckProgAction?.Invoke();
-
         SettingAction += SetMainImg;
         SettingAction += SetGauge;
         SettingAction += SetText;
@@ -152,8 +150,8 @@ public class UI : MonoBehaviour
         int imgFileName = 0;         // 이미지 파일 이름
         
         category = categoryState.ToString();
-        affState = Waifu.Instance.Affection_compare();
-        imgFileName = waifu.Interact_idx - waifu.Correction_number;
+        affState = waifu.Affection_compare();
+        imgFileName = waifu.Interact_img_path();
 
         string imgPath = "";
         if (category.Equals("Poke") || category.Equals("Event"))
@@ -221,14 +219,14 @@ public class UI : MonoBehaviour
 
     public void OnClickPokeBtn()
     {
-        if(textState == TextUIState.Typing)
+        waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+
+        if (textState == TextUIState.Typing)
         {
             StopTypingEffect();
         }
         else
         {
-            GameManager.CheckProgAction?.Invoke();
-
             string temp = waifu.Check_Category();
 
             if (temp.Equals("Poke"))
@@ -246,11 +244,12 @@ public class UI : MonoBehaviour
     }
     public void OnClickTwtBtn()
     {
+        waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
+
         string temp = waifu.Check_Category();
-        if (temp.Equals("Twitter"))
+        if (temp.Equals("Twt"))
             SetCategoryState(CategoryState.Twitter);
 
-        waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
 
         SettingAction?.Invoke();
 
@@ -261,8 +260,10 @@ public class UI : MonoBehaviour
     }
     public void OnClickPatBtn()
     {
+        waifu = SingletonManager.Instance.GetSingleton<AffectionPat>();
+
         string temp = waifu.Check_Category();
-        if (temp.Equals("Twitter"))
+        if (temp.Equals("Pat"))
             SetCategoryState(CategoryState.Pat);
 
         SettingAction?.Invoke();
@@ -306,24 +307,6 @@ public class UI : MonoBehaviour
         categoryState = state;
         // 플레이어 데이터 저장
         //Waifu.Instance.CreatePlayerData();
-
-        // 인스턴스 변경
-        switch(state)
-        {
-            case CategoryState.Poke:
-            case CategoryState.Event:
-                waifu = SingletonManager.Instance.GetSingleton<Waifu>();
-                break;
-            case CategoryState.Twitter:
-                //waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
-                break;
-            case CategoryState.Pat:
-                //waifu = SingletonManager.Instance.GetSingleton<AffectionPat>();
-                break;
-        }
-
-
-
     }
 
     public void SetCategoryState(string state)

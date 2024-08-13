@@ -11,13 +11,6 @@ public class AffectionPat : MonoBehaviour,ICategory
     {
         get
         {
-            if (_instance == null)
-            {
-                GameObject singletonObject = new GameObject();
-                _instance = singletonObject.AddComponent<AffectionPat>();
-                singletonObject.name = typeof(AffectionPat).ToString() + "(Sington)";
-                SingletonManager.Instance.RegisterSingleton(_instance);
-            }
             return _instance;
         }
     }
@@ -58,6 +51,8 @@ public class AffectionPat : MonoBehaviour,ICategory
 
     void Start()
     {
+        StartCoroutine(DataManager.Instance.WaitDataLoading(SheetLoadAction));
+
         Interact_idx = 0;
         gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
 
@@ -94,8 +89,9 @@ public class AffectionPat : MonoBehaviour,ICategory
             {
                 dialogueData.Add(cur);
             }
-
         }
+        Interact_Init();
+
     }
 
     public List<Dictionary<string, string>> GetDataList(string name)

@@ -2,27 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Waifu;
 
 public class AffectionTwt : MonoBehaviour, ICategory
 {
-    private static AffectionTwt _instance;
+    private static AffectionTwt _Instance;
 
     public static AffectionTwt Instance
-    {
-        get 
+    { 
+        get
         {
-            if( _instance == null)
+            if (_Instance == null)
             {
                 GameObject singletonObject = new GameObject();
-                _instance = singletonObject.AddComponent<AffectionTwt>();
-                singletonObject.name = typeof(AffectionTwt).ToString() + "(Sington)";
-                SingletonManager.Instance.RegisterSingleton(_instance);
+                _Instance = singletonObject.AddComponent<AffectionTwt>();
+                singletonObject.name = typeof(AffectionTwt).ToString() + " (Singleton)";
+                SingletonManager.Instance.RegisterSingleton(_Instance);
             }
-            return _instance;
+            return _Instance;
         }
     }
-
+    
     private int _interact_idx = 0;
     public int Interact_idx
     {
@@ -43,11 +42,10 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     void Awake()
     {
-        if(_instance == null)
+        if(_Instance == null)
         {
-            _instance = this as AffectionTwt;
-            SingletonManager.Instance.RegisterSingleton(_instance);
-            DontDestroyOnLoad(_instance);
+            _Instance = this as AffectionTwt;
+            SingletonManager.Instance.RegisterSingleton(_Instance);
         }
         else
         {
@@ -55,11 +53,12 @@ public class AffectionTwt : MonoBehaviour, ICategory
         }
 
         SheetLoadAction += SetSheetData;
-        SheetLoadAction?.Invoke();
     }
 
     void Start()
     {
+        StartCoroutine(DataManager.Instance.WaitDataLoading(SheetLoadAction));
+
         Interact_idx = 0;
         gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
 
@@ -71,6 +70,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+        
     }
 
     #region EXCEL Data
@@ -98,6 +98,8 @@ public class AffectionTwt : MonoBehaviour, ICategory
             }
                 
         }
+
+        Interact_Init();
     }
 
     public List<Dictionary<string , string>> GetDataList(string name)
@@ -213,7 +215,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
     {
         int _cnt = 0;
 
-        while(_cnt < Affection_sheet(2,"Twtr"))
+        while(_cnt < Affection_sheet(2,"Twt"))
         {
             gameManager.twt_interact.Add(_cnt);
             _cnt++;
