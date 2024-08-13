@@ -43,13 +43,8 @@ public class Waifu : MonoBehaviour, ICategory
         set { _correction_number = value; }
     }
 
-    public int affection_exp;//호감도 경험치
-    public int affection_lv;//호감도 레벨
     public List<int> affection_barrel = new List<int>();//호감도 레벨업 필요 경험치
     public string category_restore;//현재 카테고리
-    public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
-    //private List<int> twt_interact = new List<int>();
-    //private List<int> pat_interact = new List<int>();
     
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     
@@ -64,15 +59,12 @@ public class Waifu : MonoBehaviour, ICategory
     }
     [Header("호감도 상태")]
     public Affection_status affection_status;
-    
-    
+
+    GameManager gameManager;
     DataManager dataManager;
     SheetData affSheet;
 
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
-    List<Dictionary<string, string>> patData = new List<Dictionary<string, string>>();
-    List<Dictionary<string, string>> twtData = new List<Dictionary<string, string>>();
-
 
     public Action SheetLoadAction { get; set; }
 
@@ -97,6 +89,7 @@ public class Waifu : MonoBehaviour, ICategory
         Interact_idx = 0;
         _correction_number = 0;
         category_restore = "Poke";
+        gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
         
         int _cnt = 0;
 
@@ -108,10 +101,8 @@ public class Waifu : MonoBehaviour, ICategory
             _cnt++;
         }
         
-        LoadPlayerData();
+        //LoadPlayerData();
         Interact_Init();
-        //Twt_Interaction_Init();
-        //Pat_Interaction_Init();
     }
 
     #region EXCEL Data
@@ -131,10 +122,6 @@ public class Waifu : MonoBehaviour, ICategory
             var cur = iter.Current;
             if (cur["category"].Equals("Poke") || cur["category"].Equals("Event"))
                 dialogueData.Add(cur);
-            else if (cur["category"].Equals("Pat"))
-                patData.Add(cur);
-            else if (cur["category"].Equals("Twt"))
-                twtData.Add(cur);
         }
     }
 
@@ -144,10 +131,6 @@ public class Waifu : MonoBehaviour, ICategory
         {
             case "Poke":
                 return dialogueData;
-            case "Pat":
-                return patData;
-            case "Twt":
-                return twtData;
             default:
                 return dialogueData;
         }
@@ -158,6 +141,7 @@ public class Waifu : MonoBehaviour, ICategory
     #region Player Data
 
     //플레이어 데이터 생성하는 곳 - 본인이 넣어야 하는 위치 찾아서 넣기
+    /*
     public void CreatePlayerData(bool isSave = false)
     {
         //PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact, twt_interact, pat_interact);
@@ -165,20 +149,21 @@ public class Waifu : MonoBehaviour, ICategory
         if (isSave)
             GameManager.Instance.SaveData(data);
     }
-
+    */
     // 플레이어 데이터 받아서 로드하는 곳 - 데이터 저장 후에 로딩까지는 되는데 너가 초기 값 잡고 한번 돌려주는게 없는듯 함
+    /*
     void LoadPlayerData()
     {
         PlayerData data = GameManager.Instance.LoadData();
-        affection_exp = data.affection_exp;
+        GameManager.affection_exp = data.affection_exp;
         affection_lv = data.affection_lv;
         affection_interact = new List<int>(data.affection_interact);
-    }
+    }*/
 
     #endregion
     public void Affection_ascend()
     {
-        affection_exp += affection_increase[category_restore];
+        gameManager.affection_exp += affection_increase[category_restore];
 
         Affection_level_calculate();
     }
@@ -187,16 +172,16 @@ public class Waifu : MonoBehaviour, ICategory
     {
         int _cnt = 1;
 
-        if (affection_exp >= affection_barrel[affection_lv])
+        if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            _correction_number += affection_barrel[affection_lv];
-            affection_lv++;
-            affection_exp = 0;
-            affection_interact.Clear();
+            _correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.affection_lv++;
+            gameManager.affection_exp = 0;
+            gameManager.affection_interact.Clear();
 
-            while (_cnt <= affection_barrel[affection_lv])
+            while (_cnt <= affection_barrel[gameManager.affection_lv])
             {
-                affection_interact.Add(_cnt);//임의의 대사 인덱스를 전달하기 위한 작업
+                gameManager.affection_interact.Add(_cnt);//임의의 대사 인덱스를 전달하기 위한 작업
                 _cnt++;
             }
         }
@@ -208,19 +193,19 @@ public class Waifu : MonoBehaviour, ICategory
         int _restore_rand = 0;
         category_restore = "Poke";
 
-        if (affection_lv < 4)//호감도 상태가 Member 미만인 경우
+        if (gameManager.affection_lv < 4)//호감도 상태가 Member 미만인 경우
         {
-            _I_P_N += affection_exp;
+            _I_P_N += gameManager.affection_exp;
         }
-        else if (affection_lv % 2 == 1)//Event 인 경우
+        else if (gameManager.affection_lv % 2 == 1)//Event 인 경우
         {
-            _I_P_N += affection_exp;
+            _I_P_N += gameManager.affection_exp;
             category_restore = "Event";
         }
-        else if (affection_lv >= 4 && affection_lv % 2 == 0)//호감도 상태가 Member 이상인 경우 임의의 중복되지 않는 대사 인덱스를 전달함
+        else if (gameManager.affection_lv >= 4 && gameManager.affection_lv % 2 == 0)//호감도 상태가 Member 이상인 경우 임의의 중복되지 않는 대사 인덱스를 전달함
         {
-            _restore_rand = affection_interact[UnityEngine.Random.Range(0, affection_interact.Count)];
-            affection_interact.Remove(_restore_rand);
+            _restore_rand = gameManager.affection_interact[UnityEngine.Random.Range(0, gameManager.affection_interact.Count)];
+            gameManager.affection_interact.Remove(_restore_rand);
             _I_P_N += _restore_rand;
         }
 
@@ -234,7 +219,7 @@ public class Waifu : MonoBehaviour, ICategory
 
         while (_cnt < Affection_sheet(0, "Poke"))
         {
-            affection_interact.Add(_cnt);
+            gameManager.affection_interact.Add(_cnt);
             _cnt++;
         }
     }
@@ -284,15 +269,7 @@ public class Waifu : MonoBehaviour, ICategory
         if (category_restore == "Poke" || category_restore == "Event")
         {
             _interact_idx = _aff_poke_event_idx;
-        }/*
-        else if (category_restore == "Twitter")
-        {
-            _interact_idx = _aff_twt_idx;
         }
-        else if(category_restore == "Pat")
-        {
-            _interact_idx = _aff_pat_idx;
-        }*/
     }
 
     public string Check_Category()//카테고리 확인
@@ -340,7 +317,7 @@ public class Waifu : MonoBehaviour, ICategory
 
     public string Affection_compare()
     {
-        affection_status = (Affection_status)Enum.ToObject(typeof(Affection_status), affection_lv / 2);
+        affection_status = (Affection_status)Enum.ToObject(typeof(Affection_status), gameManager.affection_lv / 2);
         return affection_status.ToString();
     }
 
@@ -354,7 +331,7 @@ public class Waifu : MonoBehaviour, ICategory
         }
         else
         {
-            aff_percent = (float)affection_exp / (float)affection_barrel[affection_lv];
+            aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;

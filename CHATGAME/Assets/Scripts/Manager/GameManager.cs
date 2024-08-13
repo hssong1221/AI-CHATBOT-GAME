@@ -42,6 +42,12 @@ public class GameManager : MonoBehaviour
     }
     public Language language;
 
+    public int affection_exp;//호감도 경험치
+    public int affection_lv;//호감도 레벨
+    public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
+    public List<int> twt_interact = new List<int>();
+    public List<int> pat_interact = new List<int>();
+
     public static Action CheckProgAction;
 
     void Awake()

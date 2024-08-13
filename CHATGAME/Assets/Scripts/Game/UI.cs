@@ -283,7 +283,7 @@ public class UI : MonoBehaviour
 
     public void OnclickSaveBtn()
     {
-        Waifu.Instance.CreatePlayerData(true);
+        //Waifu.Instance.CreatePlayerData(true);
     }
     #endregion
 
