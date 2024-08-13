@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AffectionPat : MonoBehaviour
+public class AffectionPat : MonoBehaviour,ICategory
 {
     private static AffectionPat _instance;
 
@@ -106,4 +106,109 @@ public class AffectionPat : MonoBehaviour
     #endregion
 
 
+    public void Affection_ascend()
+    {
+        gameManager.affection_exp += affection_increase["Pat"];
+
+        Affection_level_calculate();
+    }
+
+    public void Affection_level_calculate()
+    {
+        if(gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
+        {
+            gameManager.affection_lv++;
+            gameManager.affection_exp = 0;
+        }
+    }
+
+    public string Check_Category()
+    {
+        if(patData.Count == 0)
+        {
+            return "Error";
+        }
+
+        var data = patData[_interact_idx];
+
+        if(data.TryGetValue("category", out var cate))
+        {
+            return cate.ToString();
+        }
+        else
+        {
+            return "Error";
+        }
+    }
+
+    public void Interaction_Path()
+    {
+        int _restore_rand = gameManager.pat_interact[UnityEngine.Random.Range(0, gameManager.pat_interact.Count)];
+        gameManager.pat_interact.Remove(_restore_rand);
+        _interact_idx = _restore_rand;
+    }
+
+    public void Interact_Init()
+    {
+        int _cnt = 0;
+
+        while (_cnt < Affection_sheet(3,"Pat"))
+        {
+            gameManager.pat_interact.Add(_cnt);
+            _cnt++;
+        }
+    }
+
+    public float Affection_Percentage()
+    {
+        string _cate_str = Check_Category();
+        float aff_percent = 0f;
+        if (_cate_str == "Event")
+        {
+            aff_percent = 1.0f;
+        }
+        else
+        {
+            aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
+        }
+
+        return aff_percent;
+    }
+
+    public int Affection_sheet(int _aff_level, string _category)
+    {
+        int _aff_sheet = 0;
+        List<Dictionary<string, string>> _data = new List<Dictionary<string, string>>();
+
+        if (_category == "Poke" || _category == "Event")
+        {
+            _data = dialogueData;
+        }
+        else if (_category == "Pat")
+        {
+            _data = patData;
+        }
+
+        var iter = _data.GetEnumerator();
+        while (iter.MoveNext())
+        {
+            var cur = iter.Current;
+
+            if (cur["affection"].Equals(_aff_level.ToString()) && cur["category"].Equals(_category))
+            {
+                _aff_sheet++;
+            }
+        }
+        return _aff_sheet;
+    }
+
+    public int Interact_img_path()
+    {
+        return Interact_idx;
+    }
+
+    public int Interact_txt_path()
+    {
+        return Interact_idx;
+    }
 }

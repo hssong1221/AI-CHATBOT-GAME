@@ -163,7 +163,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
     {
         int _cnt = 0;
 
-        while(_cnt < Affection_sheet(2,"Twitter"))
+        while(_cnt < Affection_sheet(2,"Twtr"))
         {
             gameManager.twt_interact.Add(_cnt);
             _cnt++;
@@ -195,7 +195,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
         {
             _data = dialogueData;
         }
-        else if(_category == "Twitter")
+        else if(_category == "Twt")
         {
             _data = twtData;
         }
