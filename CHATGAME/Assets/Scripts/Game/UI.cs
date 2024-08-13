@@ -222,9 +222,7 @@ public class UI : MonoBehaviour
         waifu = SingletonManager.Instance.GetSingleton<Waifu>();
 
         if (textState == TextUIState.Typing)
-        {
             StopTypingEffect();
-        }
         else
         {
             string temp = waifu.Check_Category();
@@ -246,17 +244,22 @@ public class UI : MonoBehaviour
     {
         waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
 
-        string temp = waifu.Check_Category();
-        if (temp.Equals("Twt"))
-            SetCategoryState(CategoryState.Twitter);
+        if (textState == TextUIState.Typing)
+            StopTypingEffect();
+        else
+        {
+            string temp = waifu.Check_Category();
+            if (temp.Equals("Twt"))
+                SetCategoryState(CategoryState.Twitter);
 
 
-        SettingAction?.Invoke();
+            SettingAction?.Invoke();
 
-        waifu.Affection_ascend();
-        waifu.Interaction_Path();
+            waifu.Affection_ascend();
+            waifu.Interaction_Path();
 
-        ButtonAction.CheckUnlockAction?.Invoke();
+            ButtonAction.CheckUnlockAction?.Invoke();
+        }
     }
     public void OnClickPatBtn()
     {
