@@ -141,11 +141,6 @@ public class AffectionTwt : MonoBehaviour, ICategory
         }
     }
 
-    public string Affection_compare()
-    {
-        return "";
-    }
-
     public float Affection_Percentage()
     {
         string _cate_str = Check_Category();
@@ -160,6 +155,11 @@ public class AffectionTwt : MonoBehaviour, ICategory
         }
 
         return aff_percent;
+    }
+
+    public string Affection_compare()
+    {
+        return "";
     }
 
     public int Affection_sheet(int _aff_level, string _category)
