@@ -337,4 +337,13 @@ public class Waifu : MonoBehaviour, ICategory
         return aff_percent;
     }
 
+    public int Interact_img_path()
+    {
+        return Interact_idx - Correction_number;
+    }
+
+    public int Interact_txt_path()
+    {
+        return Interact_idx;
+    }
 }

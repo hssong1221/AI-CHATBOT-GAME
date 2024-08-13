@@ -212,4 +212,14 @@ public class AffectionTwt : MonoBehaviour, ICategory
         }
         return _aff_sheet;
     }
+
+    public int Interact_img_path()
+    {
+        return Interact_idx;
+    }
+
+    public int Interact_txt_path()
+    {
+        return Interact_idx;
+    }
 }
