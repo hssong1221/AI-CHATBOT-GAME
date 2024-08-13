@@ -10,6 +10,8 @@ public class ButtonAction : MonoBehaviour
     public Button button;
     public GameObject enableBtn;
     public GameObject disableBtn;
+    //------임시 선언------//
+
 
     public int unlockNumber;
 
@@ -24,7 +26,7 @@ public class ButtonAction : MonoBehaviour
     // 임시 
     public void CheckLockNumber()
     {
-        if (Waifu.Instance.affection_lv >= unlockNumber)
+        if (GameManager.Instance.affection_lv >= unlockNumber)
             EnableBtn();
         else
             DisableBtn();
