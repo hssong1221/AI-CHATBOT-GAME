@@ -54,6 +54,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
         }
 
         SheetLoadAction += SetSheetData;
+        SheetLoadAction?.Invoke();
     }
 
     void Start()

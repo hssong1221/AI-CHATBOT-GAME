@@ -72,6 +72,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         CheckProgAction += CheckProgress;
+
+        SingletonManager.Instance.RegisterSingleton(AffectionTwt.Instance);
     }
 
     // 호감도 시스템이랑 연동 될 곳

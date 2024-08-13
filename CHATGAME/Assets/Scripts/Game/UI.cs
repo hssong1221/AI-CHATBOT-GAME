@@ -152,10 +152,15 @@ public class UI : MonoBehaviour
         int imgFileName = 0;         // 이미지 파일 이름
         
         category = categoryState.ToString();
-        affState = waifu.Affection_compare();
+        affState = Waifu.Instance.Affection_compare();
         imgFileName = waifu.Interact_idx - waifu.Correction_number;
 
-        string imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
+        string imgPath = "";
+        if (category.Equals("Poke") || category.Equals("Event"))
+            imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
+        else
+            imgPath = $"image/{category}/{imgFileName + 1}";
+        
         Debug.Log($"현재 이미지 경로 : {imgPath}");
 
         Sprite sprite = Resources.Load<Sprite>(imgPath);
@@ -245,6 +250,8 @@ public class UI : MonoBehaviour
         if (temp.Equals("Twitter"))
             SetCategoryState(CategoryState.Twitter);
 
+        waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
+
         SettingAction?.Invoke();
 
         waifu.Affection_ascend();
@@ -298,7 +305,7 @@ public class UI : MonoBehaviour
         // 상태 변경
         categoryState = state;
         // 플레이어 데이터 저장
-        Waifu.Instance.CreatePlayerData();
+        //Waifu.Instance.CreatePlayerData();
 
         // 인스턴스 변경
         switch(state)
