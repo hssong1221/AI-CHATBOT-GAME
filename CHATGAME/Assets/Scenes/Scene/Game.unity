@@ -4083,7 +4083,7 @@ MonoBehaviour:
   button: {fileID: 0}
   enableBtn: {fileID: 1379723184}
   disableBtn: {fileID: 1157408517}
-  unlockNumber: 5
+  unlockNumber: 2
 --- !u!1 &1529829323
 GameObject:
   m_ObjectHideFlags: 0

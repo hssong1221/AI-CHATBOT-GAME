@@ -265,16 +265,23 @@ public class UI : MonoBehaviour
     {
         waifu = SingletonManager.Instance.GetSingleton<AffectionPat>();
 
-        string temp = waifu.Check_Category();
-        if (temp.Equals("Pat"))
-            SetCategoryState(CategoryState.Pat);
+        if (textState == TextUIState.Typing)
+        {
+            StopTypingEffect();
+        }
+        else
+        {
+            string temp = waifu.Check_Category();
+            if (temp.Equals("Pat"))
+                SetCategoryState(CategoryState.Pat);
 
-        SettingAction?.Invoke();
+            SettingAction?.Invoke();
 
-        waifu.Affection_ascend();
-        waifu.Interaction_Path();
+            waifu.Affection_ascend();
+            waifu.Interaction_Path();
 
-        ButtonAction.CheckUnlockAction?.Invoke();
+            ButtonAction.CheckUnlockAction?.Invoke();
+        }        
     }
     public void OnClickNextBtn()
     {
