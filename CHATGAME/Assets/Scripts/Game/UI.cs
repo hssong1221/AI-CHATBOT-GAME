@@ -35,6 +35,9 @@ public class UI : MonoBehaviour
 
     [Header("호감도 Gauge")]
     public Image guageImg;
+    public Image heart1;
+    public Image heart2;
+    public Image heart3;
 
     DataManager dataManager;
     //Waifu waifu;
@@ -171,6 +174,9 @@ public class UI : MonoBehaviour
     public void SetGauge()
     {
         float ratio = waifu.Affection_Percentage();
+        heart1.gameObject.SetActive(ratio < 0.5);
+        heart2.gameObject.SetActive(0.5 <= ratio && ratio < 1);
+        heart3.gameObject.SetActive(ratio >= 1);
         guageImg.fillAmount = ratio;
     }
 
@@ -215,7 +221,7 @@ public class UI : MonoBehaviour
 
     #endregion
 
-    #region 버튼들
+     #region 버튼들
 
     public void OnClickPokeBtn()
     {
