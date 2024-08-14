@@ -53,6 +53,7 @@ public class UI : MonoBehaviour
         Event,
         Twitter,
         Pat,
+        Date,
         Next,
     }
     [Header("현재 카테고리 상태")]
@@ -288,6 +289,29 @@ public class UI : MonoBehaviour
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }        
+    }
+
+    public void OnClickDateBtn()
+    {
+        waifu = SingletonManager.Instance.GetSingleton<AffectionDate>();
+
+        if (textState == TextUIState.Typing)
+        {
+            StopTypingEffect();
+        }
+        else
+        {
+            string temp = waifu.Check_Category();
+            if (temp.Equals("Date"))
+                SetCategoryState(CategoryState.Date);
+
+            SettingAction?.Invoke();
+
+            waifu.Affection_ascend();
+            waifu.Interaction_Path();
+
+            ButtonAction.CheckUnlockAction?.Invoke();
+        }
     }
     public void OnClickNextBtn()
     {

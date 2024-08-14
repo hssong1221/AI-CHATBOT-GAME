@@ -199,9 +199,9 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Interaction_Path()
     {
-        int _restore_rand = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];
+        int _restore_rand = gameManager.date_interact[0];
         gameManager.date_interact.Remove(_restore_rand);
-        _interact_idx = _restore_rand;
+        _interact_idx = gameManager.date_interact[0];
     }
 
     public void Interact_Init()

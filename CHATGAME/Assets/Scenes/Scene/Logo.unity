@@ -880,6 +880,7 @@ GameObject:
   - component: {fileID: 1036478823}
   - component: {fileID: 1036478822}
   - component: {fileID: 1036478824}
+  - component: {fileID: 1036478825}
   m_Layer: 0
   m_Name: Affection
   m_TagString: Untagged
@@ -943,6 +944,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   affection_barrel: 
+--- !u!114 &1036478825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036478820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202a28fb90545814cb745900f6b3745c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  affection_barrel: 
 --- !u!1 &1228779123
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,6 +992,7 @@ MonoBehaviour:
   affection_interact: 
   twt_interact: 
   pat_interact: 
+  date_interact: 
 --- !u!4 &1228779125
 Transform:
   m_ObjectHideFlags: 0
