@@ -27,6 +27,8 @@ public class AffectionDate : MonoBehaviour, ICategory
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
     List<Dictionary<string, string>> dateData = new List<Dictionary<string, string>>();
 
+    public Dictionary<string,int> Date_number = new Dictionary<string, int>();
+
     GameManager gameManager;
     DataManager dataManager;
     SheetData affSheet;
@@ -90,6 +92,10 @@ public class AffectionDate : MonoBehaviour, ICategory
             {
                 dateData.Add(val);
             }
+            if (Date_number.ContainsKey(val["situation"]))
+                Date_number[val["situation"]]++;
+            else
+                Date_number[val["situation"]] = 1;
         }
         Interact_Init();
         Barrel_Init();
@@ -241,6 +247,19 @@ public class AffectionDate : MonoBehaviour, ICategory
         else
         {
             return "Error";
+        }
+    }
+
+    public int Check_Current_Date()
+    {
+        var data = dateData[_interact_idx];
+        if (data.TryGetValue("situation", out var num))
+        {
+            return int.Parse(num);
+        }
+        else
+        {
+            return -1;
         }
     }
 }

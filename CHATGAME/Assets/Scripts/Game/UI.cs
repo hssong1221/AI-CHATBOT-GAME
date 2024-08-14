@@ -42,7 +42,9 @@ public class UI : MonoBehaviour
     DataManager dataManager;
     //Waifu waifu;
     ICategory waifu;
-   
+
+
+    int DateLimitNum;
 
     SheetData diaSheet;
     //SheetData ImgSheet;
@@ -100,6 +102,8 @@ public class UI : MonoBehaviour
 
         TextDelayTime = 0.05f;
         //DataSheetSetting(0, "Poke");
+
+        DateLimitNum = 0;
 
         SettingAction += SetMainImg;
         SettingAction += SetGauge;
@@ -160,6 +164,8 @@ public class UI : MonoBehaviour
         string imgPath = "";
         if (category.Equals("Poke") || category.Equals("Event"))
             imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
+        else if(category.Equals("Date"))
+            imgPath = $"image/{category}/{AffectionDate.Instance.Interact_date_path()}";
         else
             imgPath = $"image/{category}/{imgFileName + 1}";
         
@@ -226,6 +232,21 @@ public class UI : MonoBehaviour
 
     public void OnClickPokeBtn()
     {
+        if(categoryState == CategoryState.Date)
+        {
+            OnClickDateBtn();
+            return;
+            /*
+            var dateIdx = AffectionDate.Instance.Check_Current_Date();
+            var data = AffectionDate.Instance.Date_number;
+            if (DateLimitNum <= data[dateIdx.ToString()])
+            {
+                Debug.Log($"before : {DateLimitNum} <= {data[dateIdx.ToString()]}");
+                OnClickDateBtn();
+                return;
+            }*/
+        }
+
         waifu = SingletonManager.Instance.GetSingleton<Waifu>();
 
         if (textState == TextUIState.Typing)
@@ -245,6 +266,7 @@ public class UI : MonoBehaviour
             waifu.Interaction_Path();
 
             ButtonAction.CheckUnlockAction?.Invoke();
+            DateLimitNum = 0;
         }
     }
     public void OnClickTwtBtn()
@@ -306,6 +328,18 @@ public class UI : MonoBehaviour
                 SetCategoryState(CategoryState.Date);
 
             SettingAction?.Invoke();
+
+            var dateIdx = AffectionDate.Instance.Check_Current_Date();
+            var data = AffectionDate.Instance.Date_number;
+            Debug.Log($"before : {DateLimitNum}  {data[dateIdx.ToString()]}");
+            DateLimitNum += 1;
+
+            if (DateLimitNum == data[dateIdx.ToString()])
+            {
+                SetCategoryState(CategoryState.Poke);
+                DateLimitNum = 0;
+                Debug.Log($"Date{dateIdx} ³¡");
+            }
 
             waifu.Affection_ascend();
             waifu.Interaction_Path();
