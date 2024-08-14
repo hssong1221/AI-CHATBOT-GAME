@@ -224,4 +224,23 @@ public class AffectionDate : MonoBehaviour, ICategory
     {
         return Interact_idx;
     }
+
+    public string Interact_date_path()
+    {
+        if (dateData.Count == 0)
+        {
+            return "Error";
+        }
+
+        var data = dateData[_interact_idx];
+
+        if (data.TryGetValue("image_id", out var cate))
+        {
+            return cate.ToString();
+        }
+        else
+        {
+            return "Error";
+        }
+    }
 }
