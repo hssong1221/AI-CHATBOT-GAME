@@ -24,6 +24,7 @@ public class AffectionDate : MonoBehaviour, ICategory
     public int Correction_number { get; set; }
     public List<int> affection_barrel = new List<int>();
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
+    public List<int> date_affection_increase = new List<int>();
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
     List<Dictionary<string, string>> dateData = new List<Dictionary<string, string>>();
 
@@ -99,6 +100,7 @@ public class AffectionDate : MonoBehaviour, ICategory
         }
         Interact_Init();
         Barrel_Init();
+        Increase_Init();
     }
 
     public void Barrel_Init()
@@ -113,6 +115,27 @@ public class AffectionDate : MonoBehaviour, ICategory
         }
     }
 
+    public void Increase_Init()
+    {
+        var situation_temp="";
+        var iter = dateData.GetEnumerator();
+
+        while (iter.MoveNext())
+        {
+            var cur = iter.Current;
+
+            if (cur["situation"].Equals(situation_temp.ToString()))
+            {
+                date_affection_increase.Add(0);
+            }
+            else
+            {
+                situation_temp = cur["situation"];
+                date_affection_increase.Add(affection_increase["Date"]);
+            }
+        }
+    }
+
     public List<Dictionary<string, string>> GetDataList(string name)
     {
         return dateData;
@@ -122,7 +145,7 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Affection_ascend()
     {
-        gameManager.affection_exp += affection_increase["Date"];
+        gameManager.affection_exp += date_affection_increase[_interact_idx];
 
         Affection_level_calculate();
     }
