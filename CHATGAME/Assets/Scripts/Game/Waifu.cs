@@ -189,7 +189,8 @@ public class Waifu : MonoBehaviour, ICategory
 
     public void Interaction_Path()//Poke 상호작용 경로 번호 찾기
     {
-        int _I_P_N = _correction_number;
+        //int _I_P_N = _correction_number;
+        int _I_P_N = Correction_number;
         int _restore_rand = 0;
         category_restore = "Poke";
 
@@ -276,7 +277,6 @@ public class Waifu : MonoBehaviour, ICategory
     {
         if (dialogueData.Count == 0)
             return "Error";
-        //var data = dialogueData[_aff_poke_event_idx];
 
         var data = dialogueData[_aff_poke_event_idx];
 
@@ -323,15 +323,17 @@ public class Waifu : MonoBehaviour, ICategory
 
     public float Affection_Percentage()//호감도 UI 경험치 배율 전달
     {
-        string _cate_str = Check_Category();
+        //string _cate_str = Check_Category();
         float aff_percent = 0;
-        if (_cate_str == "Event")
+        //if (_cate_str == "Event")
+        if(gameManager.affection_lv % 2 == 1)
         {
             aff_percent = 1.0f;
         }
         else
         {
-            aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
+            aff_percent = (float)gameManager.affection_exp < (float)affection_barrel[gameManager.affection_lv] ? (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv] : 1f;
+            //aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;

@@ -38,6 +38,8 @@ public class AffectionTwt : MonoBehaviour, ICategory
     DataManager dataManager;
     SheetData affSheet;
 
+    ICategory poke_event_correct;
+
     public Action SheetLoadAction { get; set; }
 
     void Awake()
@@ -134,8 +136,11 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public void Affection_level_calculate()
     {
-        if(gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
+        poke_event_correct = SingletonManager.Instance.GetSingleton<Waifu>();
+
+        if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
+            poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
             gameManager.affection_exp = 0;
         }
@@ -143,15 +148,17 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public float Affection_Percentage()
     {
-        string _cate_str = Check_Category();
+        //string _cate_str = Check_Category();
         float aff_percent = 0f;
-        if (_cate_str == "Event")
+        //if (_cate_str == "Event")
+        if(gameManager.affection_lv % 2 == 1)
         {
             aff_percent = 1.0f;
         }
         else
         {
-            aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
+            aff_percent = (float)gameManager.affection_exp < (float)affection_barrel[gameManager.affection_lv] ? (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv] : 1f;
+            //aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;

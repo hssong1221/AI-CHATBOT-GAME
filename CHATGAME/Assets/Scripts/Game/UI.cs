@@ -116,10 +116,12 @@ public class UI : MonoBehaviour
     {
         yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
 
-        SettingAction?.Invoke();
+        //SettingAction?.Invoke();
 
-        waifu.Affection_ascend();
-        waifu.Interaction_Path();
+//        waifu.Affection_ascend();
+        //waifu.Interaction_Path();
+
+        SettingAction?.Invoke();
 
         yield return null;
     }
@@ -252,7 +254,21 @@ public class UI : MonoBehaviour
         if (textState == TextUIState.Typing)
             StopTypingEffect();
         else
-        {
+        {/*
+            string temp = waifu.Check_Category();
+
+            if (temp.Equals("Poke"))
+                SetCategoryState(CategoryState.Poke);
+            else if (temp.Equals("Event"))
+                SetCategoryState(CategoryState.Event);
+            */
+            //SettingAction?.Invoke();
+
+            waifu.Affection_ascend();
+            waifu.Interaction_Path();
+
+            
+
             string temp = waifu.Check_Category();
 
             if (temp.Equals("Poke"))
@@ -261,9 +277,6 @@ public class UI : MonoBehaviour
                 SetCategoryState(CategoryState.Event);
 
             SettingAction?.Invoke();
-
-            waifu.Affection_ascend();
-            waifu.Interaction_Path();
 
             ButtonAction.CheckUnlockAction?.Invoke();
             DateLimitNum = 0;
@@ -282,10 +295,12 @@ public class UI : MonoBehaviour
                 SetCategoryState(CategoryState.Twitter);
 
 
-            SettingAction?.Invoke();
+            //SettingAction?.Invoke();
 
             waifu.Affection_ascend();
             waifu.Interaction_Path();
+
+            SettingAction?.Invoke();
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }
@@ -304,10 +319,12 @@ public class UI : MonoBehaviour
             if (temp.Equals("Pat"))
                 SetCategoryState(CategoryState.Pat);
 
-            SettingAction?.Invoke();
+            //SettingAction?.Invoke();
 
             waifu.Affection_ascend();
             waifu.Interaction_Path();
+
+            SettingAction?.Invoke();
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }        
@@ -343,6 +360,8 @@ public class UI : MonoBehaviour
 
             waifu.Affection_ascend();
             waifu.Interaction_Path();
+
+            //SettingAction?.Invoke();
 
             ButtonAction.CheckUnlockAction?.Invoke();
         }
