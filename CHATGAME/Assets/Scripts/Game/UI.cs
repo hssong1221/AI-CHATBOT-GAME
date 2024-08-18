@@ -238,15 +238,6 @@ public class UI : MonoBehaviour
         {
             OnClickDateBtn();
             return;
-            /*
-            var dateIdx = AffectionDate.Instance.Check_Current_Date();
-            var data = AffectionDate.Instance.Date_number;
-            if (DateLimitNum <= data[dateIdx.ToString()])
-            {
-                Debug.Log($"before : {DateLimitNum} <= {data[dateIdx.ToString()]}");
-                OnClickDateBtn();
-                return;
-            }*/
         }
 
         waifu = SingletonManager.Instance.GetSingleton<Waifu>();
@@ -267,8 +258,6 @@ public class UI : MonoBehaviour
             waifu.Affection_ascend();
             waifu.Interaction_Path();
 
-            
-
             string temp = waifu.Check_Category();
 
             if (temp.Equals("Poke"))
@@ -280,6 +269,9 @@ public class UI : MonoBehaviour
 
             ButtonAction.CheckUnlockAction?.Invoke();
             DateLimitNum = 0;
+
+
+            GameManager.Instance.SaveData();
         }
     }
     public void OnClickTwtBtn()
@@ -294,7 +286,6 @@ public class UI : MonoBehaviour
             if (temp.Equals("Twt"))
                 SetCategoryState(CategoryState.Twitter);
 
-
             //SettingAction?.Invoke();
 
             waifu.Affection_ascend();
@@ -303,6 +294,7 @@ public class UI : MonoBehaviour
             SettingAction?.Invoke();
 
             ButtonAction.CheckUnlockAction?.Invoke();
+            GameManager.Instance.SaveData();
         }
     }
     public void OnClickPatBtn()
@@ -327,6 +319,7 @@ public class UI : MonoBehaviour
             SettingAction?.Invoke();
 
             ButtonAction.CheckUnlockAction?.Invoke();
+            GameManager.Instance.SaveData();
         }        
     }
 
@@ -364,18 +357,9 @@ public class UI : MonoBehaviour
             //SettingAction?.Invoke();
 
             ButtonAction.CheckUnlockAction?.Invoke();
+            GameManager.Instance.SaveData();
         }
     }
-    public void OnClickNextBtn()
-    {
-        //categoryState = CategoryState.Next;
-
-        SettingAction?.Invoke();
-
-        waifu.Affection_ascend();
-        //waifu.aff_poke_event_idx += 1;
-    }
-
 
     // temp version
     public void OnclickLanBtn()
@@ -390,7 +374,7 @@ public class UI : MonoBehaviour
 
     public void OnclickSaveBtn()
     {
-        //Waifu.Instance.CreatePlayerData(true);
+        GameManager.Instance.SaveData();
     }
     #endregion
 
@@ -398,8 +382,6 @@ public class UI : MonoBehaviour
     {
         // 상태 변경
         categoryState = state;
-        // 플레이어 데이터 저장
-        //Waifu.Instance.CreatePlayerData();
     }
 
     public void SetCategoryState(string state)

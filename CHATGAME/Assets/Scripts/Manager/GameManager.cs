@@ -58,17 +58,14 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        if (PlayerPrefs.HasKey("PlayerData"))
-            LoadData();
-        else
-            playerData = new PlayerData();
     }
 
     void Start()
     {
-        //SingletonManager.Instance.RegisterSingleton(AffectionTwt.Instance);
-        //SingletonManager.Instance.RegisterSingleton(AffectionPat.Instance);
+        if (PlayerPrefs.HasKey("PlayerData"))
+            LoadData();
+        else
+            playerData = new PlayerData();
     }
 
 
@@ -107,21 +104,68 @@ public class GameManager : MonoBehaviour
 
     #region Data SAVE LOAD
 
-    public void SaveData(PlayerData data)
+    // GameManager에 있는 변수들로 클래스를 만듬
+    // 저장이 필요한 변수들을 계속 추가해주면 된다.
+    public class PlayerData
     {
+        public int affection_exp = 0;//호감도 경험치
+        public int affection_lv = 0;//호감도 레벨
+        public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
+        public List<int> twt_interact = new List<int>();
+        public List<int> pat_interact = new List<int>();
+        public List<int> date_interact = new List<int>();
+        
+    }
+
+    // 데이터 저장을 위해 클래스안에 기존 데이터 주입
+    public PlayerData GetPlayerData()
+    {
+        return new PlayerData
+        {
+            affection_exp = this.affection_exp,
+            affection_lv = this.affection_lv,
+            affection_interact = this.affection_interact,
+            twt_interact = this.twt_interact,
+            pat_interact = this.pat_interact,
+            date_interact = this.date_interact,
+        };
+    }
+
+    // 데이터 로드를 위해 클래스 안에 있는 데이터 꺼내서 GameManager 변수 초기화
+    public void SetPlayerData(PlayerData data)
+    {
+        this.affection_exp = data.affection_exp;
+        this.affection_lv = data.affection_lv;
+        this.affection_interact = data.affection_interact;
+        this.twt_interact = data.twt_interact;
+        this.pat_interact = data.pat_interact;
+        this.date_interact = data.date_interact;
+    }
+
+    // 데이터 저장을 하려면 부르시오
+    public void SaveData()
+    {
+        PlayerData data = GetPlayerData();
         string json = JsonConvert.SerializeObject(data);
         PlayerPrefs.SetString("PlayerData", json);
         PlayerPrefs.Save();
     }
 
-    public PlayerData LoadData()
+    // 데이터 로드를 하려면 부르시오(겜 켜질 때 한번 부르면 될거 같음)
+    public void LoadData()
     {
-        string json = PlayerPrefs.GetString("PlayerData", "{}");
-        playerData = JsonConvert.DeserializeObject<PlayerData>(json);
-        return playerData;
+        if (!PlayerPrefs.HasKey("PlayerData"))
+            return;
+        else
+        {
+            string json = PlayerPrefs.GetString("PlayerData", "{}");
+            PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(json);
+            SetPlayerData(playerData);
+        }
     }
 
 #if UNITY_EDITOR
+    // 실험용 기능 - playerprefs에 저장된 데이터 날리는 함수
     [MenuItem("MyTools/Delete PlayerPrefs")]
     private static void DeleteAll()
     {

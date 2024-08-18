@@ -21,6 +21,8 @@ public class ButtonAction : MonoBehaviour
     {
         button = gameObject.GetComponent<Button>();
         CheckUnlockAction += CheckLockNumber;
+
+        //button.onClick.AddListener(CheckLockNumber);
     }
 
     // юс╫ц 
