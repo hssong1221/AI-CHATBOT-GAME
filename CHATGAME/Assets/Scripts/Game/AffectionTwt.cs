@@ -142,7 +142,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
         {
             poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
-            gameManager.affection_exp = 0;
+            gameManager.affection_exp = -1;
         }
     }
 
