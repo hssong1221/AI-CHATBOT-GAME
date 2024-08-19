@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
     public List<int> pat_interact = new List<int>();
     public List<int> date_interact = new List<int>();
 
+    public int interact_idx;
+
     #endregion
 
 
@@ -114,7 +116,8 @@ public class GameManager : MonoBehaviour
         public List<int> twt_interact = new List<int>();
         public List<int> pat_interact = new List<int>();
         public List<int> date_interact = new List<int>();
-        
+
+        public int interact_idx;
     }
 
     // 데이터 저장을 위해 클래스안에 기존 데이터 주입
@@ -128,6 +131,7 @@ public class GameManager : MonoBehaviour
             twt_interact = this.twt_interact,
             pat_interact = this.pat_interact,
             date_interact = this.date_interact,
+            interact_idx = this.interact_idx,
         };
     }
 
@@ -140,6 +144,7 @@ public class GameManager : MonoBehaviour
         this.twt_interact = data.twt_interact;
         this.pat_interact = data.pat_interact;
         this.date_interact = data.date_interact;
+        this.interact_idx = data.interact_idx;
     }
 
     // 데이터 저장을 하려면 부르시오
