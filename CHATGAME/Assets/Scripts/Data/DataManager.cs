@@ -121,7 +121,10 @@ public class DataManager : MonoBehaviour
                             row[columnName] = cellValue;
                         }
                         if (isEOF)
+                        {
+                            isEOF = false;
                             break;
+                        }
                         sheetData.AddData(row);
                     }
                     sheetsData[table.TableName] = sheetData;
@@ -197,7 +200,10 @@ public class DataManager : MonoBehaviour
                             row[columnName] = cellValue;
                         }
                         if (isEOF)
+                        {
+                            isEOF = false;
                             break;
+                        }
                         sheetData.AddData(row);
                     }
                     sheetsData[table.TableName] = sheetData;

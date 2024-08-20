@@ -13,7 +13,9 @@ public class ButtonAction : MonoBehaviour
     //------임시 선언------//
 
 
-    public int unlockNumber;
+    public int unlockLevel;
+    public int unlockCount;
+    public string cateType;
 
     public static Action CheckUnlockAction;
 
@@ -21,12 +23,14 @@ public class ButtonAction : MonoBehaviour
     {
         button = gameObject.GetComponent<Button>();
         CheckUnlockAction += CheckLockNumber;
+
+        //button.onClick.AddListener(CheckLockNumber);
     }
 
     // 임시 
     public void CheckLockNumber()
     {
-        if (GameManager.Instance.affection_lv >= unlockNumber)
+        if (GameManager.Instance.affection_lv >= unlockLevel && GameManager.Instance.unlockBtnCnt[cateType] >= unlockCount)
             EnableBtn();
         else
             DisableBtn();
