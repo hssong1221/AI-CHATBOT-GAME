@@ -7,6 +7,7 @@ using TMPro;
 
 public class UI : MonoBehaviour
 {
+    #region Values
     private static UI _instance;
     public static UI Instance
     {
@@ -40,14 +41,11 @@ public class UI : MonoBehaviour
     public Image heart3;
 
     DataManager dataManager;
-    //Waifu waifu;
     ICategory waifu;
-
 
     int DateLimitNum;
 
     SheetData diaSheet;
-    //SheetData ImgSheet;
 
     public enum CategoryState
     {
@@ -71,7 +69,7 @@ public class UI : MonoBehaviour
     public TextUIState textState;
 
     private Action SettingAction;
-
+    #endregion
     void Awake()
     {
         if (_instance == null)

@@ -38,13 +38,27 @@ public class GameManager : MonoBehaviour
 
     public int affection_exp;//호감도 경험치
     public int affection_lv;//호감도 레벨
-    public int Correction_number;
-    public int Interact_idx;
-    public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
-    public List<int> twt_interact = new List<int>();
-    public List<int> pat_interact = new List<int>();
-    public List<int> date_interact = new List<int>();
-    public Dictionary<string,int> unlockBtnCnt = new Dictionary<string,int>() { { "Twitter", 0 }, { "Pat", 0 }, { "Date", 0 } };
+    public int Correction_number;/// <summary>
+    /// 이미지 경로를 Interact_idx 에서 보정하기 위한 값, 호감도 레벨이 오를때마다 이전 레벨까지 레벨업 필요 경험치의 총합
+    /// </summary>
+    public int Interact_idx;/// <summary>
+    /// 이미지 경로와 텍스트 경로 인덱스
+    /// </summary>
+    public List<int> affection_interact = new List<int>();/// <summary>
+    /// 남아있는 poke, event 상호작용 인덱스 리스트
+    /// </summary>
+    public List<int> twt_interact = new List<int>();/// <summary>
+    /// 남아있는 Twitter 상호작용 인덱스 리스트
+    /// </summary>
+    public List<int> pat_interact = new List<int>();/// <summary>
+    /// 남아있는 pat 상호작용 인덱스 리스트
+    /// </summary>
+    public List<int> date_interact = new List<int>();/// <summary>
+    /// 남아있는 date 상호작용 인덱스 리스트
+    /// </summary>
+    public Dictionary<string,int> unlockBtnCnt = new Dictionary<string,int>() { { "Twitter", 0 }, { "Pat", 0 }, { "Date", 0 } };/// <summary>
+    /// 버튼 액션 활성화 비교
+    /// </summary>
     #endregion
 
 
