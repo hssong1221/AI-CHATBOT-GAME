@@ -58,7 +58,7 @@ public class AffectionDate : MonoBehaviour, ICategory
     void Start()
     {
         StartCoroutine(DataManager.Instance.WaitDataLoading(SheetLoadAction));
-
+        
         Interact_idx = 0;
         gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
     }
@@ -242,6 +242,11 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Interact_Init()
     {
+        if (gameManager.date_interact.Count > 0)
+        {
+            return;
+        }
+
         int _cnt = 0;
 
         while (_cnt < Affection_sheet(3, "Date"))

@@ -445,7 +445,9 @@ MonoBehaviour:
   button: {fileID: 0}
   enableBtn: {fileID: 1529829323}
   disableBtn: {fileID: 1914239955}
-  unlockNumber: 5
+  unlockLevel: 6
+  unlockCount: 5
+  cateType: Pat
 --- !u!1 &65254577
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,7 +502,9 @@ MonoBehaviour:
   button: {fileID: 0}
   enableBtn: {fileID: 888216870}
   disableBtn: {fileID: 2036060020}
-  unlockNumber: 2
+  unlockLevel: 4
+  unlockCount: 10
+  cateType: Date
 --- !u!1 &130243708
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,7 +2031,9 @@ MonoBehaviour:
   button: {fileID: 0}
   enableBtn: {fileID: 1450950120}
   disableBtn: {fileID: 530555863}
-  unlockNumber: 10
+  unlockLevel: 0
+  unlockCount: 0
+  cateType: 
 --- !u!1 &888216870
 GameObject:
   m_ObjectHideFlags: 0
@@ -4100,7 +4106,9 @@ MonoBehaviour:
   button: {fileID: 0}
   enableBtn: {fileID: 1379723184}
   disableBtn: {fileID: 1157408517}
-  unlockNumber: 2
+  unlockLevel: 6
+  unlockCount: 5
+  cateType: Pat
 --- !u!1 &1529829323
 GameObject:
   m_ObjectHideFlags: 0
@@ -5507,7 +5515,9 @@ MonoBehaviour:
   button: {fileID: 0}
   enableBtn: {fileID: 308962710}
   disableBtn: {fileID: 30236780}
-  unlockNumber: 2
+  unlockLevel: 2
+  unlockCount: 5
+  cateType: Twitter
 --- !u!1 &2035141786
 GameObject:
   m_ObjectHideFlags: 0

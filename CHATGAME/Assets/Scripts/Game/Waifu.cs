@@ -82,6 +82,7 @@ public class Waifu : MonoBehaviour, ICategory
         }
 
         SheetLoadAction += SetSheetData;
+        //Interact_Init();
     }
 
     void Start()
@@ -95,7 +96,6 @@ public class Waifu : MonoBehaviour, ICategory
 
         while ( _cnt < 6)
         {
-            //affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"] + Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"]);
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
@@ -216,6 +216,11 @@ public class Waifu : MonoBehaviour, ICategory
 
     public void Interact_Init()
     {
+        if(gameManager.affection_interact.Count > 0)
+        {
+            return;
+        }
+
         int _cnt = 0;
 
         while (_cnt < Affection_sheet(0, "Poke"))

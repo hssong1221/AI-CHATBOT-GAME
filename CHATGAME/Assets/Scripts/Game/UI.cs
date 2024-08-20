@@ -267,6 +267,10 @@ public class UI : MonoBehaviour
 
             SettingAction?.Invoke();
 
+            GameManager.Instance.unlockBtnCnt["Twitter"]++;
+            GameManager.Instance.unlockBtnCnt["Pat"]++;
+            GameManager.Instance.unlockBtnCnt["Date"]++;
+
             ButtonAction.CheckUnlockAction?.Invoke();
             DateLimitNum = 0;
 
@@ -293,6 +297,8 @@ public class UI : MonoBehaviour
 
             SettingAction?.Invoke();
 
+            GameManager.Instance.unlockBtnCnt["Twitter"]=0;
+
             ButtonAction.CheckUnlockAction?.Invoke();
             GameManager.Instance.SaveData();
         }
@@ -317,6 +323,8 @@ public class UI : MonoBehaviour
             waifu.Interaction_Path();
 
             SettingAction?.Invoke();
+
+            GameManager.Instance.unlockBtnCnt["Pat"]=0;
 
             ButtonAction.CheckUnlockAction?.Invoke();
             GameManager.Instance.SaveData();
@@ -355,6 +363,8 @@ public class UI : MonoBehaviour
             waifu.Interaction_Path();
 
             //SettingAction?.Invoke();
+
+            GameManager.Instance.unlockBtnCnt["Date"]=0;
 
             ButtonAction.CheckUnlockAction?.Invoke();
             GameManager.Instance.SaveData();

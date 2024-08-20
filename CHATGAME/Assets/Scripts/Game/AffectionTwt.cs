@@ -60,7 +60,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
     void Start()
     {
         StartCoroutine(DataManager.Instance.WaitDataLoading(SheetLoadAction));
-
+        
         Interact_idx = 0;
         gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
         
@@ -225,7 +225,9 @@ public class AffectionTwt : MonoBehaviour, ICategory
     public void Interact_Init()
     {
         if (gameManager.twt_interact.Count > 0)
+        {
             return;
+        }
 
         int _cnt = 0;
 
