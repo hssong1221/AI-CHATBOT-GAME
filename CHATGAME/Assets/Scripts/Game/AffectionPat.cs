@@ -120,7 +120,8 @@ public class AffectionPat : MonoBehaviour,ICategory
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
+            //poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
             gameManager.affection_exp = -1;
         }

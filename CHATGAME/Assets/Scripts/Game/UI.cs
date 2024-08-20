@@ -192,7 +192,7 @@ public class UI : MonoBehaviour
     public void SetText()
     {
         // waifu aff_poke_event_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
-        var Idx = waifu.Interact_idx;
+        var Idx = waifu.Interact_txt_path();
 
         var data = waifu.GetDataList(categoryState.ToString())[Idx];
         if (data == null)

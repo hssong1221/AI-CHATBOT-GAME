@@ -174,7 +174,8 @@ public class Waifu : MonoBehaviour, ICategory
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            _correction_number += affection_barrel[gameManager.affection_lv];
+            //_correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
             gameManager.affection_exp = 0;
             gameManager.affection_interact.Clear();
@@ -190,7 +191,7 @@ public class Waifu : MonoBehaviour, ICategory
     public void Interaction_Path()//Poke 상호작용 경로 번호 찾기
     {
         //int _I_P_N = _correction_number;
-        int _I_P_N = Correction_number;
+        int _I_P_N = gameManager.Correction_number;
         int _restore_rand = 0;
         category_restore = "Poke";
 
@@ -274,7 +275,8 @@ public class Waifu : MonoBehaviour, ICategory
     {
         if (category_restore == "Poke" || category_restore == "Event")
         {
-            _interact_idx = _aff_poke_event_idx;
+            //_interact_idx = _aff_poke_event_idx;
+            gameManager.Interact_idx = _aff_poke_event_idx;
         }
     }
 
@@ -346,11 +348,11 @@ public class Waifu : MonoBehaviour, ICategory
 
     public int Interact_img_path()
     {
-        return Interact_idx - Correction_number;
+        return gameManager.Interact_idx - gameManager.Correction_number;
     }
 
     public int Interact_txt_path()
     {
-        return Interact_idx;
+        return gameManager.Interact_idx;
     }
 }

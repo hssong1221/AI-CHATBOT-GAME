@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
 
     public int affection_exp;//호감도 경험치
     public int affection_lv;//호감도 레벨
+    public int Correction_number;
+    public int Interact_idx;
     public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
     public List<int> twt_interact = new List<int>();
     public List<int> pat_interact = new List<int>();
@@ -110,6 +112,8 @@ public class GameManager : MonoBehaviour
     {
         public int affection_exp = 0;//호감도 경험치
         public int affection_lv = 0;//호감도 레벨
+        public int Correction_number = 0;
+        public int Interact_idx = 0;
         public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
         public List<int> twt_interact = new List<int>();
         public List<int> pat_interact = new List<int>();
@@ -124,6 +128,8 @@ public class GameManager : MonoBehaviour
         {
             affection_exp = this.affection_exp,
             affection_lv = this.affection_lv,
+            Correction_number = this.Correction_number,
+            Interact_idx = this.Interact_idx,
             affection_interact = this.affection_interact,
             twt_interact = this.twt_interact,
             pat_interact = this.pat_interact,
@@ -137,6 +143,8 @@ public class GameManager : MonoBehaviour
     {
         this.affection_exp = data.affection_exp;
         this.affection_lv = data.affection_lv;
+        this.Correction_number = data.Correction_number;
+        this.Interact_idx = data.Interact_idx;
         this.affection_interact = data.affection_interact;
         this.twt_interact = data.twt_interact;
         this.pat_interact = data.pat_interact;
