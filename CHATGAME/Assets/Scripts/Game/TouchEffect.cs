@@ -5,17 +5,38 @@ using UnityEngine;
 public class TouchEffect : MonoBehaviour
 {
     public Canvas canvas;
+    public RectTransform rt;
     public GameObject effect;
 
+    public float limitTime = 0.05f;
+    float TouchTime = 0f;
+
+    public List<GameObject> touchObjectPool = new List<GameObject>();
     void Update()
     {
-#if UNITY_EDITOR
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButton(0) && TouchTime >= limitTime)
         {
-            Vector3 pos = Input.mousePosition;
-            Instantiate(effect, pos, Quaternion.identity, canvas.transform);
+            TouchTime = 0f;
+            // 클릭 위치
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, Camera.main, out var localPoint);
+
+            for(int i = 0; i < touchObjectPool.Count; i++)
+            {
+                // 만들어져 있는 것중에 사용 다하고 꺼져있는거 다시 사용하기
+                if (!touchObjectPool[i].activeSelf)
+                {
+                    touchObjectPool[i].SetActive(true);
+                    touchObjectPool[i].transform.localPosition = localPoint;
+                    return;
+                }
+            }
+            // 처음이거나 사용가능한게 없을때 새로 만들어서 넣어줌
+            var gameobject = Instantiate(effect, canvas.transform);
+            gameobject.transform.localPosition = localPoint;
+            touchObjectPool.Add(gameobject);
         }
-#endif
+        TouchTime += Time.deltaTime;
+
 #if UNITY_ANDROID
         /*
         if (Input.touchCount > 0)

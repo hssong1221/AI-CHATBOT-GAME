@@ -224,6 +224,9 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public void Interact_Init()
     {
+        if (gameManager.twt_interact.Count > 0)
+            return;
+
         int _cnt = 0;
 
         while(_cnt < Affection_sheet(2,"Twt"))
