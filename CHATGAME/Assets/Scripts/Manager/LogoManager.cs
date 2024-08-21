@@ -9,6 +9,7 @@ public class LogoManager : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         GameManager.Instance.LoadData();
+        PreCalculateAffectionModule();
         SceneManager.LoadScene("Game");
     }
 
@@ -25,5 +26,14 @@ public class LogoManager : MonoBehaviour
     public void OnClickExitBtn()
     {
         Application.Quit();
+    }
+
+    // _interact 미리 계산 다시
+    public void PreCalculateAffectionModule()
+    {
+        Waifu.Instance.Interact_Init();
+        AffectionTwt.Instance.Interact_Init();
+        AffectionPat.Instance.Interact_Init();
+        AffectionDate.Instance.Interact_Init();
     }
 }

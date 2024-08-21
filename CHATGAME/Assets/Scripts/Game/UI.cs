@@ -24,6 +24,8 @@ public class UI : MonoBehaviour
         }
     }
 
+    public Animator animator;
+
     [Header("텍스트 박스 UI")]
     public Image mainImg;
     public TextMeshProUGUI nameText;
@@ -110,6 +112,11 @@ public class UI : MonoBehaviour
         StartCoroutine(Init());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            animator.SetTrigger("isFade");
+    }
     IEnumerator Init()
     {
         yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
@@ -224,11 +231,9 @@ public class UI : MonoBehaviour
         textState = TextUIState.End;
     }
 
-    
-
     #endregion
 
-     #region 버튼들
+    #region 버튼들
 
     public void OnClickPokeBtn()
     {
@@ -328,7 +333,6 @@ public class UI : MonoBehaviour
             GameManager.Instance.SaveData();
         }        
     }
-
     public void OnClickDateBtn()
     {
         waifu = SingletonManager.Instance.GetSingleton<AffectionDate>();
@@ -339,37 +343,46 @@ public class UI : MonoBehaviour
         }
         else
         {
-            string temp = waifu.Check_Category();
-            if (temp.Equals("Date"))
-                SetCategoryState(CategoryState.Date);
-
-            waifu.Interaction_Path();
-
-            SettingAction?.Invoke();
-
-            var dateIdx = AffectionDate.Instance.Check_Current_Date();
-            var data = AffectionDate.Instance.Date_number;
-            Debug.Log($"before : {DateLimitNum}  {data[dateIdx.ToString()]}");
-            DateLimitNum += 1;
-
-            if (DateLimitNum == data[dateIdx.ToString()])
-            {
-                SetCategoryState(CategoryState.Poke);
-                DateLimitNum = 0;
-                waifu.Sequence_Init();
-                Debug.Log($"Date{dateIdx} 끝");
-            }
-
-            waifu.Affection_ascend();
-            //waifu.Interaction_Path();
-
-            //SettingAction?.Invoke();
-
-            GameManager.Instance.unlockBtnCnt["Date"]=0;
-
-            ButtonAction.CheckUnlockAction?.Invoke();
-            GameManager.Instance.SaveData();
+            if (GameManager.Instance.isDate)
+                DataBtnAction();
+            else
+                animator.SetTrigger("isFade"); // animation event function으로 DataBtnAction과 연결되어있음
         }
+    }
+
+    public void DataBtnAction()
+    {
+        string temp = waifu.Check_Category();
+        if (temp.Equals("Date"))
+            SetCategoryState(CategoryState.Date);
+
+        waifu.Interaction_Path();
+
+        SettingAction?.Invoke();
+
+        var dateIdx = AffectionDate.Instance.Check_Current_Date();
+        var data = AffectionDate.Instance.Date_number;
+        Debug.Log($"before : {DateLimitNum}  {data[dateIdx.ToString()]}");
+        DateLimitNum += 1;
+
+        if (DateLimitNum == data[dateIdx.ToString()])
+        {
+            SetCategoryState(CategoryState.Poke);
+            DateLimitNum = 0;
+            waifu.Sequence_Init();
+            Debug.Log($"Date{dateIdx} 끝");
+            animator.SetTrigger("isEnd");
+        }
+
+        waifu.Affection_ascend();
+        //waifu.Interaction_Path();
+
+        //SettingAction?.Invoke();
+
+        GameManager.Instance.unlockBtnCnt["Date"] = 0;
+
+        ButtonAction.CheckUnlockAction?.Invoke();
+        GameManager.Instance.SaveData();
     }
 
     // temp version
@@ -387,6 +400,7 @@ public class UI : MonoBehaviour
     {
         GameManager.Instance.SaveData();
     }
+
     #endregion
 
     public void SetCategoryState(CategoryState state)
@@ -399,4 +413,6 @@ public class UI : MonoBehaviour
     {
         categoryState = (CategoryState)Enum.ToObject(typeof(CategoryState), state);
     }
+
+    
 }
