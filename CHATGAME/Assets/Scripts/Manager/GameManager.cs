@@ -157,7 +157,10 @@ public class GameManager : MonoBehaviour
     public void LoadData()
     {
         if (!PlayerPrefs.HasKey("PlayerData"))
-            return;
+        {
+            PlayerData data = new PlayerData();
+            SetPlayerData(data);
+        }
         else
         {
             string json = PlayerPrefs.GetString("PlayerData", "{}");

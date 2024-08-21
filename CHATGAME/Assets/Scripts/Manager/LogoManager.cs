@@ -5,12 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class LogoManager : MonoBehaviour
 {
-
-    void Update()
+    public void OnClickNewBtn()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SceneManager.LoadScene("Game");
-        }
+        PlayerPrefs.DeleteAll();
+        GameManager.Instance.LoadData();
+        SceneManager.LoadScene("Game");
+    }
+
+    public void OnClickLoadBtn()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void OnClickGalleryBtn()
+    {
+        Debug.Log("구현 안했음");
+    }
+
+    public void OnClickExitBtn()
+    {
+        Application.Quit();
     }
 }
