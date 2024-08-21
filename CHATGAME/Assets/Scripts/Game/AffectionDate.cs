@@ -5,6 +5,7 @@ using System;
 
 public class AffectionDate : MonoBehaviour, ICategory
 {
+    #region Values
     private static AffectionDate _instance;
 
     public static AffectionDate Instance
@@ -15,6 +16,7 @@ public class AffectionDate : MonoBehaviour, ICategory
         }
     }
 
+    private int _date_temp = 0;
     private int _interact_idx = 0;
     public int Interact_idx
     {
@@ -38,6 +40,7 @@ public class AffectionDate : MonoBehaviour, ICategory
     ICategory poke_event_correct;
 
     public Action SheetLoadAction { get; set; }
+    #endregion
 
     void Awake()
     {
@@ -117,7 +120,7 @@ public class AffectionDate : MonoBehaviour, ICategory
         }
     }
 
-    public void Increase_Init()
+    public void Increase_Init()//Date 상호작용마다 호감도 상승치를 결정
     {
         var situation_temp="";
         var iter = dateData.GetEnumerator();
@@ -148,7 +151,7 @@ public class AffectionDate : MonoBehaviour, ICategory
     public void Affection_ascend()
     {
         gameManager.affection_exp += date_affection_increase[_interact_idx];
-
+        //gameManager.date_sequence++;
         Affection_level_calculate();
     }
 
@@ -158,7 +161,7 @@ public class AffectionDate : MonoBehaviour, ICategory
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
             gameManager.affection_exp = -1;
         }
@@ -166,9 +169,8 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public float Affection_Percentage()
     {
-        //string _cate_str = Check_Category();
         float aff_percent = 0f;
-        //if (_cate_str == "Event")
+        
         if(gameManager.affection_lv % 2 == 1)
         {
             aff_percent = 1.0f;
@@ -176,7 +178,6 @@ public class AffectionDate : MonoBehaviour, ICategory
         else
         {
             aff_percent = (float)gameManager.affection_exp < (float)affection_barrel[gameManager.affection_lv] ? (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv] : 1f;
-            //aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;
@@ -235,9 +236,18 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Interaction_Path()
     {
-        int _restore_rand = gameManager.date_interact[0];
-        gameManager.date_interact.Remove(_restore_rand);
-        _interact_idx = gameManager.date_interact[0];
+        //int _restore_rand = gameManager.date_interact[0];
+        //_interact_idx = gameManager.date_interact[0];
+
+        if(!gameManager.isDate)//데이트 첫 진입
+        {
+            _date_temp = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];
+            gameManager.date_interact.Remove(_date_temp);
+            gameManager.isDate = true;
+        }
+        _interact_idx = _date_temp + gameManager.date_sequence;
+        Debug.Log("random date idx : " + _interact_idx);
+        gameManager.date_sequence++;
     }
 
     public void Interact_Init()
@@ -248,10 +258,25 @@ public class AffectionDate : MonoBehaviour, ICategory
         }
 
         int _cnt = 0;
-
+        /*
         while (_cnt < Affection_sheet(3, "Date"))
         {
             gameManager.date_interact.Add(_cnt);
+            _cnt++;
+        }
+        */
+        var situation_temp = "";
+        var iter = dateData.GetEnumerator();
+
+        while (iter.MoveNext())
+        {
+            var cur = iter.Current;
+
+            if (!cur["situation"].Equals(situation_temp.ToString()))
+            {
+                situation_temp = cur["situation"];
+                gameManager.date_interact.Add(_cnt);
+            }
             _cnt++;
         }
     }
@@ -296,5 +321,11 @@ public class AffectionDate : MonoBehaviour, ICategory
         {
             return -1;
         }
+    }
+
+    public void Sequence_Init()
+    {
+        gameManager.date_sequence = 0;
+        gameManager.isDate = false;
     }
 }

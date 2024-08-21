@@ -7,6 +7,7 @@ using TMPro;
 
 public class UI : MonoBehaviour
 {
+    #region Values
     private static UI _instance;
     public static UI Instance
     {
@@ -40,14 +41,11 @@ public class UI : MonoBehaviour
     public Image heart3;
 
     DataManager dataManager;
-    //Waifu waifu;
     ICategory waifu;
-
 
     int DateLimitNum;
 
     SheetData diaSheet;
-    //SheetData ImgSheet;
 
     public enum CategoryState
     {
@@ -71,7 +69,7 @@ public class UI : MonoBehaviour
     public TextUIState textState;
 
     private Action SettingAction;
-
+    #endregion
     void Awake()
     {
         if (_instance == null)
@@ -192,7 +190,7 @@ public class UI : MonoBehaviour
     public void SetText()
     {
         // waifu aff_poke_event_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
-        var Idx = waifu.Interact_idx;
+        var Idx = waifu.Interact_txt_path();
 
         var data = waifu.GetDataList(categoryState.ToString())[Idx];
         if (data == null)
@@ -345,6 +343,8 @@ public class UI : MonoBehaviour
             if (temp.Equals("Date"))
                 SetCategoryState(CategoryState.Date);
 
+            waifu.Interaction_Path();
+
             SettingAction?.Invoke();
 
             var dateIdx = AffectionDate.Instance.Check_Current_Date();
@@ -356,11 +356,12 @@ public class UI : MonoBehaviour
             {
                 SetCategoryState(CategoryState.Poke);
                 DateLimitNum = 0;
+                waifu.Sequence_Init();
                 Debug.Log($"Date{dateIdx} 끝");
             }
 
             waifu.Affection_ascend();
-            waifu.Interaction_Path();
+            //waifu.Interaction_Path();
 
             //SettingAction?.Invoke();
 

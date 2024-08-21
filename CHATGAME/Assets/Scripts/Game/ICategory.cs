@@ -22,14 +22,18 @@ public interface ICategory
     #endregion
 
     public void Affection_ascend();
-    public string Check_Category();
-
-    public string Affection_compare();
-    public void Interaction_Path();
 
     public float Affection_Percentage();
+
+    public string Affection_compare();
+
+    public string Check_Category();
+        
+    public void Interaction_Path();
 
     public int Interact_img_path();
 
     public int Interact_txt_path();
+
+    public void Sequence_Init();
 }
