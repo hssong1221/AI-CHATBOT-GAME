@@ -314,4 +314,9 @@ public class Waifu : MonoBehaviour, ICategory
     {
         return gameManager.Interact_idx;
     }
+
+    public void Sequence_Init()
+    {
+        return;
+    }
 }

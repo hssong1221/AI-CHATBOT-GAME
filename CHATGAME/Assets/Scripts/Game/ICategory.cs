@@ -34,4 +34,6 @@ public interface ICategory
     public int Interact_img_path();
 
     public int Interact_txt_path();
+
+    public void Sequence_Init();
 }

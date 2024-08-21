@@ -227,4 +227,9 @@ public class AffectionPat : MonoBehaviour,ICategory
     {
         return Interact_idx;
     }
+
+    public void Sequence_Init()
+    {
+        return;
+    }
 }

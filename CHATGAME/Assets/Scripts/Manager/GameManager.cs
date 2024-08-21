@@ -42,7 +42,13 @@ public class GameManager : MonoBehaviour
     /// 이미지 경로를 Interact_idx 에서 보정하기 위한 값, 호감도 레벨이 오를때마다 이전 레벨까지 레벨업 필요 경험치의 총합
     /// </summary>
     public int Interact_idx;/// <summary>
-    /// 이미지 경로와 텍스트 경로 인덱스
+                            /// 이미지 경로와 텍스트 경로 인덱스
+                            /// </summary>
+    public bool isDate;/// <summary>
+    /// date 상태 저장
+    /// </summary>
+    public int date_sequence;/// <summary>
+    /// random date situation 의 진행도
     /// </summary>
     public List<int> affection_interact = new List<int>();/// <summary>
     /// 남아있는 poke, event 상호작용 인덱스 리스트
@@ -128,6 +134,8 @@ public class GameManager : MonoBehaviour
         public int affection_lv = 0;//호감도 레벨
         public int Correction_number = 0;
         public int Interact_idx = 0;
+        public bool isDate = false;
+        public int date_sequence = 0;
         public List<int> affection_interact = new List<int>();//상호작용 인덱스 저장
         public List<int> twt_interact = new List<int>();
         public List<int> pat_interact = new List<int>();
@@ -144,6 +152,8 @@ public class GameManager : MonoBehaviour
             affection_lv = this.affection_lv,
             Correction_number = this.Correction_number,
             Interact_idx = this.Interact_idx,
+            isDate = this.isDate,
+            date_sequence = this.date_sequence,
             affection_interact = this.affection_interact,
             twt_interact = this.twt_interact,
             pat_interact = this.pat_interact,
@@ -159,6 +169,8 @@ public class GameManager : MonoBehaviour
         this.affection_lv = data.affection_lv;
         this.Correction_number = data.Correction_number;
         this.Interact_idx = data.Interact_idx;
+        this.isDate = data.isDate;
+        this.date_sequence = data.date_sequence;
         this.affection_interact = data.affection_interact;
         this.twt_interact = data.twt_interact;
         this.pat_interact = data.pat_interact;

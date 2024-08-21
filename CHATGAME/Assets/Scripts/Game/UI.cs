@@ -343,6 +343,8 @@ public class UI : MonoBehaviour
             if (temp.Equals("Date"))
                 SetCategoryState(CategoryState.Date);
 
+            waifu.Interaction_Path();
+
             SettingAction?.Invoke();
 
             var dateIdx = AffectionDate.Instance.Check_Current_Date();
@@ -354,11 +356,12 @@ public class UI : MonoBehaviour
             {
                 SetCategoryState(CategoryState.Poke);
                 DateLimitNum = 0;
+                waifu.Sequence_Init();
                 Debug.Log($"Date{dateIdx} ³¡");
             }
 
             waifu.Affection_ascend();
-            waifu.Interaction_Path();
+            //waifu.Interaction_Path();
 
             //SettingAction?.Invoke();
 

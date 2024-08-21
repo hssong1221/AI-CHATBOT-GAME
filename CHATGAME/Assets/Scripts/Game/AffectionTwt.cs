@@ -248,4 +248,9 @@ public class AffectionTwt : MonoBehaviour, ICategory
     {
         return Interact_idx;
     }
+
+    public void Sequence_Init()
+    {
+        return;
+    }
 }
