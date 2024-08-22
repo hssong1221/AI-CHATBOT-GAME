@@ -79,6 +79,7 @@ public class AffectionDate : MonoBehaviour, ICategory
     {
         var iter = affSheet.Data.GetEnumerator();
         var date_itr = dateSheet.Data.GetEnumerator();
+        int _cnt = 0;
         while (iter.MoveNext())
         {
             var cur = iter.Current;
@@ -100,7 +101,9 @@ public class AffectionDate : MonoBehaviour, ICategory
             if (Date_number.ContainsKey(val["situation"]))
                 Date_number[val["situation"]]++;
             else
-                Date_number[val["situation"]] = 1;
+                //Date_number[val["situation"]] = 1;
+                Date_number[val["situation"]] = _cnt;
+            _cnt++;
         }
         Interact_Init();
         Barrel_Init();

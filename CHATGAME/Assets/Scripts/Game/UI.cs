@@ -402,10 +402,12 @@ public class UI : MonoBehaviour
 
         var dateIdx = AffectionDate.Instance.Check_Current_Date();
         var data = AffectionDate.Instance.Date_number;
-        Debug.Log($"before : {DateLimitNum}  {data[dateIdx.ToString()]}");
+        //Debug.Log($"before : {DateLimitNum}  {data[dateIdx.ToString()]}");
+        Debug.Log($"before : {GameManager.Instance.date_sequence}  {data[dateIdx.ToString()]}");
         DateLimitNum += 1;
 
-        if (DateLimitNum == data[dateIdx.ToString()])
+        //if (DateLimitNum == data[dateIdx.ToString()])
+        if (GameManager.Instance.date_sequence >= data[dateIdx.ToString()])
         {
             SetCategoryState(CategoryState.Poke);
             DateLimitNum = 0;
