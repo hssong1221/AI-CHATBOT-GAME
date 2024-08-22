@@ -61,6 +61,7 @@ public class UI : MonoBehaviour
     }
     [Header("현재 카테고리 상태")]
     public CategoryState categoryState;
+    CategoryState lastState;
     
     public enum TextUIState
     {
@@ -274,8 +275,31 @@ public class UI : MonoBehaviour
             StopTypingEffect();
         else
         {
+            waifu.Affection_ascend();
+            waifu.Interaction_Path();
+
+            string temp = waifu.Check_Category();
+            if (temp.Equals("Poke"))
+                SetCategoryState(CategoryState.Poke);
+            else if (temp.Equals("Event"))
+                SetCategoryState(CategoryState.Event);
+
+            bool stateChange = false;
+            if ((categoryState == CategoryState.Poke && lastState == CategoryState.Event) ||
+                (categoryState == CategoryState.Event && lastState == CategoryState.Poke))
+                stateChange = true;
+
+            lastState = categoryState;
+
+            if(stateChange)
+            {
+                animator.SetTrigger("isFadeInOut");
+                return;
+            }
+
+            // Date가 끝나는 상태일 때 
             if (isDateOut)
-                animator.SetTrigger("isDateOut");
+                animator.SetTrigger("isDateOut"); // animation event function으로 PokeBtnEvent와 연결되어있음
             else
                 PokeBtnEvent();
         }
@@ -283,16 +307,6 @@ public class UI : MonoBehaviour
 
     public void PokeBtnEvent()
     {
-        waifu.Affection_ascend();
-        waifu.Interaction_Path();
-
-        string temp = waifu.Check_Category();
-
-        if (temp.Equals("Poke"))
-            SetCategoryState(CategoryState.Poke);
-        else if (temp.Equals("Event"))
-            SetCategoryState(CategoryState.Event);
-
         SettingAction?.Invoke();
 
         GameManager.Instance.unlockBtnCnt["Twitter"]++;
@@ -371,7 +385,7 @@ public class UI : MonoBehaviour
             if (GameManager.Instance.isDate)
                 DataBtnEvent();
             else
-                animator.SetTrigger("isDateIn"); // animation event function으로 DataBtnAction과 연결되어있음
+                animator.SetTrigger("isDateIn"); // animation event function으로 DataBtnEvent와 연결되어있음
         }
     }
 
