@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     /// 남아있는 pat 상호작용 인덱스 리스트
     /// </summary>
     public List<int> date_interact = new List<int>();/// <summary>
-    /// 남아있는 date 상호작용 인덱스 리스트
+    /// 남아있는 date 상호작용 situation 시작 인덱스 리스트
     /// </summary>
     public Dictionary<string,int> unlockBtnCnt = new Dictionary<string,int>() { { "Twitter", 0 }, { "Pat", 0 }, { "Date", 0 } };/// <summary>
     /// 버튼 액션 활성화 비교

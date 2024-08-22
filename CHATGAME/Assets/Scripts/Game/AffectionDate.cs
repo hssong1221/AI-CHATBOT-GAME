@@ -16,7 +16,6 @@ public class AffectionDate : MonoBehaviour, ICategory
         }
     }
 
-    private int _date_temp = 0;
     private int _interact_idx = 0;
     public int Interact_idx
     {
@@ -150,8 +149,8 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Affection_ascend()
     {
-        gameManager.affection_exp += date_affection_increase[_interact_idx];
-        //gameManager.date_sequence++;
+        //gameManager.affection_exp += date_affection_increase[_interact_idx];
+        gameManager.affection_exp += date_affection_increase[gameManager.date_sequence];
         Affection_level_calculate();
     }
 
@@ -222,7 +221,8 @@ public class AffectionDate : MonoBehaviour, ICategory
             return "Error";
         }
 
-        var data = dateData[_interact_idx];
+        //var data = dateData[_interact_idx];
+        var data = dateData[gameManager.date_sequence];
 
         if (data.TryGetValue("category", out var cate))
         {
@@ -236,18 +236,18 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Interaction_Path()
     {
-        //int _restore_rand = gameManager.date_interact[0];
-        //_interact_idx = gameManager.date_interact[0];
-
         if(!gameManager.isDate)//데이트 첫 진입
         {
-            _date_temp = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];
-            gameManager.date_interact.Remove(_date_temp);
+            //_date_temp = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];
+            //gameManager.date_interact.Remove(_date_temp);
+            gameManager.date_sequence = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];
+            gameManager.date_interact.Remove(gameManager.date_sequence);
             gameManager.isDate = true;
         }
-        _interact_idx = _date_temp + gameManager.date_sequence;
-        Debug.Log("random date idx : " + _interact_idx);
-        gameManager.date_sequence++;
+        //_interact_idx = _date_temp + gameManager.date_sequence;        
+        //_interact_idx = gameManager.date_sequence;
+        Debug.Log("random date idx : " + gameManager.date_sequence);
+        //gameManager.date_sequence++;
     }
 
     public void Interact_Init()
@@ -283,12 +283,12 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public int Interact_img_path()
     {
-        return Interact_idx;
+        return -1;
     }
 
     public int Interact_txt_path()
     {
-        return Interact_idx;
+        return gameManager.date_sequence;
     }
 
     public string Interact_date_path()
@@ -298,7 +298,8 @@ public class AffectionDate : MonoBehaviour, ICategory
             return "Error";
         }
 
-        var data = dateData[_interact_idx];
+        //var data = dateData[_interact_idx];
+        var data = dateData[gameManager.date_sequence];
 
         if (data.TryGetValue("image_id", out var cate))
         {
@@ -312,7 +313,8 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public int Check_Current_Date()
     {
-        var data = dateData[_interact_idx];
+        //var data = dateData[_interact_idx];
+        var data = dateData[gameManager.date_sequence];
         if (data.TryGetValue("situation", out var num))
         {
             return int.Parse(num);
