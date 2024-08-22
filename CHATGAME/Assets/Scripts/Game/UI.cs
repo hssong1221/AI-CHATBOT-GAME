@@ -46,6 +46,7 @@ public class UI : MonoBehaviour
     ICategory waifu;
 
     int DateLimitNum;
+    bool isDateOut;
 
     SheetData diaSheet;
 
@@ -104,6 +105,7 @@ public class UI : MonoBehaviour
         //DataSheetSetting(0, "Poke");
 
         DateLimitNum = 0;
+        isDateOut = false;
 
         SettingAction += SetMainImg;
         SettingAction += SetGauge;
@@ -248,39 +250,39 @@ public class UI : MonoBehaviour
         if (textState == TextUIState.Typing)
             StopTypingEffect();
         else
-        {/*
-            string temp = waifu.Check_Category();
-
-            if (temp.Equals("Poke"))
-                SetCategoryState(CategoryState.Poke);
-            else if (temp.Equals("Event"))
-                SetCategoryState(CategoryState.Event);
-            */
-            //SettingAction?.Invoke();
-
-            waifu.Affection_ascend();
-            waifu.Interaction_Path();
-
-            string temp = waifu.Check_Category();
-
-            if (temp.Equals("Poke"))
-                SetCategoryState(CategoryState.Poke);
-            else if (temp.Equals("Event"))
-                SetCategoryState(CategoryState.Event);
-
-            SettingAction?.Invoke();
-
-            GameManager.Instance.unlockBtnCnt["Twitter"]++;
-            GameManager.Instance.unlockBtnCnt["Pat"]++;
-            GameManager.Instance.unlockBtnCnt["Date"]++;
-
-            ButtonAction.CheckUnlockAction?.Invoke();
-            DateLimitNum = 0;
-
-
-            GameManager.Instance.SaveData();
+        {
+            if (isDateOut)
+                animator.SetTrigger("isDateOut");
+            else
+                PokeBtnEvent();
         }
     }
+
+    public void PokeBtnEvent()
+    {
+        waifu.Affection_ascend();
+        waifu.Interaction_Path();
+
+        string temp = waifu.Check_Category();
+
+        if (temp.Equals("Poke"))
+            SetCategoryState(CategoryState.Poke);
+        else if (temp.Equals("Event"))
+            SetCategoryState(CategoryState.Event);
+
+        SettingAction?.Invoke();
+
+        GameManager.Instance.unlockBtnCnt["Twitter"]++;
+        GameManager.Instance.unlockBtnCnt["Pat"]++;
+        GameManager.Instance.unlockBtnCnt["Date"]++;
+
+        ButtonAction.CheckUnlockAction?.Invoke();
+        DateLimitNum = 0;
+        isDateOut = false;
+
+        GameManager.Instance.SaveData();
+    }
+
     public void OnClickTwtBtn()
     {
         waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
@@ -344,13 +346,13 @@ public class UI : MonoBehaviour
         else
         {
             if (GameManager.Instance.isDate)
-                DataBtnAction();
+                DataBtnEvent();
             else
-                animator.SetTrigger("isFade"); // animation event function으로 DataBtnAction과 연결되어있음
+                animator.SetTrigger("isDateIn"); // animation event function으로 DataBtnAction과 연결되어있음
         }
     }
 
-    public void DataBtnAction()
+    public void DataBtnEvent()
     {
         string temp = waifu.Check_Category();
         if (temp.Equals("Date"))
@@ -371,7 +373,7 @@ public class UI : MonoBehaviour
             DateLimitNum = 0;
             waifu.Sequence_Init();
             Debug.Log($"Date{dateIdx} 끝");
-            animator.SetTrigger("isEnd");
+            isDateOut = true;
         }
 
         waifu.Affection_ascend();

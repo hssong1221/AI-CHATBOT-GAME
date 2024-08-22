@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isEnd
+    m_ConditionEvent: isDateOut
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 273156618624893714}
@@ -34,7 +34,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isFade
+    m_ConditionEvent: isDateIn
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1746853358987285070}
@@ -108,13 +108,13 @@ AnimatorController:
   m_Name: FadeINOUT
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isFade
+  - m_Name: isDateIn
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: isEnd
+  - m_Name: isDateOut
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
