@@ -90,7 +90,16 @@ public class UI : MonoBehaviour
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
         //waifu = SingletonManager.Instance.GetSingleton<Waifu>();
         //waifu = SingletonManager.Instance.GetSingleton<AffectionPokeEvent>();
-        waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+        if(GameManager.Instance.isDate)
+        {
+            SetCategoryState(CategoryState.Date);
+            waifu = SingletonManager.Instance.GetSingleton<AffectionDate>();
+        }
+        else
+        {
+            waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+        }
+        
 
 
         diaSheet = dataManager.GetSheetData("Dialogue");
@@ -119,11 +128,19 @@ public class UI : MonoBehaviour
     }
     IEnumerator Init()
     {
-        yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
+        if(GameManager.Instance.isDate)
+        {
+            yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Date.ToString()).Count > 0);
+        }
+        else
+        {
+            yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
+        }
+        
 
         //SettingAction?.Invoke();
 
-//        waifu.Affection_ascend();
+        //waifu.Affection_ascend();
         //waifu.Interaction_Path();
 
         SettingAction?.Invoke();
@@ -239,6 +256,7 @@ public class UI : MonoBehaviour
     {
         if(categoryState == CategoryState.Date)
         {
+            //GameManager.Instance.date_sequence++;
             OnClickDateBtn();
             return;
         }
@@ -356,6 +374,7 @@ public class UI : MonoBehaviour
         if (temp.Equals("Date"))
             SetCategoryState(CategoryState.Date);
 
+        GameManager.Instance.date_sequence++;
         waifu.Interaction_Path();
 
         SettingAction?.Invoke();
