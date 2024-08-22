@@ -186,7 +186,12 @@ public class UI : MonoBehaviour
         imgFileName = waifu.Interact_img_path();
 
         string imgPath = "";
-        if (category.Equals("Poke") || category.Equals("Event"))
+        
+        if(category.Equals("Event") || GameManager.Instance.affection_lv % 2 == 1)
+        {
+            imgPath = $"image/Event/{affState}/{imgFileName + 1}";
+        }
+        else if (category.Equals("Poke")/* || category.Equals("Event")*/)
             imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
         else if(category.Equals("Date"))
             imgPath = $"image/{category}/{AffectionDate.Instance.Interact_date_path()}";
