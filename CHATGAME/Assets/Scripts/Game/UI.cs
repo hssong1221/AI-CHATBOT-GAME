@@ -115,11 +115,6 @@ public class UI : MonoBehaviour
         StartCoroutine(Init());
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-            animator.SetTrigger("isFade");
-    }
     IEnumerator Init()
     {
         yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
