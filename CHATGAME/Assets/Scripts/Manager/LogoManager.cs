@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LogoManager : MonoBehaviour
 {
@@ -10,12 +11,13 @@ public class LogoManager : MonoBehaviour
         PlayerPrefs.DeleteAll();
         GameManager.Instance.LoadData();
         PreCalculateAffectionModule();
-        SceneManager.LoadScene("Game");
+
+        Invoke("StartGame", 1f);
     }
 
     public void OnClickLoadBtn()
     {
-        SceneManager.LoadScene("Game");
+        Invoke("StartGame", 1f);
     }
 
     public void OnClickGalleryBtn()
@@ -26,6 +28,11 @@ public class LogoManager : MonoBehaviour
     public void OnClickExitBtn()
     {
         Application.Quit();
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("Game");
     }
 
     // _interact 미리 계산 다시

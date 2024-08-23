@@ -5814,8 +5814,10 @@ MonoBehaviour:
   canvas: {fileID: 2035141789}
   rt: {fileID: 2035141790}
   effect: {fileID: 5625072730211675236, guid: d8fb1f6540cfeb94bac86fdf9287f5a4, type: 3}
-  limitTime: 0.03
+  effect2: {fileID: 5625072730211675236, guid: 7bdb96de3612e144faf2d9c5fc0f8429, type: 3}
+  limitTime: 0.1
   touchObjectPool: []
+  touchObjectPool2: []
 --- !u!95 &2035141793
 Animator:
   serializedVersion: 5
