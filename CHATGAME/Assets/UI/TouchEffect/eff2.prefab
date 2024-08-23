@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -7751922126744693860}
   - component: {fileID: -5253668810922919569}
   m_Layer: 5
-  m_Name: eff
+  m_Name: eff2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4848,7 +4848,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f90cccc318c2fd94aa42b286d3c714d7, type: 2}
+  - {fileID: 2100000, guid: 1d101b1cf515fc2498f1b8a40f342cc8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
