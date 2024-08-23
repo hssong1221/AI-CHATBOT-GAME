@@ -132,7 +132,11 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public void Affection_ascend()
     {
-        gameManager.affection_exp += affection_increase["Twitter"];
+        if(gameManager.affection_lv > 4)
+        {
+            gameManager.affection_exp += affection_increase["Twitter"];
+        }
+        
 
         Affection_level_calculate();
     }

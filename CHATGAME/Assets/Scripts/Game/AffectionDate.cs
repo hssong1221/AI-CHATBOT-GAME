@@ -25,11 +25,15 @@ public class AffectionDate : MonoBehaviour, ICategory
     public int Correction_number { get; set; }
     public List<int> affection_barrel = new List<int>();
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
-    public List<int> date_affection_increase = new List<int>();
+    public List<int> date_affection_increase = new List<int>();/// <summary>
+    /// 각각 date situation 의 호감도 상승치
+    /// </summary>
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
     List<Dictionary<string, string>> dateData = new List<Dictionary<string, string>>();
 
-    public Dictionary<string,int> Date_number = new Dictionary<string, int>();
+    public Dictionary<string,int> Date_number = new Dictionary<string, int>();/// <summary>
+    /// 각 date situation 이 종료되는 시점의 엑셀 인덱스
+    /// </summary>
 
     GameManager gameManager;
     DataManager dataManager;
