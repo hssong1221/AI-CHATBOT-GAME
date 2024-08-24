@@ -7,27 +7,29 @@ using TMPro;
 
 public class ButtonAction : MonoBehaviour
 {
+    #region Values
     public Button button;
     public GameObject enableBtn;
     public GameObject disableBtn;
-    //------임시 선언------//
-
-
-    public int unlockLevel;
-    public int unlockCount;
-    public string cateType;
+    public int unlockLevel;/// <summary>
+    /// 버튼 활성화 기준 레벨
+    /// </summary>
+    public int unlockCount;/// <summary>
+    /// 버튼 활성화 기준 poke 카운트 횟수
+    /// </summary>
+    public string cateType;/// <summary>
+    /// 버튼 카테고리 타입
+    /// </summary>
 
     public static Action CheckUnlockAction;
+    #endregion
 
     private void Start()
     {
         button = gameObject.GetComponent<Button>();
         CheckUnlockAction += CheckLockNumber;
-
-        //button.onClick.AddListener(CheckLockNumber);
     }
 
-    // 임시 
     public void CheckLockNumber()
     {
         if (GameManager.Instance.affection_lv >= unlockLevel && GameManager.Instance.unlockBtnCnt[cateType] >= unlockCount)
@@ -35,8 +37,6 @@ public class ButtonAction : MonoBehaviour
         else
             DisableBtn();
     }
-
-    
 
     public void EnableBtn()
     {

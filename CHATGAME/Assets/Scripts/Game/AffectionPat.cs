@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AffectionPat : MonoBehaviour,ICategory
 {
+    #region Values
     private static AffectionPat _instance;
 
     public static AffectionPat Instance
@@ -34,6 +35,7 @@ public class AffectionPat : MonoBehaviour,ICategory
     ICategory poke_event_correct;
 
     public Action SheetLoadAction { get; set; }
+    #endregion
 
     void Awake()
     {
@@ -120,7 +122,7 @@ public class AffectionPat : MonoBehaviour,ICategory
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
             gameManager.affection_exp = -1;
         }
@@ -128,9 +130,8 @@ public class AffectionPat : MonoBehaviour,ICategory
 
     public float Affection_Percentage()
     {
-        //string _cate_str = Check_Category();
         float aff_percent = 0f;
-        //if (_cate_str == "Event")
+        
         if(gameManager.affection_lv % 2 == 1)
         {
             aff_percent = 1.0f;
@@ -138,7 +139,6 @@ public class AffectionPat : MonoBehaviour,ICategory
         else
         {
             aff_percent = (float)gameManager.affection_exp < (float)affection_barrel[gameManager.affection_lv] ? (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv] : 1f;
-            //aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;
@@ -197,6 +197,10 @@ public class AffectionPat : MonoBehaviour,ICategory
 
     public void Interaction_Path()
     {
+        if(gameManager.pat_interact.Count <= 0)
+        {
+            Interact_Init();
+        }
         int _restore_rand = gameManager.pat_interact[UnityEngine.Random.Range(0, gameManager.pat_interact.Count)];
         gameManager.pat_interact.Remove(_restore_rand);
         _interact_idx = _restore_rand;
@@ -226,5 +230,10 @@ public class AffectionPat : MonoBehaviour,ICategory
     public int Interact_txt_path()
     {
         return Interact_idx;
+    }
+
+    public void Sequence_Init()
+    {
+        return;
     }
 }

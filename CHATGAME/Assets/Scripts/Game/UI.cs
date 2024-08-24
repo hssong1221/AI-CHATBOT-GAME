@@ -7,6 +7,7 @@ using TMPro;
 
 public class UI : MonoBehaviour
 {
+    #region Values
     private static UI _instance;
     public static UI Instance
     {
@@ -22,6 +23,8 @@ public class UI : MonoBehaviour
             return _instance;
         }
     }
+
+    public Animator animator;
 
     [Header("텍스트 박스 UI")]
     public Image mainImg;
@@ -40,14 +43,12 @@ public class UI : MonoBehaviour
     public Image heart3;
 
     DataManager dataManager;
-    //Waifu waifu;
     ICategory waifu;
 
-
     int DateLimitNum;
+    bool isDateOut;
 
     SheetData diaSheet;
-    //SheetData ImgSheet;
 
     public enum CategoryState
     {
@@ -60,6 +61,7 @@ public class UI : MonoBehaviour
     }
     [Header("현재 카테고리 상태")]
     public CategoryState categoryState;
+    CategoryState lastState;
     
     public enum TextUIState
     {
@@ -71,7 +73,7 @@ public class UI : MonoBehaviour
     public TextUIState textState;
 
     private Action SettingAction;
-
+    #endregion
     void Awake()
     {
         if (_instance == null)
@@ -90,7 +92,16 @@ public class UI : MonoBehaviour
         dataManager = SingletonManager.Instance.GetSingleton<DataManager>();
         //waifu = SingletonManager.Instance.GetSingleton<Waifu>();
         //waifu = SingletonManager.Instance.GetSingleton<AffectionPokeEvent>();
-        waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+        if(GameManager.Instance.isDate)
+        {
+            SetCategoryState(CategoryState.Date);
+            waifu = SingletonManager.Instance.GetSingleton<AffectionDate>();
+        }
+        else
+        {
+            waifu = SingletonManager.Instance.GetSingleton<Waifu>();
+        }
+        
 
 
         diaSheet = dataManager.GetSheetData("Dialogue");
@@ -104,6 +115,7 @@ public class UI : MonoBehaviour
         //DataSheetSetting(0, "Poke");
 
         DateLimitNum = 0;
+        isDateOut = false;
 
         SettingAction += SetMainImg;
         SettingAction += SetGauge;
@@ -114,11 +126,19 @@ public class UI : MonoBehaviour
 
     IEnumerator Init()
     {
-        yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
+        if(GameManager.Instance.isDate)
+        {
+            yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Date.ToString()).Count > 0);
+        }
+        else
+        {
+            yield return new WaitUntil(() => waifu.GetDataList(CategoryState.Poke.ToString()).Count > 0);
+        }
+        
 
         //SettingAction?.Invoke();
 
-//        waifu.Affection_ascend();
+        //waifu.Affection_ascend();
         //waifu.Interaction_Path();
 
         SettingAction?.Invoke();
@@ -164,7 +184,12 @@ public class UI : MonoBehaviour
         imgFileName = waifu.Interact_img_path();
 
         string imgPath = "";
-        if (category.Equals("Poke") || category.Equals("Event"))
+        
+        if(category.Equals("Event") || GameManager.Instance.affection_lv % 2 == 1)
+        {
+            imgPath = $"image/Event/{affState}/{imgFileName + 1}";
+        }
+        else if (category.Equals("Poke")/* || category.Equals("Event")*/)
             imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
         else if(category.Equals("Date"))
             imgPath = $"image/{category}/{AffectionDate.Instance.Interact_date_path()}";
@@ -192,7 +217,7 @@ public class UI : MonoBehaviour
     public void SetText()
     {
         // waifu aff_poke_event_idx 부분은 이제 categorystate 마다 다른 idx가 들어가게 바꿔야 함
-        var Idx = waifu.Interact_idx;
+        var Idx = waifu.Interact_txt_path();
 
         var data = waifu.GetDataList(categoryState.ToString())[Idx];
         if (data == null)
@@ -226,16 +251,15 @@ public class UI : MonoBehaviour
         textState = TextUIState.End;
     }
 
-    
-
     #endregion
 
-     #region 버튼들
+    #region 버튼들
 
     public void OnClickPokeBtn()
     {
         if(categoryState == CategoryState.Date)
         {
+            //GameManager.Instance.date_sequence++;
             OnClickDateBtn();
             return;
         }
@@ -245,39 +269,52 @@ public class UI : MonoBehaviour
         if (textState == TextUIState.Typing)
             StopTypingEffect();
         else
-        {/*
-            string temp = waifu.Check_Category();
-
-            if (temp.Equals("Poke"))
-                SetCategoryState(CategoryState.Poke);
-            else if (temp.Equals("Event"))
-                SetCategoryState(CategoryState.Event);
-            */
-            //SettingAction?.Invoke();
-
+        {
             waifu.Affection_ascend();
             waifu.Interaction_Path();
 
             string temp = waifu.Check_Category();
-
             if (temp.Equals("Poke"))
                 SetCategoryState(CategoryState.Poke);
             else if (temp.Equals("Event"))
                 SetCategoryState(CategoryState.Event);
 
-            SettingAction?.Invoke();
+            bool stateChange = false;
+            if ((categoryState == CategoryState.Poke && lastState == CategoryState.Event) ||
+                (categoryState == CategoryState.Event && lastState == CategoryState.Poke))
+                stateChange = true;
 
-            GameManager.Instance.unlockBtnCnt["Twitter"]++;
-            GameManager.Instance.unlockBtnCnt["Pat"]++;
-            GameManager.Instance.unlockBtnCnt["Date"]++;
+            lastState = categoryState;
 
-            ButtonAction.CheckUnlockAction?.Invoke();
-            DateLimitNum = 0;
+            if(stateChange)
+            {
+                animator.SetTrigger("isFadeInOut");
+                return;
+            }
 
-
-            GameManager.Instance.SaveData();
+            // Date가 끝나는 상태일 때 
+            if (isDateOut)
+                animator.SetTrigger("isDateOut"); // animation event function으로 PokeBtnEvent와 연결되어있음
+            else
+                PokeBtnEvent();
         }
     }
+
+    public void PokeBtnEvent()
+    {
+        SettingAction?.Invoke();
+
+        GameManager.Instance.unlockBtnCnt["Twitter"]++;
+        GameManager.Instance.unlockBtnCnt["Pat"]++;
+        GameManager.Instance.unlockBtnCnt["Date"]++;
+
+        ButtonAction.CheckUnlockAction?.Invoke();
+        DateLimitNum = 0;
+        isDateOut = false;
+
+        GameManager.Instance.SaveData();
+    }
+
     public void OnClickTwtBtn()
     {
         waifu = SingletonManager.Instance.GetSingleton<AffectionTwt>();
@@ -330,7 +367,6 @@ public class UI : MonoBehaviour
             GameManager.Instance.SaveData();
         }        
     }
-
     public void OnClickDateBtn()
     {
         waifu = SingletonManager.Instance.GetSingleton<AffectionDate>();
@@ -341,34 +377,49 @@ public class UI : MonoBehaviour
         }
         else
         {
-            string temp = waifu.Check_Category();
-            if (temp.Equals("Date"))
-                SetCategoryState(CategoryState.Date);
-
-            SettingAction?.Invoke();
-
-            var dateIdx = AffectionDate.Instance.Check_Current_Date();
-            var data = AffectionDate.Instance.Date_number;
-            Debug.Log($"before : {DateLimitNum}  {data[dateIdx.ToString()]}");
-            DateLimitNum += 1;
-
-            if (DateLimitNum == data[dateIdx.ToString()])
-            {
-                SetCategoryState(CategoryState.Poke);
-                DateLimitNum = 0;
-                Debug.Log($"Date{dateIdx} 끝");
-            }
-
-            waifu.Affection_ascend();
-            waifu.Interaction_Path();
-
-            //SettingAction?.Invoke();
-
-            GameManager.Instance.unlockBtnCnt["Date"]=0;
-
-            ButtonAction.CheckUnlockAction?.Invoke();
-            GameManager.Instance.SaveData();
+            if (GameManager.Instance.isDate)
+                DataBtnEvent();
+            else
+                animator.SetTrigger("isDateIn"); // animation event function으로 DataBtnEvent와 연결되어있음
         }
+    }
+
+    public void DataBtnEvent()
+    {
+        string temp = waifu.Check_Category();
+        if (temp.Equals("Date"))
+            SetCategoryState(CategoryState.Date);
+
+        GameManager.Instance.date_sequence++;
+        waifu.Interaction_Path();
+
+        SettingAction?.Invoke();
+
+        var dateIdx = AffectionDate.Instance.Check_Current_Date();
+        var data = AffectionDate.Instance.Date_number;
+        //Debug.Log($"before : {DateLimitNum}  {data[dateIdx.ToString()]}");
+        Debug.Log($"before : {GameManager.Instance.date_sequence}  {data[dateIdx.ToString()]}");
+        DateLimitNum += 1;
+
+        //if (DateLimitNum == data[dateIdx.ToString()])
+        if (GameManager.Instance.date_sequence >= data[dateIdx.ToString()])
+        {
+            SetCategoryState(CategoryState.Poke);
+            DateLimitNum = 0;
+            waifu.Sequence_Init();
+            Debug.Log($"Date{dateIdx} 끝");
+            isDateOut = true;
+        }
+
+        waifu.Affection_ascend();
+        //waifu.Interaction_Path();
+
+        //SettingAction?.Invoke();
+
+        GameManager.Instance.unlockBtnCnt["Date"] = 0;
+
+        ButtonAction.CheckUnlockAction?.Invoke();
+        GameManager.Instance.SaveData();
     }
 
     // temp version
@@ -386,6 +437,7 @@ public class UI : MonoBehaviour
     {
         GameManager.Instance.SaveData();
     }
+
     #endregion
 
     public void SetCategoryState(CategoryState state)
@@ -398,4 +450,6 @@ public class UI : MonoBehaviour
     {
         categoryState = (CategoryState)Enum.ToObject(typeof(CategoryState), state);
     }
+
+    
 }

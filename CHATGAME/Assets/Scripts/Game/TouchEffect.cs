@@ -7,11 +7,13 @@ public class TouchEffect : MonoBehaviour
     public Canvas canvas;
     public RectTransform rt;
     public GameObject effect;
+    public GameObject effect2;
 
-    public float limitTime = 0.05f;
+    public float limitTime = 0.1f;
     float TouchTime = 0f;
 
     public List<GameObject> touchObjectPool = new List<GameObject>();
+    public List<GameObject> touchObjectPool2 = new List<GameObject>();
     void Update()
     {
         if(Input.GetMouseButton(0) && TouchTime >= limitTime)
@@ -20,20 +22,8 @@ public class TouchEffect : MonoBehaviour
             // 클릭 위치
             RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, Camera.main, out var localPoint);
 
-            for(int i = 0; i < touchObjectPool.Count; i++)
-            {
-                // 만들어져 있는 것중에 사용 다하고 꺼져있는거 다시 사용하기
-                if (!touchObjectPool[i].activeSelf)
-                {
-                    touchObjectPool[i].SetActive(true);
-                    touchObjectPool[i].transform.localPosition = localPoint;
-                    return;
-                }
-            }
-            // 처음이거나 사용가능한게 없을때 새로 만들어서 넣어줌
-            var gameobject = Instantiate(effect, canvas.transform);
-            gameobject.transform.localPosition = localPoint;
-            touchObjectPool.Add(gameobject);
+            EffectOut1(localPoint);
+            EffectOut2(localPoint);
         }
         TouchTime += Time.deltaTime;
 
@@ -58,5 +48,41 @@ public class TouchEffect : MonoBehaviour
         }
         */
 #endif
+    }
+
+    void EffectOut1(Vector2 localPoint)
+    {
+        for (int i = 0; i < touchObjectPool.Count; i++)
+        {
+            // 만들어져 있는 것중에 사용 다하고 꺼져있는거 다시 사용하기
+            if (!touchObjectPool[i].activeSelf)
+            {
+                touchObjectPool[i].SetActive(true);
+                touchObjectPool[i].transform.localPosition = localPoint;
+                return;
+            }
+        }
+        // 처음이거나 사용가능한게 없을때 새로 만들어서 넣어줌
+        var gameobject = Instantiate(effect, canvas.transform);
+        gameobject.transform.localPosition = localPoint;
+        touchObjectPool.Add(gameobject);
+    }
+
+    void EffectOut2(Vector2 localPoint)
+    {
+        for (int i = 0; i < touchObjectPool2.Count; i++)
+        {
+            // 만들어져 있는 것중에 사용 다하고 꺼져있는거 다시 사용하기
+            if (!touchObjectPool2[i].activeSelf)
+            {
+                touchObjectPool2[i].SetActive(true);
+                touchObjectPool2[i].transform.localPosition = localPoint;
+                return;
+            }
+        }
+        // 처음이거나 사용가능한게 없을때 새로 만들어서 넣어줌
+        var gameobject = Instantiate(effect2, canvas.transform);
+        gameobject.transform.localPosition = localPoint;
+        touchObjectPool2.Add(gameobject);
     }
 }

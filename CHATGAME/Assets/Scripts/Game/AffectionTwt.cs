@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AffectionTwt : MonoBehaviour, ICategory
 {
+    #region Values
     private static AffectionTwt _Instance;
 
     public static AffectionTwt Instance
@@ -41,6 +42,8 @@ public class AffectionTwt : MonoBehaviour, ICategory
     ICategory poke_event_correct;
 
     public Action SheetLoadAction { get; set; }
+
+    #endregion
 
     void Awake()
     {
@@ -129,7 +132,11 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public void Affection_ascend()
     {
-        gameManager.affection_exp += affection_increase["Twitter"];
+        if(gameManager.affection_lv > 4)
+        {
+            gameManager.affection_exp += affection_increase["Twitter"];
+        }
+        
 
         Affection_level_calculate();
     }
@@ -140,7 +147,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
             gameManager.affection_exp = -1;
         }
@@ -148,9 +155,8 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public float Affection_Percentage()
     {
-        //string _cate_str = Check_Category();
         float aff_percent = 0f;
-        //if (_cate_str == "Event")
+
         if(gameManager.affection_lv % 2 == 1)
         {
             aff_percent = 1.0f;
@@ -158,7 +164,6 @@ public class AffectionTwt : MonoBehaviour, ICategory
         else
         {
             aff_percent = (float)gameManager.affection_exp < (float)affection_barrel[gameManager.affection_lv] ? (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv] : 1f;
-            //aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;
@@ -217,6 +222,10 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public void Interaction_Path()
     {
+        if(gameManager.twt_interact.Count <= 0)//두가지 방법을 고려( 1. 기존의 상호작용을 계속해서 랜덤으로 보여준다, 2. 새로운 상호작용 업뎃이 나올때까지 기다려달라고 한다. )
+        {
+            Interact_Init();
+        }
         int _restore_rand = gameManager.twt_interact[UnityEngine.Random.Range(0,gameManager.twt_interact.Count)];
         gameManager.twt_interact.Remove(_restore_rand);
         _interact_idx = _restore_rand;
@@ -246,5 +255,10 @@ public class AffectionTwt : MonoBehaviour, ICategory
     public int Interact_txt_path()
     {
         return Interact_idx;
+    }
+
+    public void Sequence_Init()
+    {
+        return;
     }
 }
