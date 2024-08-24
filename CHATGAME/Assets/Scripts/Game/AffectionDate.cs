@@ -243,6 +243,11 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Interaction_Path()
     {
+        if(gameManager.date_interact.Count <= 0)
+        {
+            Interact_Init();
+        }
+
         if(!gameManager.isDate)//데이트 첫 진입
         {
             //_date_temp = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];

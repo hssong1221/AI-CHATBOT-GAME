@@ -197,6 +197,10 @@ public class AffectionPat : MonoBehaviour,ICategory
 
     public void Interaction_Path()
     {
+        if(gameManager.pat_interact.Count <= 0)
+        {
+            Interact_Init();
+        }
         int _restore_rand = gameManager.pat_interact[UnityEngine.Random.Range(0, gameManager.pat_interact.Count)];
         gameManager.pat_interact.Remove(_restore_rand);
         _interact_idx = _restore_rand;

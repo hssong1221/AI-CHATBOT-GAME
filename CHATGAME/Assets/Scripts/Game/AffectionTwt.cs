@@ -222,6 +222,10 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public void Interaction_Path()
     {
+        if(gameManager.twt_interact.Count <= 0)//두가지 방법을 고려( 1. 기존의 상호작용을 계속해서 랜덤으로 보여준다, 2. 새로운 상호작용 업뎃이 나올때까지 기다려달라고 한다. )
+        {
+            Interact_Init();
+        }
         int _restore_rand = gameManager.twt_interact[UnityEngine.Random.Range(0,gameManager.twt_interact.Count)];
         gameManager.twt_interact.Remove(_restore_rand);
         _interact_idx = _restore_rand;
