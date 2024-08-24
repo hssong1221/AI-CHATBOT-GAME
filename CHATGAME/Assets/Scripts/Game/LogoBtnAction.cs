@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class LogoBtnAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class LogoBtnAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     public Button btn;
     public TextMeshProUGUI btnText;
@@ -23,5 +23,15 @@ public class LogoBtnAction : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerExit(PointerEventData eventData)
     {
         btnText.color = Color.white;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        btnText.color = Color.black;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        btnText.color = Color.black;
     }
 }
