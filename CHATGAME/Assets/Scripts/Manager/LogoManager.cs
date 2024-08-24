@@ -12,12 +12,12 @@ public class LogoManager : MonoBehaviour
         GameManager.Instance.LoadData();
         PreCalculateAffectionModule();
 
-        Invoke("StartGame", 1f);
+        Invoke("StartGame", 0.5f);
     }
 
     public void OnClickLoadBtn()
     {
-        Invoke("StartGame", 1f);
+        Invoke("StartGame", 0.5f);
     }
 
     public void OnClickGalleryBtn()
