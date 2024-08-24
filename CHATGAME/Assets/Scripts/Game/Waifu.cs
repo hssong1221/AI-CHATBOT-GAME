@@ -257,6 +257,11 @@ public class Waifu : MonoBehaviour, ICategory
 
     public void Interaction_Path()//Poke 상호작용 경로 번호 찾기
     {
+        if(gameManager.affection_interact.Count <= 0)
+        {
+            Interact_Init();
+        }
+
         int _I_P_N = gameManager.Correction_number;
         int _restore_rand = 0;
         category_restore = "Poke";
@@ -290,7 +295,7 @@ public class Waifu : MonoBehaviour, ICategory
 
         int _cnt = 0;
 
-        while (_cnt < Affection_sheet(0, "Poke"))
+        while (_cnt < Affection_sheet(gameManager.affection_lv, "Poke"))
         {
             gameManager.affection_interact.Add(_cnt);
             _cnt++;
