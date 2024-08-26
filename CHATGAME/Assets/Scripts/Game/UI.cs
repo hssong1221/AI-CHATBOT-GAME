@@ -423,6 +423,10 @@ public class UI : MonoBehaviour
     }
 
     // temp version
+    public void OnClickMenuButton()
+    {
+        UICtrl.Instance.ShowPanel("image/UI/UI_MenuPopup", transform);
+    }
     public void OnclickLanBtn()
     {
         if (GameManager.Instance.language == GameManager.Language.Kor)
