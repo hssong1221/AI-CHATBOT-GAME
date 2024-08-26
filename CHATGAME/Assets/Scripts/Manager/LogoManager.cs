@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class LogoManager : MonoBehaviour
 {
+    public Canvas logocanvas;
     public void OnClickNewBtn()
     {
         PlayerPrefs.DeleteAll();
@@ -22,7 +23,8 @@ public class LogoManager : MonoBehaviour
 
     public void OnClickGalleryBtn()
     {
-        Debug.Log("구현 안했음");
+        //Debug.Log("구현 안했음");
+        UICtrl.Instance.ShowPanel("image/UI/UI_GalleryPanel", logocanvas.transform);
     }
 
     public void OnClickExitBtn()
