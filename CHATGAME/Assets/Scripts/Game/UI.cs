@@ -384,6 +384,7 @@ public class UI : MonoBehaviour
         }
     }
 
+
     public void DataBtnEvent()
     {
         string temp = waifu.Check_Category();
@@ -421,6 +422,12 @@ public class UI : MonoBehaviour
         ButtonAction.CheckUnlockAction?.Invoke();
         GameManager.Instance.SaveData();
     }
+
+    public void OnClickGalBtn()
+    {
+        UICtrl.Instance.ShowPanel("image/UI/UI_GalleryPanel", transform);
+    }
+
 
     // temp version
     public void OnClickMenuButton()
