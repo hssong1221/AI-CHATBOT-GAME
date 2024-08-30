@@ -69,7 +69,7 @@ public class Waifu : MonoBehaviour, ICategory
     DataManager dataManager;
     SheetData affSheet;
 
-    List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();/// <summary>
+    public List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();/// <summary>
     /// poke, event 상호작용 정보 저장
     /// </summary>
 

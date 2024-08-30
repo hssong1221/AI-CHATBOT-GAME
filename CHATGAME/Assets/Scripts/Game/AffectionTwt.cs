@@ -33,7 +33,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
     public List<int> affection_barrel = new List<int>();
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
-    List<Dictionary<string, string>> twtData = new List<Dictionary<string, string>>();
+    public List<Dictionary<string, string>> twtData = new List<Dictionary<string, string>>();
 
     GameManager gameManager;
     DataManager dataManager;

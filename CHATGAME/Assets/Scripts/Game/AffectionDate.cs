@@ -29,7 +29,7 @@ public class AffectionDate : MonoBehaviour, ICategory
     /// 각각 date situation 의 호감도 상승치
     /// </summary>
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
-    List<Dictionary<string, string>> dateData = new List<Dictionary<string, string>>();
+    public List<Dictionary<string, string>> dateData = new List<Dictionary<string, string>>();
 
     public Dictionary<string,int> Date_number = new Dictionary<string, int>();/// <summary>
     /// 각 date situation 이 종료되는 시점의 엑셀 인덱스
