@@ -248,26 +248,34 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     #region Buttons
     public void SetCategoryPokeBtn()
     {
+        _recyclableScrollRect.ReloadData();
         category_status = Category_status.Poke;
         PokeEventDataLength();
+        InitData();
     }
 
     public void SetCategoryTwtBtn()
     {
+        _recyclableScrollRect.ReloadData();
         category_status = Category_status.Twitter;
         _dataLength = Interact_cnt(2, "Twt");
+        InitData();
     }
 
     public void SetCategoryPatBtn()
     {
+        _recyclableScrollRect.ReloadData();
         category_status = Category_status.Pat;
         _dataLength = Interact_cnt(3, "Pat");
+        InitData();
     }
 
     public void SetCategoryDateBtn()
     {
+        _recyclableScrollRect.ReloadData();
         category_status = Category_status.Date;
         _dataLength = Interact_cnt(3, "Date");
+        InitData();
     }
     #endregion
 }
