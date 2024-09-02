@@ -102,6 +102,8 @@ public class Waifu : MonoBehaviour, ICategory
         Interact_Init();
     }
 
+    
+
     #region EXCEL Data
     public void SetSheetData()
     {
@@ -109,6 +111,7 @@ public class Waifu : MonoBehaviour, ICategory
         affSheet = dataManager.GetSheetData("Dialogue");
 
         SheetData_Categorize();
+        Barrel_Init();
     }
 
     public void SheetData_Categorize()
@@ -119,6 +122,17 @@ public class Waifu : MonoBehaviour, ICategory
             var cur = iter.Current;
             if (cur["category"].Equals("Poke") || cur["category"].Equals("Event"))
                 dialogueData.Add(cur);
+        }
+    }
+
+    public void Barrel_Init()
+    {
+        int _cnt = 0;
+        while (_cnt < 6)
+        {
+            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"]);
+            affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
+            _cnt++;
         }
     }
 

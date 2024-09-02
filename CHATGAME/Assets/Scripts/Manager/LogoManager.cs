@@ -45,4 +45,12 @@ public class LogoManager : MonoBehaviour
         AffectionPat.Instance.Interact_Init();
         AffectionDate.Instance.Interact_Init();
     }
+
+
+    public void OnClickDel()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("ALL DELETE");
+    }
+
 }

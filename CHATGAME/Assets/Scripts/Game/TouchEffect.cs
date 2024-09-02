@@ -28,7 +28,6 @@ public class TouchEffect : MonoBehaviour
         }
         TouchTime += Time.deltaTime;
 
-#if UNITY_ANDROID
         /*
         if (Input.touchCount > 0)
         {
@@ -48,7 +47,6 @@ public class TouchEffect : MonoBehaviour
             }
         }
         */
-#endif
     }
 
     void EffectOut1(Vector2 localPoint)
