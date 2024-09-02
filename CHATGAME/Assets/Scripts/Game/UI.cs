@@ -266,6 +266,9 @@ public class UI : MonoBehaviour
 
         waifu = SingletonManager.Instance.GetSingleton<Waifu>();
 
+        /*foreach (var a in Waifu.Instance.affection_barrel)
+            Debug.Log(a);*/
+
         if (textState == TextUIState.Typing)
             StopTypingEffect();
         else
