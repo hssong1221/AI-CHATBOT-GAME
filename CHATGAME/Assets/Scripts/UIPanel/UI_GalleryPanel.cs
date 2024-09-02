@@ -138,6 +138,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
             date_img_id.Clear();
             string temp = _data[0]["image_id"];
             date_img_id.Add(temp);
+            _cnt = 1;
 
             while (itr.MoveNext())
             {
@@ -199,7 +200,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         }
         else if(category_status.ToString() == "Date")
         {
-            _combineImgPath = $"image/{category_status.ToString()}/{date_img_id[index % date_img_id.Count]}";//임시
+            _combineImgPath = $"image/{category_status.ToString()}/{date_img_id[index/* % date_img_id.Count*/]}";//임시
         }
 
         return _combineImgPath;
