@@ -63,8 +63,13 @@ public class GameManager : MonoBehaviour
     /// 남아있는 date 상호작용 situation 시작 인덱스 리스트
     /// </summary>
     public Dictionary<string,int> unlockBtnCnt = new Dictionary<string,int>() { { "Twitter", 0 }, { "Pat", 0 }, { "Date", 0 } };/// <summary>
-    /// 버튼 액션 활성화 비교
-    /// </summary>
+                                                                                                                                /// 버튼 액션 활성화 비교
+                                                                                                                                /// </summary>
+    #endregion
+
+    #region NON_INIT Var
+    public string temp; // 임시 데이터, 지우고 원하는거로 바꾸기
+
     #endregion
 
 
@@ -142,6 +147,10 @@ public class GameManager : MonoBehaviour
         public List<int> date_interact = new List<int>();
         public Dictionary<string, int> unlockBtnCnt = new Dictionary<string, int>() { { "Twitter", 0 }, { "Pat", 0 }, { "Date", 0 } };
     }
+    public class NonInitData
+    {
+        public string temp;
+    }
 
     // 데이터 저장을 위해 클래스안에 기존 데이터 주입
     public PlayerData GetPlayerData()
@@ -178,12 +187,27 @@ public class GameManager : MonoBehaviour
         this.unlockBtnCnt = data.unlockBtnCnt;
     }
 
+    public NonInitData GetNonInitData()
+    {
+        return new NonInitData
+        {
+            temp = this.temp,
+        };
+    }
+    public void SetNonInitData(NonInitData data)
+    {
+        this.temp = data.temp;
+    }
+
     // 데이터 저장을 하려면 부르시오
     public void SaveData()
     {
         PlayerData data = GetPlayerData();
+        NonInitData data2 = GetNonInitData();
         string json = JsonConvert.SerializeObject(data);
+        string json2 = JsonConvert.SerializeObject(data2);
         PlayerPrefs.SetString("PlayerData", json);
+        PlayerPrefs.SetString("NonInitData", json2);
         PlayerPrefs.Save();
     }
 
@@ -200,6 +224,18 @@ public class GameManager : MonoBehaviour
             string json = PlayerPrefs.GetString("PlayerData", "{}");
             PlayerData playerData = JsonConvert.DeserializeObject<PlayerData>(json);
             SetPlayerData(playerData);
+        }
+
+        if(!PlayerPrefs.HasKey("NonInitData"))
+        {
+            NonInitData data2 = new NonInitData();
+            SetNonInitData(data2);
+        }
+        else
+        {
+            string json2 = PlayerPrefs.GetString("NonInitData", "{}");
+            NonInitData niData = JsonConvert.DeserializeObject<NonInitData>(json2);
+            SetNonInitData(niData);
         }
     }
 

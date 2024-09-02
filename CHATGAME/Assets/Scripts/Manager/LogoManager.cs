@@ -9,7 +9,7 @@ public class LogoManager : MonoBehaviour
     public Canvas logocanvas;
     public void OnClickNewBtn()
     {
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey("PlayerData");
         GameManager.Instance.LoadData();
         PreCalculateAffectionModule();
 
