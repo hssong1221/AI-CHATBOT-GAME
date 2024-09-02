@@ -19,5 +19,10 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void SoundSetting(float val)
+    {
+        Audio.volume = val;
+    }
+
     
 }

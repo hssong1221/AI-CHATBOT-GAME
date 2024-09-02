@@ -32,6 +32,5 @@ public class BasePanel : MonoBehaviour
     public virtual void OnClickBackBtn()
     {
         EndPanel();
-        return;
     }
 }

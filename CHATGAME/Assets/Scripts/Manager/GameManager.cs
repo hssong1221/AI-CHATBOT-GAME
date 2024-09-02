@@ -24,7 +24,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public PlayerData playerData;
+    public PlayerData playerData; // gamemanager에서 playerdata 처리 다시 확인하기 2024/09/02 
+    //public NonInitData nonInitData;
+    
+    public SoundManager soundManager;
 
     public enum Language
     {
@@ -90,6 +93,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         if (PlayerPrefs.HasKey("PlayerData"))
+            LoadData();
+        else
+            playerData = new PlayerData();
+
+        if (PlayerPrefs.HasKey("NonInitData"))
             LoadData();
         else
             playerData = new PlayerData();
