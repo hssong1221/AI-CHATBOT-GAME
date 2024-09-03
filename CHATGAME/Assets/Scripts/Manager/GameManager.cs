@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public PlayerData playerData; // gamemanager에서 playerdata 처리 다시 확인하기 2024/09/02 
+    //public PlayerData playerData; 
     //public NonInitData nonInitData;
     
     public SoundManager soundManager;
@@ -92,15 +92,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("PlayerData"))
-            LoadData();
-        else
-            playerData = new PlayerData();
+        LoadData();
 
-        if (PlayerPrefs.HasKey("NonInitData"))
-            LoadData();
+        /*if (PlayerPrefs.HasKey("PlayerData"))
+           LoadData() 
         else
-            playerData = new PlayerData();
+            playerData = new PlayerData();*/
     }
 
 

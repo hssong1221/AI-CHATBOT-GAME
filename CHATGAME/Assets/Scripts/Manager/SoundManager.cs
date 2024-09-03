@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         SoundPlay();
+        Audio.volume = PlayerPrefs.GetFloat("soundOpt", 0.3f);
     }
 
     public void SoundPlay()
@@ -23,6 +24,4 @@ public class SoundManager : MonoBehaviour
     {
         Audio.volume = val;
     }
-
-    
 }

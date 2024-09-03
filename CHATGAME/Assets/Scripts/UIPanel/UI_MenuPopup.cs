@@ -4,6 +4,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Newtonsoft.Json;
+using System.Linq.Expressions;
 
 public class UI_MenuPopup : BasePanel
 {
@@ -16,14 +18,18 @@ public class UI_MenuPopup : BasePanel
     public GameObject accPanel;
     public List<GameObject> panelList; // inspector 에서 집어넣기
 
-    public Item1_MenuPopup item1_popup;
+    public Item_MenuPopup1 item_popup1;
+
+    private float soundOpt;       // 전체 볼륨
 
     public override void InitChild()
     {
-        sndPanel.SetActive(true);
-        ctrlPanel.SetActive(false);
-        accPanel.SetActive(false);
-        LoadSetting();
+        soundOpt = PlayerPrefs.GetFloat("soundOpt", 0.3f);
+
+        foreach (var p in panelList)
+            p.SetActive(false);
+
+        OnClickSndBtn();
     }
 
 
@@ -31,7 +37,7 @@ public class UI_MenuPopup : BasePanel
     public void OnClickSndBtn()
     {
         BtnAction(0);
-        LoadSetting();
+        SoundBtnAction();
     }
 
     public void OnClickCtrlBtn()
@@ -51,12 +57,43 @@ public class UI_MenuPopup : BasePanel
 
         panelList[idx].SetActive(true);
     }
+
     #endregion
 
-    public void LoadSetting()
+    public void SoundBtnAction()
     {
-
-        float[] temp = new float[3] { GameManager.Instance.soundManager.Audio.volume, 0, 0 };
-        item1_popup.Init(temp);
+        float[] temp = new float[3] { soundOpt, 0, 0 };
+        item_popup1.Init(temp);
     }
+
+    
+}
+public static class Data
+{
+    #region Variable
+    private static float soundOpt;
+    #endregion
+
+    #region get/set
+    // 전체 볼륨 
+    public static float SoundOpt
+    {
+        get
+        {
+            return soundOpt;
+        }
+        set
+        {
+            soundOpt = value;
+            PlayerPrefs.SetFloat(GetMemberName(() => soundOpt), value);
+        }
+    }
+
+    private static string GetMemberName<T>(Expression<Func<T>> memberExpression)    //변수명을 string으로 리턴해주는 함수. 변수명을 그대로 key로 쓰기 위함. 
+    {
+        MemberExpression expressionBody = (MemberExpression)memberExpression.Body;
+        return expressionBody.Member.Name;
+    }
+
+    #endregion
 }
