@@ -1994,6 +1994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3299f501038a436458ed800ee8709768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 1228779127}
   language: 0
   affection_exp: 0
   affection_lv: 0

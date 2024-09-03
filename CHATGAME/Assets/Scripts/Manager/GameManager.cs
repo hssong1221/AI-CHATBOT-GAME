@@ -24,7 +24,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public PlayerData playerData;
+    //public PlayerData playerData; 
+    //public NonInitData nonInitData;
+    
+    public SoundManager soundManager;
 
     public enum Language
     {
@@ -89,10 +92,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("PlayerData"))
-            LoadData();
+        LoadData();
+
+        /*if (PlayerPrefs.HasKey("PlayerData"))
+           LoadData() 
         else
-            playerData = new PlayerData();
+            playerData = new PlayerData();*/
     }
 
 
