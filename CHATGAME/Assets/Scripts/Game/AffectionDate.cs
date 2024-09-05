@@ -112,6 +112,7 @@ public class AffectionDate : MonoBehaviour, ICategory
         Interact_Init();
         Barrel_Init();
         Increase_Init();
+        Gallery_Index_Init();
     }
 
     public void Barrel_Init()
@@ -150,6 +151,24 @@ public class AffectionDate : MonoBehaviour, ICategory
     public List<Dictionary<string, string>> GetDataList(string name)
     {
         return dateData;
+    }
+
+    public void Gallery_Index_Init()
+    {
+        var image_id_temp = "";
+        var itr = dateData.GetEnumerator();
+
+        while (itr.MoveNext())
+        {
+            var cur = itr.Current;
+
+            if (!cur["image_id"].Equals(image_id_temp.ToString())/* && !gameManager.date_gallery_idx.ContainsKey(image_id_temp.ToString())*/)
+            {
+                image_id_temp = cur["image_id"];
+                //Debug.Log("gallery img id : " + image_id_temp);
+                gameManager.date_gallery_idx.TryAdd(image_id_temp.ToString(), 0);
+            }
+        }
     }
 
     #endregion
@@ -315,6 +334,8 @@ public class AffectionDate : MonoBehaviour, ICategory
 
         if (data.TryGetValue("image_id", out var cate))
         {
+            gameManager.date_gallery_idx[cate.ToString()] = 1;
+            //Debug.Log(cate.ToString() + " : " + gameManager.date_gallery_idx[cate.ToString()]);
             return cate.ToString();
         }
         else

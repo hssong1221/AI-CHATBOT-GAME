@@ -40,6 +40,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         _recyclableScrollRect.DataSource = this;
         BarrelInit();
         category_status = Category_status.Poke;
+        Date_Img_Id_List_Init(3,"Date");
     }
 
     public override void InitChild()
@@ -133,25 +134,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         }
         else if(cate == "Date")
         {
-            _data = AffectionDate.Instance.dateData;
-            var itr = _data.GetEnumerator();
-            date_img_id.Clear();
-            string temp = _data[0]["image_id"];
-            date_img_id.Add(temp);
-            _cnt = 1;
-
-            while (itr.MoveNext())
-            {
-                var cur = itr.Current;
-
-                if (cur["affection"].Equals(aff_lv.ToString()) && cur["category"].Equals(cate) && !cur["image_id"].Equals(temp))
-                {
-                    temp = cur["image_id"];
-                    date_img_id.Add(temp);
-                    _cnt++;
-                }
-            }
-            return _cnt;
+            return date_img_id.Count;
         }
 
         var iter = _data.GetEnumerator();
@@ -205,6 +188,34 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
 
         return _combineImgPath;
     }
+
+    public void Date_Img_Id_List_Init(int aff_lv, string cate)
+    {
+        int _cnt = 0;
+        List<Dictionary<string, string>> _data = new List<Dictionary<string, string>>();
+        if(date_img_id.Count <= 0)
+        {
+            _data = AffectionDate.Instance.dateData;
+            var itr = _data.GetEnumerator();
+            date_img_id.Clear();
+            string temp = _data[0]["image_id"];
+            date_img_id.Add(temp);
+            _cnt = 1;
+
+            while (itr.MoveNext())
+            {
+                var cur = itr.Current;
+
+                if (cur["affection"].Equals(aff_lv.ToString()) && cur["category"].Equals(cate) && !cur["image_id"].Equals(temp))
+                {
+                    temp = cur["image_id"];
+                    date_img_id.Add(temp);
+                    _cnt++;
+                }
+            }
+        }
+    }
+
     #endregion
 
     #region Recycle scroll
@@ -235,15 +246,11 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     /// </summary>
     public void SetCell(ICell cell, int index)
     {
-        //string imgpath = $"image/{CheckCategory(index)}/{CheckAffectionLevel(index)}/{CalculateCorrection(index) + 1}";
         string imgpath = CombineImgPath(index);
         //Casting to the implemented Cell
         var item = cell as Item_GalleryScroll;
-        item.ConfigureCell(_contactList[index], index, imgpath);
+        item.ConfigureCell(_contactList[index], index, imgpath, category_status.ToString(), date_img_id[index % date_img_id.Count]);
     }
-
-
-
     #endregion
 
     #region Buttons
@@ -253,6 +260,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Poke;
         PokeEventDataLength();
         InitData();
+        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
     }
 
     public void SetCategoryTwtBtn()
@@ -261,6 +269,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Twitter;
         _dataLength = Interact_cnt(2, "Twt");
         InitData();
+        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
     }
 
     public void SetCategoryPatBtn()
@@ -269,6 +278,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Pat;
         _dataLength = Interact_cnt(3, "Pat");
         InitData();
+        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
     }
 
     public void SetCategoryDateBtn()
@@ -277,6 +287,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Date;
         _dataLength = Interact_cnt(3, "Date");
         InitData();
+        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
     }
     #endregion
 }

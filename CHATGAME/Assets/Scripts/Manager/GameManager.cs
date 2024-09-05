@@ -71,7 +71,10 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region NON_INIT Var
-    public string temp; // 임시 데이터, 지우고 원하는거로 바꾸기
+    public List<int> poke_event_gallery_idx = new List<int>();
+    public List<int> twt_gallery_idx = new List<int>();
+    public List<int> pat_gallery_idx = new List<int>();
+    public Dictionary<string, int> date_gallery_idx = new Dictionary<string, int>();
 
     #endregion
 
@@ -154,7 +157,10 @@ public class GameManager : MonoBehaviour
     }
     public class NonInitData
     {
-        public string temp;
+        public List<int> poke_event_gallery_idx = new List<int>();
+        public List<int> twt_gallery_idx = new List<int>();
+        public List<int> pat_gallery_idx = new List<int>();
+        public Dictionary<string, int> date_gallery_idx = new Dictionary<string, int>();
     }
 
     // 데이터 저장을 위해 클래스안에 기존 데이터 주입
@@ -196,12 +202,18 @@ public class GameManager : MonoBehaviour
     {
         return new NonInitData
         {
-            temp = this.temp,
+            poke_event_gallery_idx = this.poke_event_gallery_idx,
+            twt_gallery_idx = this.twt_gallery_idx,
+            pat_gallery_idx = this.pat_gallery_idx,
+            date_gallery_idx = this.date_gallery_idx,
         };
     }
     public void SetNonInitData(NonInitData data)
     {
-        this.temp = data.temp;
+        this.poke_event_gallery_idx = data.poke_event_gallery_idx;
+        this.twt_gallery_idx = data.twt_gallery_idx;
+        this.pat_gallery_idx = data.pat_gallery_idx;
+        this.date_gallery_idx = data.date_gallery_idx;
     }
 
     // 데이터 저장을 하려면 부르시오
