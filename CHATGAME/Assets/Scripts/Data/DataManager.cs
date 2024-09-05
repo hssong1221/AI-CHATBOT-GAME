@@ -175,7 +175,7 @@ public class DataManager : MonoBehaviour
                 foreach (DataTable table in result.Tables)
                 {
                     var sheetData = new SheetData(table.TableName);
-                    Debug.Log(table.TableName);
+                    //Debug.Log(table.TableName);
 
                     for (int i = 0; i < table.Rows.Count; i++)
                     {
@@ -196,7 +196,7 @@ public class DataManager : MonoBehaviour
                             if (cellValue.Equals("EOF"))
                                 isEOF = true;
 
-                            Debug.Log($"{columnName} : {cellValue}");
+                            //Debug.Log($"{columnName} : {cellValue}");
                             row[columnName] = cellValue;
                         }
                         if (isEOF)
@@ -209,9 +209,9 @@ public class DataManager : MonoBehaviour
                     sheetsData[table.TableName] = sheetData;
                 }
             }
+            Waifu.Instance.SheetLoadAction?.Invoke();
+            fileReadEnd = true;
         }
-        Waifu.Instance.SheetLoadAction?.Invoke();
-        fileReadEnd = true;
     }
 
 

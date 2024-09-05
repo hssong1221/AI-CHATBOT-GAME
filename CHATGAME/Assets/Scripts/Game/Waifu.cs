@@ -69,7 +69,7 @@ public class Waifu : MonoBehaviour, ICategory
     DataManager dataManager;
     SheetData affSheet;
 
-    List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();/// <summary>
+    public List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();/// <summary>
     /// poke, event 상호작용 정보 저장
     /// </summary>
 
@@ -99,17 +99,10 @@ public class Waifu : MonoBehaviour, ICategory
         category_restore = "Poke";
         gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
         
-        int _cnt = 0;
-
-        while ( _cnt < 6)
-        {
-            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"]);
-            affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
-            _cnt++;
-        }
-        
         Interact_Init();
     }
+
+    
 
     #region EXCEL Data
     public void SetSheetData()
@@ -118,6 +111,7 @@ public class Waifu : MonoBehaviour, ICategory
         affSheet = dataManager.GetSheetData("Dialogue");
 
         SheetData_Categorize();
+        Barrel_Init();
     }
 
     public void SheetData_Categorize()
@@ -127,7 +121,21 @@ public class Waifu : MonoBehaviour, ICategory
         {
             var cur = iter.Current;
             if (cur["category"].Equals("Poke") || cur["category"].Equals("Event"))
+            {
                 dialogueData.Add(cur);
+            }
+        }
+        //Gallery_Index_Init();
+    }
+
+    public void Barrel_Init()
+    {
+        int _cnt = 0;
+        while (_cnt < 6)
+        {
+            affection_barrel.Add(Affection_sheet(_cnt, "Poke") * affection_increase["Poke"]);
+            affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
+            _cnt++;
         }
     }
 
@@ -139,6 +147,19 @@ public class Waifu : MonoBehaviour, ICategory
                 return dialogueData;
             default:
                 return dialogueData;
+        }
+    }
+
+    public void Gallery_Index_Init()
+    {
+        int _cnt = 0;
+        if(gameManager.poke_event_gallery_idx.Count <= 0)
+        {
+            while (_cnt < dialogueData.Count)
+            {
+                gameManager.poke_event_gallery_idx.Add(0);
+                _cnt++;
+            }
         }
     }
 
@@ -307,6 +328,7 @@ public class Waifu : MonoBehaviour, ICategory
         if (category_restore == "Poke" || category_restore == "Event")
         {
             gameManager.Interact_idx = _aff_poke_event_idx;
+            //gameManager.poke_event_gallery_idx[gameManager.Interact_idx] = 1;
         }
     }
 
@@ -317,6 +339,7 @@ public class Waifu : MonoBehaviour, ICategory
 
     public int Interact_txt_path()
     {
+        gameManager.poke_event_gallery_idx[gameManager.Interact_idx] = 1;
         return gameManager.Interact_idx;
     }
 

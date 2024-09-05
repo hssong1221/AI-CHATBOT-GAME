@@ -26,7 +26,7 @@ public class AffectionPat : MonoBehaviour,ICategory
     public List<int> affection_barrel = new List<int>();
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
-    List<Dictionary<string, string>> patData = new List<Dictionary<string, string>>();
+    public List<Dictionary<string, string>> patData = new List<Dictionary<string, string>>();
 
     GameManager gameManager;
     DataManager dataManager;
@@ -87,6 +87,7 @@ public class AffectionPat : MonoBehaviour,ICategory
         }
         Interact_Init();
         Barrel_Init();
+        //Gallery_Index_Init();
     }
 
     public void Barrel_Init()
@@ -106,6 +107,18 @@ public class AffectionPat : MonoBehaviour,ICategory
         return patData;
     }
 
+    public void Gallery_Index_Init()
+    {
+        int _cnt = 0;
+        if (gameManager.pat_gallery_idx.Count <= 0)
+        {
+            while (_cnt < patData.Count)
+            {
+                gameManager.pat_gallery_idx.Add(0);
+                _cnt++;
+            }
+        }
+    }
     #endregion
 
 
@@ -204,6 +217,7 @@ public class AffectionPat : MonoBehaviour,ICategory
         int _restore_rand = gameManager.pat_interact[UnityEngine.Random.Range(0, gameManager.pat_interact.Count)];
         gameManager.pat_interact.Remove(_restore_rand);
         _interact_idx = _restore_rand;
+        gameManager.pat_gallery_idx[_interact_idx] = 1;
     }
 
     public void Interact_Init()

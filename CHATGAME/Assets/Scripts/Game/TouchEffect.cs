@@ -5,6 +5,7 @@ using UnityEngine;
 public class TouchEffect : MonoBehaviour
 {
     public Canvas canvas;
+    public GameObject parent;
     public RectTransform rt;
     public GameObject effect;
     public GameObject effect2;
@@ -27,7 +28,6 @@ public class TouchEffect : MonoBehaviour
         }
         TouchTime += Time.deltaTime;
 
-#if UNITY_ANDROID
         /*
         if (Input.touchCount > 0)
         {
@@ -47,7 +47,6 @@ public class TouchEffect : MonoBehaviour
             }
         }
         */
-#endif
     }
 
     void EffectOut1(Vector2 localPoint)
@@ -63,7 +62,7 @@ public class TouchEffect : MonoBehaviour
             }
         }
         // 처음이거나 사용가능한게 없을때 새로 만들어서 넣어줌
-        var gameobject = Instantiate(effect, canvas.transform);
+        var gameobject = Instantiate(effect, parent.transform);
         gameobject.transform.localPosition = localPoint;
         touchObjectPool.Add(gameobject);
     }
@@ -81,7 +80,7 @@ public class TouchEffect : MonoBehaviour
             }
         }
         // 처음이거나 사용가능한게 없을때 새로 만들어서 넣어줌
-        var gameobject = Instantiate(effect2, canvas.transform);
+        var gameobject = Instantiate(effect2, parent.transform);
         gameobject.transform.localPosition = localPoint;
         touchObjectPool2.Add(gameobject);
     }

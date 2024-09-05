@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class LogoManager : MonoBehaviour
 {
+    public Canvas logocanvas;
     public void OnClickNewBtn()
     {
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey("PlayerData");
         GameManager.Instance.LoadData();
         PreCalculateAffectionModule();
 
@@ -22,7 +23,8 @@ public class LogoManager : MonoBehaviour
 
     public void OnClickGalleryBtn()
     {
-        Debug.Log("구현 안했음");
+        //Debug.Log("구현 안했음");
+        UICtrl.Instance.ShowPanel("image/UI/UI_GalleryPanel", logocanvas.transform);
     }
 
     public void OnClickExitBtn()
@@ -42,5 +44,17 @@ public class LogoManager : MonoBehaviour
         AffectionTwt.Instance.Interact_Init();
         AffectionPat.Instance.Interact_Init();
         AffectionDate.Instance.Interact_Init();
+        Waifu.Instance.Gallery_Index_Init();
+        AffectionTwt.Instance.Gallery_Index_Init();
+        AffectionPat.Instance.Gallery_Index_Init();
+        //AffectionDate.Instance.Gallery_Index_Init();
     }
+
+
+    public void OnClickDel()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("ALL DELETE");
+    }
+
 }

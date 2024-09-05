@@ -266,6 +266,9 @@ public class UI : MonoBehaviour
 
         waifu = SingletonManager.Instance.GetSingleton<Waifu>();
 
+        /*foreach (var a in Waifu.Instance.affection_barrel)
+            Debug.Log(a);*/
+
         if (textState == TextUIState.Typing)
             StopTypingEffect();
         else
@@ -384,6 +387,7 @@ public class UI : MonoBehaviour
         }
     }
 
+
     public void DataBtnEvent()
     {
         string temp = waifu.Check_Category();
@@ -422,7 +426,17 @@ public class UI : MonoBehaviour
         GameManager.Instance.SaveData();
     }
 
+    public void OnClickGalBtn()
+    {
+        UICtrl.Instance.ShowPanel("image/UI/UI_GalleryPanel", transform);
+    }
+
+
     // temp version
+    public void OnClickMenuButton()
+    {
+        UICtrl.Instance.ShowPanel("image/UI/UI_MenuPopup", transform);
+    }
     public void OnclickLanBtn()
     {
         if (GameManager.Instance.language == GameManager.Language.Kor)
