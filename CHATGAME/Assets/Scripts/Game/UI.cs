@@ -41,6 +41,9 @@ public class UI : MonoBehaviour
     public Image heart1;
     public Image heart2;
     public Image heart3;
+    public float fillSpeed = 1f;
+    private float currentFill = 0f;
+    private float targetFill = 0f;
 
     DataManager dataManager;
     ICategory waifu;
@@ -74,6 +77,7 @@ public class UI : MonoBehaviour
 
     private Action SettingAction;
     #endregion
+
     void Awake()
     {
         if (_instance == null)
@@ -101,8 +105,6 @@ public class UI : MonoBehaviour
         {
             waifu = SingletonManager.Instance.GetSingleton<Waifu>();
         }
-        
-
 
         diaSheet = dataManager.GetSheetData("Dialogue");
         //ImgSheet = dataManager.GetSheetData("ImgPath");
@@ -122,6 +124,12 @@ public class UI : MonoBehaviour
         SettingAction += SetText;
 
         StartCoroutine(Init());
+    }
+
+    void Update()
+    {
+        currentFill = Mathf.Lerp(currentFill, targetFill, Time.deltaTime * fillSpeed);
+        guageImg.fillAmount = currentFill / 1;
     }
 
     IEnumerator Init()
@@ -211,7 +219,8 @@ public class UI : MonoBehaviour
         heart1.gameObject.SetActive(ratio < 0.5);
         heart2.gameObject.SetActive(0.5 <= ratio && ratio < 1);
         heart3.gameObject.SetActive(ratio >= 1);
-        guageImg.fillAmount = ratio;
+        targetFill = ratio;
+        //guageImg.fillAmount = ratio;
     }
 
     public void SetText()
