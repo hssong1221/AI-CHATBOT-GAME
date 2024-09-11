@@ -23,6 +23,14 @@ public class UI_MenuPopup : BasePanel
 
     private float soundOpt;       // 전체 볼륨
     private int languageOpt;      // 언어 설정 idx
+
+    public static Action backAction;
+
+    void Start()
+    {
+        backAction += OnClickBackBtn;
+    }
+
     public override void InitChild()
     {
         soundOpt = PlayerPrefs.GetFloat("soundOpt", 0.3f);
@@ -33,7 +41,6 @@ public class UI_MenuPopup : BasePanel
 
         OnClickSndBtn();
     }
-
 
     #region BTN
     public void OnClickSndBtn()
@@ -59,6 +66,14 @@ public class UI_MenuPopup : BasePanel
             panel.SetActive(false);
 
         panelList[idx].SetActive(true);
+    }
+
+    public override void OnClickBackBtn()
+    {
+        // 저장 안하고 끄면 처음 들어왔던 설정으로 바뀌는 거임
+        GameManager.Instance.soundManager.SoundSetting(Data.SoundOpt);
+        GameManager.Instance.language = (GameManager.Language)Data.LanguageOpt;
+        EndPanel();
     }
 
     #endregion
@@ -110,7 +125,7 @@ public static class Data
         set
         {
             languageOpt = value;
-            PlayerPrefs.SetFloat(GetMemberName(() => languageOpt), value);
+            PlayerPrefs.SetInt(GetMemberName(() => languageOpt), value);
         }
     }
 

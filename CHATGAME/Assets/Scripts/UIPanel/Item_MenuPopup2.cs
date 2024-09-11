@@ -83,5 +83,6 @@ public class Item_MenuPopup2 : MonoBehaviour
     public void OnClickSaveBtn()
     {
         Data.LanguageOpt = (int)GameManager.Instance.language;
+        //UI_MenuPopup.backAction?.Invoke();
     }
 }

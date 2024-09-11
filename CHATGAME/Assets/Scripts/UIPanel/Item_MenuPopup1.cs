@@ -37,5 +37,6 @@ public class Item_MenuPopup1 : MonoBehaviour
     public void OnClickSaveBtn()
     {
         Data.SoundOpt = slider1.value;
+        //UI_MenuPopup.backAction?.Invoke();
     }
 }
