@@ -61,9 +61,71 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
                 }
             }
         }
+        else if((_category == "Poke" /*&& GameManager.Instance.poke_event_gallery_idx[_itemIdx] == 1*/))
+        {
+            var str = Waifu.Instance.dialogueData[_itemIdx]["category"];
+            var afflv = int.Parse(Waifu.Instance.dialogueData[_itemIdx]["affection"]);
+            var col = int.Parse(Waifu.Instance.dialogueData[_itemIdx]["number"])-1;
+
+            if (str == "Poke" && afflv < 2)
+            {
+                if (GameManager.Instance.poke_event_gallery_list[afflv * 2][col] == 1)
+                {
+                    EnableBtn();
+                }
+                else
+                {
+                    DisableBtn();
+                }
+            }
+            else if(str == "Poke" && afflv >= 2)
+            {
+                if (GameManager.Instance.poke_event_gallery_list[4][col] == 1)
+                {
+                    EnableBtn();
+                }
+                else
+                {
+                    DisableBtn();
+                }
+            }
+            else if(str == "Event" && afflv == 0)
+            {
+                if (GameManager.Instance.poke_event_gallery_list[1][col] == 1)
+                {
+                    EnableBtn();
+                }
+                else
+                {
+                    DisableBtn();
+                }
+            }
+            else if (str == "Event" && afflv == 1)
+            {
+                if (GameManager.Instance.poke_event_gallery_list[3][col] == 1)
+                {
+                    EnableBtn();
+                }
+                else
+                {
+                    DisableBtn();
+                }
+            }
+            else if (str == "Event" && afflv >= 2)
+            {
+                if (GameManager.Instance.poke_event_gallery_list[afflv+3][col] == 1)
+                {
+                    EnableBtn();
+                }
+                else
+                {
+                    DisableBtn();
+                }
+            }
+        }
         else
         {
-            if((_category == "Poke" && GameManager.Instance.poke_event_gallery_idx[_itemIdx] == 1) || (_category == "Twitter" && GameManager.Instance.twt_gallery_idx[_itemIdx] == 1) || (_category == "Pat" && GameManager.Instance.pat_gallery_idx[_itemIdx] == 1))
+            if( (_category == "Twitter" && GameManager.Instance.twt_gallery_idx[_itemIdx] == 1) || (_category == "Pat" && GameManager.Instance.pat_gallery_idx[_itemIdx] == 1))
             {
                 EnableBtn();
             }

@@ -67,11 +67,18 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     {
         int _cnt = 0;
         _dataLength = 0;
+
+        while (_cnt < GameManager.Instance.poke_event_gallery_list.Count) 
+        {
+            _dataLength += GameManager.Instance.poke_event_gallery_list[_cnt].Count;
+            _cnt++;
+        }
+        /*
         while (_cnt < 6)
         {
             _dataLength += affection_barrel[_cnt];
             _cnt++;
-        }
+        }*/
     }
 
     public string CheckCategory(int idx)
@@ -107,6 +114,10 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
 
         if (poke_event_data.TryGetValue("affection", out var affection))
         {
+            if (int.Parse(affection) >= 2 && poke_event_data["category"] == "Poke")//member 이상의 poke 인 경우
+            {
+                return "Member";
+            }
             return aff_str[int.Parse((affection.ToString()))];
         }
         else
@@ -153,17 +164,11 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     public int CalculateCorrection(int idx)
     {
         int restore = 0;
-        int _cnt = 0;
-        
-        while(idx >= 0)
+        var poke_event_data = Waifu.Instance.dialogueData[idx];
+
+        if (poke_event_data.TryGetValue("number", out var num))
         {
-            restore = idx;
-            idx -= affection_barrel[_cnt];
-            if(idx < 0)
-            {
-                return restore;
-            }
-            _cnt++;
+            restore = int.Parse(num.ToString());
         }
 
         return restore;
@@ -175,7 +180,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
 
         if(category_status.ToString() == "Poke")
         {
-            _combineImgPath = $"image/{CheckCategory(index)}/{CheckAffectionLevel(index)}/{CalculateCorrection(index) + 1}";
+            _combineImgPath = $"image/{CheckCategory(index)}/{CheckAffectionLevel(index)}/{CalculateCorrection(index)/* + 1*/}";
         }
         else if(category_status.ToString() == "Twitter" || category_status.ToString() == "Pat")
         {

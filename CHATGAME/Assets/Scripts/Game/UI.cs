@@ -195,10 +195,10 @@ public class UI : MonoBehaviour
         
         if(category.Equals("Event") || GameManager.Instance.affection_lv % 2 == 1)
         {
-            imgPath = $"image/Event/{affState}/{imgFileName + 1}";
+            imgPath = $"image/Event/{affState}/{imgFileName/* + 1*/}";
         }
         else if (category.Equals("Poke")/* || category.Equals("Event")*/)
-            imgPath = $"image/{category}/{affState}/{imgFileName + 1}";
+            imgPath = $"image/{category}/{affState}/{imgFileName/* + 1*/}";
         else if(category.Equals("Date"))
             imgPath = $"image/{category}/{AffectionDate.Instance.Interact_date_path()}";
         else
