@@ -31,9 +31,10 @@ public class GameManager : MonoBehaviour
 
     public enum Language
     {
-        Kor,
-        Eng,
-        China,
+        Kor = 1,
+        Eng = 2,
+        China = 3,
+        Japan = 4,
     }
     public Language language;
 
@@ -123,7 +124,10 @@ public class GameManager : MonoBehaviour
                 selecter = "entext";
                 break;
             case Language.China:
-                selecter = "china";
+                selecter = "cntext";
+                break;
+            case Language.Japan:
+                selecter = "jptext";
                 break;
             default:
                 selecter = "text";

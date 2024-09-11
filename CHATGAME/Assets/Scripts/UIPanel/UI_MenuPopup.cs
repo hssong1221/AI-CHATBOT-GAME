@@ -19,12 +19,14 @@ public class UI_MenuPopup : BasePanel
     public List<GameObject> panelList; // inspector 에서 집어넣기
 
     public Item_MenuPopup1 item_popup1;
+    public Item_MenuPopup2 item_popup2;
 
     private float soundOpt;       // 전체 볼륨
-
+    private int languageOpt;      // 언어 설정 idx
     public override void InitChild()
     {
         soundOpt = PlayerPrefs.GetFloat("soundOpt", 0.3f);
+        languageOpt = PlayerPrefs.GetInt("languageOpt", 1);
 
         foreach (var p in panelList)
             p.SetActive(false);
@@ -43,6 +45,7 @@ public class UI_MenuPopup : BasePanel
     public void OnClickCtrlBtn()
     {
         BtnAction(1);
+        LanBtnAction();
     }
 
     public void OnClickAccBtn()
@@ -66,12 +69,20 @@ public class UI_MenuPopup : BasePanel
         item_popup1.Init(temp);
     }
 
+    public void LanBtnAction()
+    {
+        int temp = languageOpt;
+        item_popup2.Init(temp);
+    }
     
 }
+
+// 설정용 DATA
 public static class Data
 {
     #region Variable
     private static float soundOpt;
+    private static int languageOpt;
     #endregion
 
     #region get/set
@@ -86,6 +97,20 @@ public static class Data
         {
             soundOpt = value;
             PlayerPrefs.SetFloat(GetMemberName(() => soundOpt), value);
+        }
+    }
+
+    //언어 설정 idx
+    public static int LanguageOpt
+    {
+        get
+        {
+            return languageOpt;
+        }
+        set
+        {
+            languageOpt = value;
+            PlayerPrefs.SetFloat(GetMemberName(() => languageOpt), value);
         }
     }
 

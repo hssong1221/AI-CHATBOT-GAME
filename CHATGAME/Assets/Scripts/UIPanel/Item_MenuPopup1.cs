@@ -9,7 +9,7 @@ public class Item_MenuPopup1 : MonoBehaviour
     public Slider slider2;
     public Slider slider3;
 
-    
+    public Button SaveBtn;
 
     private void Start()
     {
@@ -23,6 +23,9 @@ public class Item_MenuPopup1 : MonoBehaviour
         slider3.value = valList[2];
 
         GameManager.Instance.soundManager.SoundSetting(slider1.value);
+
+        SaveBtn.onClick.RemoveAllListeners();
+        SaveBtn.onClick.AddListener(OnClickSaveBtn);
     }
 
     public void OnSlider1Changed(float val)
@@ -30,6 +33,7 @@ public class Item_MenuPopup1 : MonoBehaviour
         slider1.value = val;
         GameManager.Instance.soundManager.SoundSetting(val);
     }
+
     public void OnClickSaveBtn()
     {
         Data.SoundOpt = slider1.value;
