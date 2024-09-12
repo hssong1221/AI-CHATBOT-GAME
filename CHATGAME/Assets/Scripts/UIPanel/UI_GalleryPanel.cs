@@ -9,6 +9,7 @@ public struct Item_Info
 {
     //public Image mainImg;
     public string mainText;
+    public string imgPath;
 }
 
 public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
@@ -20,8 +21,8 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     [SerializeField]
     private int _dataLength;
 
+    [SerializeField]
     private List<Item_Info> _contactList = new List<Item_Info>();
-    public List<int> affection_barrel = new List<int>();
     public List<string> date_img_id = new List<string>();
 
     public enum Category_status
@@ -38,7 +39,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     private void Awake()
     {
         _recyclableScrollRect.DataSource = this;
-        BarrelInit();
+        PokeEventDataLength();
         category_status = Category_status.Poke;
         Date_Img_Id_List_Init(3,"Date");
     }
@@ -50,18 +51,6 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     }
 
     #region Make Image Path
-    public void BarrelInit()
-    {
-        int _cnt = 0;
-
-        while (_cnt < 6)
-        {
-            affection_barrel.Add(Interact_cnt(_cnt, "Poke"));
-            affection_barrel.Add(Interact_cnt(_cnt, "Event"));
-            _cnt++;
-        }
-        PokeEventDataLength();
-    }
 
     public void PokeEventDataLength()
     {
@@ -82,13 +71,12 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     }
 
     public string CheckCategory(int idx)
-    {
+    {/*
         if (Waifu.Instance.dialogueData.Count <= 0)
         {
             return "Error";
         }
 
-        //var poke_event_data = poke_event[idx];
         var poke_event_data = Waifu.Instance.dialogueData[idx];
 
         if (poke_event_data.TryGetValue("category", out var category))
@@ -98,12 +86,36 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         else
         {
             return "Error";
+        }*/
+        if(GameManager.Instance.poke_event_gallery_list.Count <= 0)
+        {
+            return "Error";
         }
+
+        var poke_event_data = GameManager.Instance.poke_event_gallery_list;
+        List<string> cate = new List<string>() { "Poke", "Event", "Poke", "Event", "Poke", "Event", "Event", "Event"};
+        int row = 0;
+
+        while(row < poke_event_data.Count)
+        {
+            if (idx - poke_event_data[row].Count < 0) 
+            {
+                break;
+            }
+            else
+            {
+                idx -= poke_event_data[row].Count;
+                row++;
+            }
+            
+        }
+
+        return cate[row];
     }
 
     public string CheckAffectionLevel(int idx)
-    {
-        if (Waifu.Instance.dialogueData.Count <= 0/* || twitter.Count <= 0 || pat.Count <= 0 || date.Count <= 0*/)
+    {/*
+        if (Waifu.Instance.dialogueData.Count <= 0)
         {
             return "Error";
         }
@@ -123,7 +135,30 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         else
         {
             return "Error";
+        }*/
+        if(GameManager.Instance.poke_event_gallery_list.Count <= 0)
+        {
+            return "Error";
         }
+
+        List<string> aff_str = new List<string>() { "Intruder", "Intruder", "Suspicious", "Suspicious", "Member", "Member","Intimate", "More", "Boyfriend" };
+        var poke_event_data = GameManager.Instance.poke_event_gallery_list;
+        int row = 0;
+
+        while(row<poke_event_data.Count)
+        {
+            if(idx - poke_event_data[row].Count < 0)
+            {
+                break ;
+            }
+            else
+            {
+                idx -= poke_event_data[row].Count; 
+                row++;
+            }
+        }
+
+        return aff_str[row];
     }
 
     public int Interact_cnt(int aff_lv, string cate)
@@ -162,7 +197,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     }
 
     public int CalculateCorrection(int idx)
-    {
+    {/*
         int restore = 0;
         var poke_event_data = Waifu.Instance.dialogueData[idx];
 
@@ -171,7 +206,25 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
             restore = int.Parse(num.ToString());
         }
 
-        return restore;
+        return restore;*/
+
+        int row = 0;
+        var poke_event_data = GameManager.Instance.poke_event_gallery_list;
+
+        while(row < poke_event_data.Count)
+        {
+            if(idx - poke_event_data[row].Count < 0)
+            {
+                break;
+            }
+            else
+            {
+                idx -= poke_event_data[row].Count;
+                row++;
+            }
+        }
+
+        return idx;
     }
 
     public string CombineImgPath(int index)
@@ -180,7 +233,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
 
         if(category_status.ToString() == "Poke")
         {
-            _combineImgPath = $"image/{CheckCategory(index)}/{CheckAffectionLevel(index)}/{CalculateCorrection(index)/* + 1*/}";
+            _combineImgPath = $"image/{CheckCategory(index)}/{CheckAffectionLevel(index)}/{CalculateCorrection(index) + 1}";
         }
         else if(category_status.ToString() == "Twitter" || category_status.ToString() == "Pat")
         {
@@ -233,6 +286,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         {
             Item_Info obj = new Item_Info();
             obj.mainText = i.ToString();
+            obj.imgPath = CombineImgPath(i);
             _contactList.Add(obj);
         }
     }
@@ -254,7 +308,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         string imgpath = CombineImgPath(index);
         //Casting to the implemented Cell
         var item = cell as Item_GalleryScroll;
-        item.ConfigureCell(_contactList[index], index, imgpath, category_status.ToString(), date_img_id[index % date_img_id.Count]);
+        item.ConfigureCell(_contactList[index], index, /*imgpath,*/ category_status.ToString(), date_img_id[index % date_img_id.Count]);
     }
     #endregion
 
@@ -266,6 +320,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         PokeEventDataLength();
         InitData();
         //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
+        GetItemCount();
     }
 
     public void SetCategoryTwtBtn()

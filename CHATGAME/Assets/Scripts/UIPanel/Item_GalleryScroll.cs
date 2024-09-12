@@ -14,7 +14,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     //Model
     private Item_Info _itemInfo;
     private int _itemIdx;
-    public string ImgPath;
+    //public string ImgPath;
     private string _category;
     private string _imgId;
 
@@ -23,18 +23,19 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     public GameObject enableBtn;
     public GameObject disableBtn;
 
-    public void ConfigureCell(Item_Info itemInfo, int itemIndex, string _imgpath, string category, string imgId)
+    public void ConfigureCell(Item_Info itemInfo, int itemIndex, /*string _imgpath,*/ string category, string imgId)
     {
         _itemIdx = itemIndex;
         _itemInfo = itemInfo;
-        ImgPath = _imgpath;
+        //ImgPath = _imgpath;
         _category = category;
         _imgId = imgId;
 
         //nameLabel.text = itemInfo.mainText;
-        nameLabel.text = _imgpath;
+        //nameLabel.text = _imgpath;
 
-        Sprite sprite = Resources.Load<Sprite>(_imgpath);
+        //Sprite sprite = Resources.Load<Sprite>(_imgpath);
+        Sprite sprite = Resources.Load<Sprite>(_itemInfo.imgPath);
         if (sprite != null)
             mainImg.sprite = sprite;
         else
@@ -62,7 +63,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
             }
         }
         else if((_category == "Poke" /*&& GameManager.Instance.poke_event_gallery_idx[_itemIdx] == 1*/))
-        {
+        {/*
             var str = Waifu.Instance.dialogueData[_itemIdx]["category"];
             var afflv = int.Parse(Waifu.Instance.dialogueData[_itemIdx]["affection"]);
             var col = int.Parse(Waifu.Instance.dialogueData[_itemIdx]["number"])-1;
@@ -121,6 +122,31 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
                 {
                     DisableBtn();
                 }
+            }*/
+            int row = 0;
+            int restore = _itemIdx;
+            var poke_event_data = GameManager.Instance.poke_event_gallery_list;
+            
+            while(row < poke_event_data.Count)
+            {
+                if(restore - poke_event_data[row].Count < 0)
+                {
+                    break;
+                }
+                else
+                {
+                    restore -= poke_event_data[row].Count;
+                    row++;
+                }
+            }
+
+            if (poke_event_data[row][restore] == 1)
+            {
+                EnableBtn();
+            }
+            else
+            {
+                DisableBtn();
             }
         }
         else
