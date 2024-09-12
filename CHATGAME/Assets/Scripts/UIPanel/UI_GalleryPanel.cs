@@ -305,7 +305,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     /// </summary>
     public void SetCell(ICell cell, int index)
     {
-        string imgpath = CombineImgPath(index);
+        //string imgpath = CombineImgPath(index);
         //Casting to the implemented Cell
         var item = cell as Item_GalleryScroll;
         item.ConfigureCell(_contactList[index], index, /*imgpath,*/ category_status.ToString(), date_img_id[index % date_img_id.Count]);

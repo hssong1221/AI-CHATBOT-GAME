@@ -87,7 +87,7 @@ public class AffectionPat : MonoBehaviour,ICategory
         }
         Interact_Init();
         Barrel_Init();
-        //Gallery_Index_Init();
+        Gallery_Index_Init();
     }
 
     public void Barrel_Init()

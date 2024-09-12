@@ -52,8 +52,8 @@ public class Waifu : MonoBehaviour, ICategory
                                                                                                                                                                        /// category 종류별 제공 경험치
                                                                                                                                                                        /// </summary>
     private int _aff_poke_event_idx = 0;/// <summary>
-    /// 호감도 경험치 + 보정 수치(Correction_number) = Interact_idx 계산 과정에 쓰이는 변수
-    /// </summary>
+                                        /// 호감도 경험치 + 보정 수치(Correction_number) = Interact_idx 계산 과정에 쓰이는 변수
+                                        /// </summary>
     private List<int> gallery_count = new List<int>() { 5,2,7,3,21,2,4,4};
 
     public enum Affection_status
