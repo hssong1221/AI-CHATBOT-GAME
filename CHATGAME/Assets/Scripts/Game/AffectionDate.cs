@@ -125,6 +125,8 @@ public class AffectionDate : MonoBehaviour, ICategory
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+
+        affection_barrel[10] = 1;
     }
 
     public void Increase_Init()//Date 상호작용마다 호감도 상승치를 결정
@@ -175,7 +177,10 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public void Affection_ascend()
     {
-        //gameManager.affection_exp += date_affection_increase[_interact_idx];
+        if (gameManager.affection_lv >= 10)
+        {
+            return;
+        }
         gameManager.affection_exp += date_affection_increase[gameManager.date_sequence];
         Affection_level_calculate();
     }

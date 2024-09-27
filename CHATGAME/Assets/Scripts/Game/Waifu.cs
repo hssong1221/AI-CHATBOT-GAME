@@ -105,8 +105,6 @@ public class Waifu : MonoBehaviour, ICategory
         Interact_Init();
     }
 
-    
-
     #region EXCEL Data
     public void SetSheetData()
     {
@@ -140,6 +138,8 @@ public class Waifu : MonoBehaviour, ICategory
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+
+        affection_barrel[10] = 1;
     }
 
     public List<Dictionary<string, string>> GetDataList(string name)
@@ -192,6 +192,10 @@ public class Waifu : MonoBehaviour, ICategory
 
     public void Affection_ascend()
     {
+        if(gameManager.affection_lv >= 10)
+        {
+            return;
+        }
         gameManager.affection_exp += affection_increase[category_restore];
 
         Affection_level_calculate();
@@ -220,7 +224,7 @@ public class Waifu : MonoBehaviour, ICategory
     {
         float aff_percent = 0;
 
-        if (gameManager.affection_lv % 2 == 1)
+        if (gameManager.affection_lv % 2 == 1 || gameManager.affection_lv >= 10)
         {
             aff_percent = 1.0f;
         }
@@ -289,7 +293,14 @@ public class Waifu : MonoBehaviour, ICategory
             Interact_Init();
         }
 
-        int _I_P_N = gameManager.Correction_number;
+        int _I_P_N = 0;
+
+        if (gameManager.affection_lv >= 10)
+        {
+            gameManager.Correction_number = 76;//특이 케이스
+        }
+
+        _I_P_N = gameManager.Correction_number;
         int _restore_rand = 0;
         category_restore = "Poke";
 
@@ -322,10 +333,21 @@ public class Waifu : MonoBehaviour, ICategory
 
         int _cnt = 0;
 
-        while (_cnt < Affection_sheet(gameManager.affection_lv, "Poke"))
+        if (gameManager.affection_lv >= 10)
         {
-            gameManager.affection_interact.Add(_cnt);
-            _cnt++;
+            while (_cnt < Affection_sheet(4, "Poke"))
+            {
+                gameManager.affection_interact.Add(_cnt);
+                _cnt++;
+            }
+        }
+        else
+        {
+            while (_cnt < Affection_sheet(gameManager.affection_lv / 2, "Poke"))
+            {
+                gameManager.affection_interact.Add(_cnt);
+                _cnt++;
+            }
         }
     }
 

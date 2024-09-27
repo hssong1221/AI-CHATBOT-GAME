@@ -110,6 +110,8 @@ public class AffectionTwt : MonoBehaviour, ICategory
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+
+        affection_barrel[10] = 1;
     }
 
     public List<Dictionary<string , string>> GetDataList(string name)
@@ -132,25 +134,16 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     #endregion
 
-    #region Player Data
-    /*
-    public void CreatePlayerData(bool isSave = false)
-    {
-        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact, affection_interact, affection_interact);
-        if (isSave)
-        {
-            GameManager.Instance.SaveData(data);
-        }
-    }*/
-    #endregion
-
     public void Affection_ascend()
     {
-        if(gameManager.affection_lv > 4)
+        if (gameManager.affection_lv >= 10)
+        {
+            return;
+        }
+        if (gameManager.affection_lv > 4)
         {
             gameManager.affection_exp += affection_increase["Twitter"];
-        }
-        
+        }        
 
         Affection_level_calculate();
     }
