@@ -414,6 +414,8 @@ public class UI : MonoBehaviour
         Debug.Log($"before : {GameManager.Instance.date_sequence}  {data[dateIdx.ToString()]}");
         DateLimitNum += 1;
 
+        waifu.Affection_ascend();
+
         //if (DateLimitNum == data[dateIdx.ToString()])
         if (GameManager.Instance.date_sequence >= data[dateIdx.ToString()])
         {
@@ -424,7 +426,7 @@ public class UI : MonoBehaviour
             isDateOut = true;
         }
 
-        waifu.Affection_ascend();
+        
         //waifu.Interaction_Path();
 
         //SettingAction?.Invoke();
