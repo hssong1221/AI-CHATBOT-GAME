@@ -3,10 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Advertisements;
 
-public class LogoManager : MonoBehaviour
+public class LogoManager : MonoBehaviour, IUnityAdsInitializationListener
 {
     public Canvas logocanvas;
+    //ads ฐüทร test 
+    public string aosGameID;
+    public bool testMode = true;
+    public string gameID;
+
+    private void Awake()
+    {
+        InitialzeAds();
+    }
+
+    public void InitialzeAds()
+    {
+#if UNITY_EDITOR
+        gameID = aosGameID;
+#elif UNITY_ANDROID
+        gameID = aosGameID:  
+#endif
+        if (!Advertisement.isInitialized && Advertisement.isSupported)
+        {
+            Advertisement.Initialize(gameID, testMode, this);
+        }
+    }
+
+    public void OnInitializationComplete()
+    {
+        Debug.Log("unity ads init complete");
+    }
+
+    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
+    {
+        Debug.LogError($"unity ads failed {error.ToString()} - {message}");
+    }
+
     public void OnClickNewBtn()
     {
         PlayerPrefs.DeleteKey("PlayerData");
@@ -15,6 +49,7 @@ public class LogoManager : MonoBehaviour
 
         Invoke("StartGame", 0.5f);
     }
+
 
     public void OnClickLoadBtn()
     {

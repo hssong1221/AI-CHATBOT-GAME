@@ -1516,6 +1516,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logocanvas: {fileID: 356263338}
+  aosGameID: 5707447
+  testMode: 1
+  gameID: 
 --- !u!1 &977302789
 GameObject:
   m_ObjectHideFlags: 0
