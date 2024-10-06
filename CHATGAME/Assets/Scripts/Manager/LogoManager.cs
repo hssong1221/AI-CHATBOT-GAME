@@ -13,6 +13,12 @@ public class LogoManager : MonoBehaviour, IUnityAdsInitializationListener
     public bool testMode = true;
     public string gameID;
 
+    [SerializeField]
+    InterstitialAdsBtn interstitialAdsBtn;
+    [SerializeField]
+    RewardedAdsButton rewardedAdsBtn;
+    
+
     private void Awake()
     {
         InitialzeAds();
@@ -34,6 +40,10 @@ public class LogoManager : MonoBehaviour, IUnityAdsInitializationListener
     public void OnInitializationComplete()
     {
         Debug.Log("unity ads init complete");
+
+        // unity ads 초기화 시킨후에 광고 load가능
+        interstitialAdsBtn.LoadAd();
+        rewardedAdsBtn.LoadAd();
     }
 
     public void OnInitializationFailed(UnityAdsInitializationError error, string message)
