@@ -27,6 +27,7 @@ public class BasePanel : MonoBehaviour
     public virtual void EndPanel()
     {
         gameObject.SetActive(false);
+        UICtrl.Instance.HidePanel(gameObject);
     }
 
     public virtual void OnClickBackBtn()

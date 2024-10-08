@@ -51,8 +51,10 @@ public class UICtrl : MonoBehaviour
         if(panelInstance.ContainsKey(pgo.name))
         {
             //panelInstance[pgo.name].SetActive(true);
-
             var bp = panelInstance[pgo.name].GetComponent<BasePanel>();
+
+            bp.transform.SetParent(parent, false);
+
             bp.Init();
 
             return panelInstance[pgo.name].gameObject;
@@ -63,6 +65,11 @@ public class UICtrl : MonoBehaviour
             panelInstance.Add(pgo.name, CurrentPanel);
             return pgo;
         }
+    }
+
+    public void HidePanel(GameObject panel)
+    {
+        panel.transform.SetParent(transform, false);
     }
 
 }

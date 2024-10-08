@@ -87,7 +87,7 @@ public class AffectionPat : MonoBehaviour,ICategory
         }
         Interact_Init();
         Barrel_Init();
-        //Gallery_Index_Init();
+        Gallery_Index_Init();
     }
 
     public void Barrel_Init()
@@ -100,6 +100,8 @@ public class AffectionPat : MonoBehaviour,ICategory
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+
+        affection_barrel[10] = 1;
     }
 
     public List<Dictionary<string, string>> GetDataList(string name)
@@ -124,6 +126,10 @@ public class AffectionPat : MonoBehaviour,ICategory
 
     public void Affection_ascend()
     {
+        if (gameManager.affection_lv >= 10)
+        {
+            return;
+        }
         gameManager.affection_exp += affection_increase["Pat"];
 
         Affection_level_calculate();

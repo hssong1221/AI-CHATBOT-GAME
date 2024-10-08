@@ -24,6 +24,12 @@ public class LogoManager : MonoBehaviour
     public void OnClickGalleryBtn()
     {
         //Debug.Log("구현 안했음");
+        if (!PlayerPrefs.HasKey("PlayerData"))
+        {
+            Debug.Log("아직 플레이어 데이터가 없습니다 라는 alert창을 띄울 계획");
+            return;
+        }
+
         UICtrl.Instance.ShowPanel("image/UI/UI_GalleryPanel", logocanvas.transform);
     }
 

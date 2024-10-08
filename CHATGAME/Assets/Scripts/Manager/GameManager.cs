@@ -31,9 +31,10 @@ public class GameManager : MonoBehaviour
 
     public enum Language
     {
-        Kor,
-        Eng,
-        China,
+        Kor = 1,
+        Eng = 2,
+        China = 3,
+        Japan = 4,
     }
     public Language language;
 
@@ -71,7 +72,8 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region NON_INIT Var
-    public List<int> poke_event_gallery_idx = new List<int>();
+    //public List<int> poke_event_gallery_idx = new List<int>();
+    public List<List<int>> poke_event_gallery_list = new List<List<int>>();
     public List<int> twt_gallery_idx = new List<int>();
     public List<int> pat_gallery_idx = new List<int>();
     public Dictionary<string, int> date_gallery_idx = new Dictionary<string, int>();
@@ -101,6 +103,10 @@ public class GameManager : MonoBehaviour
            LoadData() 
         else
             playerData = new PlayerData();*/
+
+        // Setting Data
+        language = (Language)PlayerPrefs.GetInt("languageOpt", 1);
+
     }
 
 
@@ -123,7 +129,10 @@ public class GameManager : MonoBehaviour
                 selecter = "entext";
                 break;
             case Language.China:
-                selecter = "china";
+                selecter = "cntext";
+                break;
+            case Language.Japan:
+                selecter = "jptext";
                 break;
             default:
                 selecter = "text";
@@ -157,7 +166,8 @@ public class GameManager : MonoBehaviour
     }
     public class NonInitData
     {
-        public List<int> poke_event_gallery_idx = new List<int>();
+        //public List<int> poke_event_gallery_idx = new List<int>();
+        public List<List<int>> poke_event_gallery_list = new List<List<int>>();
         public List<int> twt_gallery_idx = new List<int>();
         public List<int> pat_gallery_idx = new List<int>();
         public Dictionary<string, int> date_gallery_idx = new Dictionary<string, int>();
@@ -202,7 +212,8 @@ public class GameManager : MonoBehaviour
     {
         return new NonInitData
         {
-            poke_event_gallery_idx = this.poke_event_gallery_idx,
+            //poke_event_gallery_idx = this.poke_event_gallery_idx,
+            poke_event_gallery_list = this.poke_event_gallery_list,
             twt_gallery_idx = this.twt_gallery_idx,
             pat_gallery_idx = this.pat_gallery_idx,
             date_gallery_idx = this.date_gallery_idx,
@@ -210,7 +221,8 @@ public class GameManager : MonoBehaviour
     }
     public void SetNonInitData(NonInitData data)
     {
-        this.poke_event_gallery_idx = data.poke_event_gallery_idx;
+        //this.poke_event_gallery_idx = data.poke_event_gallery_idx;
+        this.poke_event_gallery_list = data.poke_event_gallery_list;
         this.twt_gallery_idx = data.twt_gallery_idx;
         this.pat_gallery_idx = data.pat_gallery_idx;
         this.date_gallery_idx = data.date_gallery_idx;
