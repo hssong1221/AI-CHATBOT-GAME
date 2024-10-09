@@ -484,7 +484,7 @@ public class UI : MonoBehaviour
     {
         Debug.Log($"전체 인덱스 : {GameManager.Instance.Correction_number + GameManager.Instance.affection_exp}");
         // 엔딩을 보기 전에만 유효한 거라서 엔딩 후에도 일관되게 작동할 뭔가가 필요함
-        if (GameManager.Instance.Correction_number + GameManager.Instance.affection_exp % 3 == 0)
+        if ((GameManager.Instance.Correction_number + GameManager.Instance.affection_exp) % 3 == 0)
         {
             RewardedAdsAction.rewardedAdsAction();
             return;

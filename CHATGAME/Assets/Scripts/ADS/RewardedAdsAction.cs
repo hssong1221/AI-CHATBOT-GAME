@@ -60,7 +60,7 @@ public class RewardedAdsAction : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         {
             Debug.Log("Unity Ads Rewarded Ad Completed");
             // 광고 재생 후 줄 보상 코드
-            LoadAd();
+            //LoadAd();
         }
     }
 
