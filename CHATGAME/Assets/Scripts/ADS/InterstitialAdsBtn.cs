@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 
 
+// interstitial ad 는 사용을 안할 거 같아요
+// 전면광고는 스킵이 있기 때문
+
 public class InterstitialAdsBtn : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     // 광고 유닛 ID는 대시보드에 있는데 Interstitial Rewarded Banner 셋중에 하나임

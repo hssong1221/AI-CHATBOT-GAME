@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     //public NonInitData nonInitData;
     
     public SoundManager soundManager;
+    public AdsManager adsManager;
 
     public enum Language
     {
