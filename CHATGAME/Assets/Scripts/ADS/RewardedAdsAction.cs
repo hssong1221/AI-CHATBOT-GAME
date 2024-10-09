@@ -5,13 +5,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class RewardedAdsButtonAction : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
+public class RewardedAdsAction : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
     [SerializeField] string _androidAdUnitId = "Rewarded_Android";
     [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
     string _adUnitId = null;
 
-    public static Action RewardedAdsAction;
+    public static Action rewardedAdsAction;
 
     void Awake()
     {
@@ -45,7 +45,7 @@ public class RewardedAdsButtonAction : MonoBehaviour, IUnityAdsLoadListener, IUn
         Debug.Log("Ad Loaded: " + adUnitId);
         if (adUnitId.Equals(_adUnitId))
         {
-             RewardedAdsAction += ShowAd;
+            rewardedAdsAction += ShowAd;
         }
     }
 
@@ -60,6 +60,7 @@ public class RewardedAdsButtonAction : MonoBehaviour, IUnityAdsLoadListener, IUn
         {
             Debug.Log("Unity Ads Rewarded Ad Completed");
             // 광고 재생 후 줄 보상 코드
+            LoadAd();
         }
     }
 
