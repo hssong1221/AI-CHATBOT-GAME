@@ -4888,6 +4888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2035141793}
+  adsNum: 10
   mainImg: {fileID: 1423629479}
   nameText: {fileID: 1368138232}
   affectionText: {fileID: 1666628755}
