@@ -5,51 +5,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
 
-public class LogoManager : MonoBehaviour, IUnityAdsInitializationListener
+public class LogoManager : MonoBehaviour
 {
     public Canvas logocanvas;
-    //ads 관련 test 
-    public string aosGameID;
-    public bool testMode = true;
-    public string gameID;
-
-    [SerializeField]
-    InterstitialAdsBtn interstitialAdsBtn;
-    [SerializeField]
-    RewardedAdsButton rewardedAdsBtn;
-    
-
-    private void Awake()
-    {
-        InitialzeAds();
-    }
-
-    public void InitialzeAds()
-    {
-#if UNITY_EDITOR
-        gameID = aosGameID;
-#elif UNITY_ANDROID
-        gameID = aosGameID:  
-#endif
-        if (!Advertisement.isInitialized && Advertisement.isSupported)
-        {
-            Advertisement.Initialize(gameID, testMode, this);
-        }
-    }
-
-    public void OnInitializationComplete()
-    {
-        Debug.Log("unity ads init complete");
-
-        // unity ads 초기화 시킨후에 광고 load가능
-        interstitialAdsBtn.LoadAd();
-        rewardedAdsBtn.LoadAd();
-    }
-
-    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
-    {
-        Debug.LogError($"unity ads failed {error.ToString()} - {message}");
-    }
 
     public void OnClickNewBtn()
     {
@@ -59,7 +17,6 @@ public class LogoManager : MonoBehaviour, IUnityAdsInitializationListener
 
         Invoke("StartGame", 0.5f);
     }
-
 
     public void OnClickLoadBtn()
     {
@@ -107,5 +64,4 @@ public class LogoManager : MonoBehaviour, IUnityAdsInitializationListener
         PlayerPrefs.DeleteAll();
         Debug.Log("ALL DELETE");
     }
-
 }

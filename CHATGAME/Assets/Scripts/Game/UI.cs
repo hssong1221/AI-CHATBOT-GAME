@@ -26,6 +26,9 @@ public class UI : MonoBehaviour
 
     public Animator animator;
 
+    [Header("광고 액션 횟수")]
+    public int adsNum;
+
     [Header("텍스트 박스 UI")]
     public Image mainImg;
     public TextMeshProUGUI nameText;
@@ -266,7 +269,7 @@ public class UI : MonoBehaviour
 
     public void OnClickPokeBtn()
     {
-        if(categoryState == CategoryState.Date)
+        if (categoryState == CategoryState.Date)
         {
             //GameManager.Instance.date_sequence++;
             OnClickDateBtn();
@@ -284,6 +287,8 @@ public class UI : MonoBehaviour
         {
             waifu.Affection_ascend();
             waifu.Interaction_Path();
+
+            ShowAdvertisement();
 
             string temp = waifu.Check_Category();
             if (temp.Equals("Poke"))
@@ -309,6 +314,8 @@ public class UI : MonoBehaviour
                 animator.SetTrigger("isDateOut"); // animation event function으로 PokeBtnEvent와 연결되어있음
             else
                 PokeBtnEvent();
+
+            
         }
     }
 
@@ -476,5 +483,14 @@ public class UI : MonoBehaviour
         categoryState = (CategoryState)Enum.ToObject(typeof(CategoryState), state);
     }
 
-    
+    public void ShowAdvertisement()
+    {
+        Debug.Log($"전체 인덱스 : {GameManager.Instance.Correction_number + GameManager.Instance.affection_exp}");
+        // 엔딩을 보기 전에만 유효한 거라서 엔딩 후에도 일관되게 작동할 뭔가가 필요함
+        if ((GameManager.Instance.Correction_number + GameManager.Instance.affection_exp) % adsNum == 0)
+        {
+            RewardedAdsAction.rewardedAdsAction();
+            return;
+        }
+    }
 }
