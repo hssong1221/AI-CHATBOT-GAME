@@ -759,7 +759,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -779,11 +785,11 @@ PlayerSettings:
   apiCompatibilityLevel: 3
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 40395f4b-e3a1-4147-a857-5c9334977395
+  cloudProjectId: d20f2ecd-ab90-4c5a-8172-1dd678a65635
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: CHATGAME
-  organizationId: hssong971221
+  projectName: ChatGame
+  organizationId: kyb0809tg
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
