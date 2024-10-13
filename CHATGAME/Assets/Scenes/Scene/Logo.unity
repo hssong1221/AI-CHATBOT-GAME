@@ -3199,6 +3199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e303e68ab2c7ec4e9438a10589b3929, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  adsNum: 10
   aosGameID: 5707447
   iosGameID: 5707446
   gameID: 
