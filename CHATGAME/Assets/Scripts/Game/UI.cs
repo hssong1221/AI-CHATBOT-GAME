@@ -26,9 +26,6 @@ public class UI : MonoBehaviour
 
     public Animator animator;
 
-    [Header("광고 액션 횟수")]
-    public int adsNum;
-
     [Header("텍스트 박스 UI")]
     public Image mainImg;
     public TextMeshProUGUI nameText;
@@ -288,6 +285,7 @@ public class UI : MonoBehaviour
             waifu.Affection_ascend();
             waifu.Interaction_Path();
 
+            //n번의 행동 후에 광고가 나오는 부분
             ShowAdvertisement();
 
             string temp = waifu.Check_Category();
@@ -301,9 +299,13 @@ public class UI : MonoBehaviour
                 (categoryState == CategoryState.Event && lastState == CategoryState.Poke))
                 stateChange = true;
 
-            lastState = categoryState;
+            // 이벤트 씬 종료 후 광고 재생
+            if (categoryState == CategoryState.Poke && lastState == CategoryState.Event)
+                ShowAdvertisement(isForce: true);
 
-            if(stateChange)
+            lastState = categoryState;
+                
+            if (stateChange)
             {
                 animator.SetTrigger("isFadeInOut");
                 return;
@@ -483,11 +485,18 @@ public class UI : MonoBehaviour
         categoryState = (CategoryState)Enum.ToObject(typeof(CategoryState), state);
     }
 
-    public void ShowAdvertisement()
+    public void ShowAdvertisement(bool isForce = false)
     {
         Debug.Log($"전체 인덱스 : {GameManager.Instance.Correction_number + GameManager.Instance.affection_exp}");
+
+        if(isForce)
+        {
+            RewardedAdsAction.rewardedAdsAction();
+            return;
+        }
+
         // 엔딩을 보기 전에만 유효한 거라서 엔딩 후에도 일관되게 작동할 뭔가가 필요함
-        if ((GameManager.Instance.Correction_number + GameManager.Instance.affection_exp) % adsNum == 0)
+        if ((GameManager.Instance.Correction_number + GameManager.Instance.affection_exp) % GameManager.Instance.adsManager.adsNum == 0)
         {
             RewardedAdsAction.rewardedAdsAction();
             return;

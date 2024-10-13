@@ -5,6 +5,9 @@ using UnityEngine.Advertisements;
 
 public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener
 {
+    [Header("±¤°í ¾×¼Ç È½¼ö")]
+    public int adsNum;
+
     [SerializeField]
     private string aosGameID;
     [SerializeField]
