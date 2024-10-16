@@ -300,7 +300,7 @@ public class UI : MonoBehaviour
                 stateChange = true;
 
             // 이벤트 씬 종료 후 광고 재생
-            if (categoryState == CategoryState.Poke && lastState == CategoryState.Event)
+            if (categoryState == CategoryState.Poke && lastState == CategoryState.Event && GameManager.Instance.affection_lv > 2)
                 ShowAdvertisement(isForce: true);
 
             lastState = categoryState;
