@@ -32,7 +32,7 @@ public class ButtonAction : MonoBehaviour
 
     public void CheckLockNumber()
     {
-        if (GameManager.Instance.affection_lv >= unlockLevel && GameManager.Instance.unlockBtnCnt[cateType] >= unlockCount)
+        if (GameManager.Instance.affection_lv >= unlockLevel && GameManager.Instance.unlockBtnCnt[cateType] >= unlockCount && !GameManager.Instance.isDate && GameManager.Instance.affection_lv % 2 == 0)
             EnableBtn();
         else
             DisableBtn();
