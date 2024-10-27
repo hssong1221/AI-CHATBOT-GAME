@@ -464,12 +464,12 @@ GameObject:
   - component: {fileID: 130243711}
   - component: {fileID: 130243710}
   m_Layer: 5
-  m_Name: Button
+  m_Name: AdsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &130243709
 RectTransform:
   m_ObjectHideFlags: 0
@@ -487,7 +487,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1231.1, y: 427}
+  m_AnchoredPosition: {x: -7, y: 427}
   m_SizeDelta: {x: 382.686, y: 167.037}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &130243710
@@ -534,9 +534,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2035141791}
+      - m_Target: {fileID: 2035141786}
         m_TargetAssemblyTypeName: UI, Assembly-CSharp
-        m_MethodName: OnclickLanBtn
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3595,12 +3595,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'TEMP BUTTON
-
-    TOGGLE ENGLISH'
+  m_text: "\uAD11\uACE0 \uC81C\uAC70 \uBC84\uD2BC\n\uC784\uC2DC \uBC84\uD2BC \uACE7
+    \uC9C0\uC6B8\uAC70\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8247e2ab5d9aaba4dac5a46d7503cfeb, type: 2}
+  m_sharedMaterial: {fileID: 48046741065122722, guid: 8247e2ab5d9aaba4dac5a46d7503cfeb, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3624,10 +3623,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 49.25
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -4888,7 +4887,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 2035141793}
-  adsNum: 10
   mainImg: {fileID: 1423629479}
   nameText: {fileID: 1368138232}
   affectionText: {fileID: 1666628755}
