@@ -32,7 +32,7 @@ public class AdsManager : MonoBehaviour, IUnityAdsInitializationListener
 #if UNITY_EDITOR
         gameID = aosGameID;
 #elif UNITY_ANDROID
-        gameID = aosGameID:  
+        gameID = aosGameID;
 #elif UNITY_IOS
         gameID = iosGameID;  
 #endif

@@ -12,8 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: LSK
-  productName: ChatGame
+  companyName: ThreeCS
+  productName: TsundereLico
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -161,7 +161,8 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: com.LSK.TEST
+    Android: com.ThreeCS.TsundereLico
+    Standalone: com.ThreeCS.TsundereLico
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -671,6 +672,7 @@ PlayerSettings:
   webGLPowerPreference: 2
   scriptingDefineSymbols:
     Android: LEVELPLAY_DEPENDENCIES_INSTALLED
+    Server: 
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
@@ -763,9 +765,9 @@ PlayerSettings:
     Build: 0
     Game Performance: 0
     Legacy Analytics: 0
-    Purchasing: 0
+    Purchasing: 1
     UDP: 0
-    Unity Ads: 0
+    Unity Ads: 1
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -785,11 +787,11 @@ PlayerSettings:
   apiCompatibilityLevel: 3
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: d20f2ecd-ab90-4c5a-8172-1dd678a65635
+  cloudProjectId: 40395f4b-e3a1-4147-a857-5c9334977395
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: ChatGame
-  organizationId: kyb0809tg
+  projectName: CHATGAME
+  organizationId: hssong971221
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
