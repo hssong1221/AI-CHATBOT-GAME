@@ -78,7 +78,7 @@ public class GameManager : MonoBehaviour
     public List<int> twt_gallery_idx = new List<int>();
     public List<int> pat_gallery_idx = new List<int>();
     public Dictionary<string, int> date_gallery_idx = new Dictionary<string, int>();
-
+    public bool isAdsPurchase;
     #endregion
 
 
@@ -172,6 +172,7 @@ public class GameManager : MonoBehaviour
         public List<int> twt_gallery_idx = new List<int>();
         public List<int> pat_gallery_idx = new List<int>();
         public Dictionary<string, int> date_gallery_idx = new Dictionary<string, int>();
+        public bool isAdsPurchase = false;
     }
 
     // 데이터 저장을 위해 클래스안에 기존 데이터 주입
@@ -218,6 +219,7 @@ public class GameManager : MonoBehaviour
             twt_gallery_idx = this.twt_gallery_idx,
             pat_gallery_idx = this.pat_gallery_idx,
             date_gallery_idx = this.date_gallery_idx,
+            isAdsPurchase = this.isAdsPurchase,
         };
     }
     public void SetNonInitData(NonInitData data)
@@ -227,6 +229,7 @@ public class GameManager : MonoBehaviour
         this.twt_gallery_idx = data.twt_gallery_idx;
         this.pat_gallery_idx = data.pat_gallery_idx;
         this.date_gallery_idx = data.date_gallery_idx;
+        this.isAdsPurchase = data.isAdsPurchase;
     }
 
     // 데이터 저장을 하려면 부르시오
