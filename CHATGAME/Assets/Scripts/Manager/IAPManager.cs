@@ -7,18 +7,32 @@ using UnityEngine.Purchasing;
 public class IAPManager : MonoBehaviour
 {
     public Image temp;
-    public bool check = false;
-
-    public void OnPurchaseComplete(bool isComplete)
-    {
-        check = isComplete;
-        Debug.Log(isComplete);
-    }
+    public bool isPurchase = false;
 
     private void Update()
     {
-        if (check)
+        if (isPurchase)
             temp.gameObject.SetActive(true);
-           
     }
+
+    public void OnPurchaseComplete(bool isComplete)
+    {
+        isPurchase = isComplete;
+        GameManager.Instance.isAdsPurchase = true;
+        GameManager.Instance.SaveData();
+    }
+
+    public void OnPurchaseFailed()
+    {
+        if (GameManager.Instance.isAdsPurchase)
+            return;
+
+        GameManager.Instance.isAdsPurchase = false;
+    }
+
+    public void OnProductFetched()
+    {
+
+    }
+    
 }

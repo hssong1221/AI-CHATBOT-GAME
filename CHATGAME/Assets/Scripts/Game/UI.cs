@@ -487,6 +487,10 @@ public class UI : MonoBehaviour
 
     public void ShowAdvertisement(bool isForce = false)
     {
+        // 광고 제거 구매하면 영원히 광고 안나옴
+        if (GameManager.Instance.isAdsPurchase)
+            return;
+
         Debug.Log($"전체 인덱스 : {GameManager.Instance.Correction_number + GameManager.Instance.affection_exp}");
 
         if(isForce)
