@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AffectionPat : MonoBehaviour,ICategory
 {
+    #region Values
     private static AffectionPat _instance;
 
     public static AffectionPat Instance
@@ -25,7 +26,7 @@ public class AffectionPat : MonoBehaviour,ICategory
     public List<int> affection_barrel = new List<int>();
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
-    List<Dictionary<string, string>> patData = new List<Dictionary<string, string>>();
+    public List<Dictionary<string, string>> patData = new List<Dictionary<string, string>>();
 
     GameManager gameManager;
     DataManager dataManager;
@@ -34,6 +35,7 @@ public class AffectionPat : MonoBehaviour,ICategory
     ICategory poke_event_correct;
 
     public Action SheetLoadAction { get; set; }
+    #endregion
 
     void Awake()
     {
@@ -54,7 +56,7 @@ public class AffectionPat : MonoBehaviour,ICategory
     void Start()
     {
         StartCoroutine(DataManager.Instance.WaitDataLoading(SheetLoadAction));
-
+        
         Interact_idx = 0;
         gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
     }
@@ -85,6 +87,7 @@ public class AffectionPat : MonoBehaviour,ICategory
         }
         Interact_Init();
         Barrel_Init();
+        Gallery_Index_Init();
     }
 
     public void Barrel_Init()
@@ -97,6 +100,8 @@ public class AffectionPat : MonoBehaviour,ICategory
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+
+        affection_barrel[10] = 1;
     }
 
     public List<Dictionary<string, string>> GetDataList(string name)
@@ -104,11 +109,27 @@ public class AffectionPat : MonoBehaviour,ICategory
         return patData;
     }
 
+    public void Gallery_Index_Init()
+    {
+        int _cnt = 0;
+        if (gameManager.pat_gallery_idx.Count <= 0)
+        {
+            while (_cnt < patData.Count)
+            {
+                gameManager.pat_gallery_idx.Add(0);
+                _cnt++;
+            }
+        }
+    }
     #endregion
 
 
     public void Affection_ascend()
     {
+        if (gameManager.affection_lv >= 10)
+        {
+            return;
+        }
         gameManager.affection_exp += affection_increase["Pat"];
 
         Affection_level_calculate();
@@ -120,17 +141,16 @@ public class AffectionPat : MonoBehaviour,ICategory
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
-            gameManager.affection_exp = 0;
+            gameManager.affection_exp = -1;
         }
     }
 
     public float Affection_Percentage()
     {
-        //string _cate_str = Check_Category();
         float aff_percent = 0f;
-        //if (_cate_str == "Event")
+        
         if(gameManager.affection_lv % 2 == 1)
         {
             aff_percent = 1.0f;
@@ -138,7 +158,6 @@ public class AffectionPat : MonoBehaviour,ICategory
         else
         {
             aff_percent = (float)gameManager.affection_exp < (float)affection_barrel[gameManager.affection_lv] ? (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv] : 1f;
-            //aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;
@@ -197,13 +216,23 @@ public class AffectionPat : MonoBehaviour,ICategory
 
     public void Interaction_Path()
     {
+        if(gameManager.pat_interact.Count <= 0)
+        {
+            Interact_Init();
+        }
         int _restore_rand = gameManager.pat_interact[UnityEngine.Random.Range(0, gameManager.pat_interact.Count)];
         gameManager.pat_interact.Remove(_restore_rand);
         _interact_idx = _restore_rand;
+        gameManager.pat_gallery_idx[_interact_idx] = 1;
     }
 
     public void Interact_Init()
     {
+        if (gameManager.pat_interact.Count > 0)
+        {
+            return;
+        }
+
         int _cnt = 0;
 
         while (_cnt < Affection_sheet(3,"Pat"))
@@ -221,5 +250,10 @@ public class AffectionPat : MonoBehaviour,ICategory
     public int Interact_txt_path()
     {
         return Interact_idx;
+    }
+
+    public void Sequence_Init()
+    {
+        return;
     }
 }

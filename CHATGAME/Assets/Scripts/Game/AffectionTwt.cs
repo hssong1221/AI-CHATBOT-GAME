@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AffectionTwt : MonoBehaviour, ICategory
 {
+    #region Values
     private static AffectionTwt _Instance;
 
     public static AffectionTwt Instance
@@ -32,7 +33,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
     public List<int> affection_barrel = new List<int>();
     public Dictionary<string, int> affection_increase = new Dictionary<string, int>() { { "Poke", 1 }, { "Event", 1 }, { "Twitter", 2 }, { "Pat", 2 }, { "Date", 2 } };//category 종류별 제공 경험치
     List<Dictionary<string, string>> dialogueData = new List<Dictionary<string, string>>();
-    List<Dictionary<string, string>> twtData = new List<Dictionary<string, string>>();
+    public List<Dictionary<string, string>> twtData = new List<Dictionary<string, string>>();
 
     GameManager gameManager;
     DataManager dataManager;
@@ -41,6 +42,8 @@ public class AffectionTwt : MonoBehaviour, ICategory
     ICategory poke_event_correct;
 
     public Action SheetLoadAction { get; set; }
+
+    #endregion
 
     void Awake()
     {
@@ -60,7 +63,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
     void Start()
     {
         StartCoroutine(DataManager.Instance.WaitDataLoading(SheetLoadAction));
-
+        
         Interact_idx = 0;
         gameManager = SingletonManager.Instance.GetSingleton<GameManager>();
         
@@ -94,6 +97,7 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
         Interact_Init();
         Barrel_Init();
+        Gallery_Index_Init();
     }
 
     public void Barrel_Init()
@@ -106,6 +110,8 @@ public class AffectionTwt : MonoBehaviour, ICategory
             affection_barrel.Add(Affection_sheet(_cnt, "Event") * affection_increase["Event"]);
             _cnt++;
         }
+
+        affection_barrel[10] = 1;
     }
 
     public List<Dictionary<string , string>> GetDataList(string name)
@@ -113,23 +119,31 @@ public class AffectionTwt : MonoBehaviour, ICategory
         return twtData;
     }
 
-    #endregion
-
-    #region Player Data
-    /*
-    public void CreatePlayerData(bool isSave = false)
+    public void Gallery_Index_Init()
     {
-        PlayerData data = new PlayerData(affection_exp, affection_lv, affection_interact, affection_interact, affection_interact);
-        if (isSave)
+        int _cnt = 0;
+        if(gameManager.twt_gallery_idx.Count <= 0)
         {
-            GameManager.Instance.SaveData(data);
+            while (_cnt < twtData.Count)
+            {
+                gameManager.twt_gallery_idx.Add(0);
+                _cnt++;
+            }
         }
-    }*/
+    }
+
     #endregion
 
     public void Affection_ascend()
     {
-        gameManager.affection_exp += affection_increase["Twitter"];
+        if (gameManager.affection_lv >= 10)
+        {
+            return;
+        }
+        if (gameManager.affection_lv > 4)
+        {
+            gameManager.affection_exp += affection_increase["Twitter"];
+        }        
 
         Affection_level_calculate();
     }
@@ -140,17 +154,16 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
         if (gameManager.affection_exp >= affection_barrel[gameManager.affection_lv])
         {
-            poke_event_correct.Correction_number += affection_barrel[gameManager.affection_lv];
+            gameManager.Correction_number += affection_barrel[gameManager.affection_lv];
             gameManager.affection_lv++;
-            gameManager.affection_exp = 0;
+            gameManager.affection_exp = -1;
         }
     }
 
     public float Affection_Percentage()
     {
-        //string _cate_str = Check_Category();
         float aff_percent = 0f;
-        //if (_cate_str == "Event")
+
         if(gameManager.affection_lv % 2 == 1)
         {
             aff_percent = 1.0f;
@@ -158,7 +171,6 @@ public class AffectionTwt : MonoBehaviour, ICategory
         else
         {
             aff_percent = (float)gameManager.affection_exp < (float)affection_barrel[gameManager.affection_lv] ? (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv] : 1f;
-            //aff_percent = (float)gameManager.affection_exp / (float)affection_barrel[gameManager.affection_lv];
         }
 
         return aff_percent;
@@ -217,13 +229,23 @@ public class AffectionTwt : MonoBehaviour, ICategory
 
     public void Interaction_Path()
     {
+        if(gameManager.twt_interact.Count <= 0)//두가지 방법을 고려( 1. 기존의 상호작용을 계속해서 랜덤으로 보여준다, 2. 새로운 상호작용 업뎃이 나올때까지 기다려달라고 한다. )
+        {
+            Interact_Init();
+        }
         int _restore_rand = gameManager.twt_interact[UnityEngine.Random.Range(0,gameManager.twt_interact.Count)];
         gameManager.twt_interact.Remove(_restore_rand);
         _interact_idx = _restore_rand;
+        gameManager.twt_gallery_idx[_interact_idx] = 1;
     }
 
     public void Interact_Init()
     {
+        if (gameManager.twt_interact.Count > 0)
+        {
+            return;
+        }
+
         int _cnt = 0;
 
         while(_cnt < Affection_sheet(2,"Twt"))
@@ -241,5 +263,10 @@ public class AffectionTwt : MonoBehaviour, ICategory
     public int Interact_txt_path()
     {
         return Interact_idx;
+    }
+
+    public void Sequence_Init()
+    {
+        return;
     }
 }
