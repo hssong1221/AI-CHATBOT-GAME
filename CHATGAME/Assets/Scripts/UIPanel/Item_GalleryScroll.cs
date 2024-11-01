@@ -16,7 +16,6 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     //Model
     private Item_Info _itemInfo;
     private int _itemIdx;
-    //public string ImgPath;
     private string _category;
     private string _imgId;
 
@@ -25,18 +24,13 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     public GameObject enableBtn;
     public GameObject disableBtn;
 
-    public void ConfigureCell(Item_Info itemInfo, int itemIndex, /*string _imgpath,*/ string category, string imgId)
+    public void ConfigureCell(Item_Info itemInfo, int itemIndex, string category, string imgId)
     {
         _itemIdx = itemIndex;
         _itemInfo = itemInfo;
-        //ImgPath = _imgpath;
         _category = category;
         _imgId = imgId;
 
-        //nameLabel.text = itemInfo.mainText;
-        //nameLabel.text = _imgpath;
-
-        //Sprite sprite = Resources.Load<Sprite>(_imgpath);
         Sprite sprite = Resources.Load<Sprite>(_itemInfo.imgPath);
         if (sprite != null)
             mainImg.sprite = sprite;
@@ -64,7 +58,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
                 }
             }
         }
-        else if((_category == "Poke" /*&& GameManager.Instance.poke_event_gallery_idx[_itemIdx] == 1*/))
+        else if((_category == "Poke"))
         {/*
             var str = Waifu.Instance.dialogueData[_itemIdx]["category"];
             var afflv = int.Parse(Waifu.Instance.dialogueData[_itemIdx]["affection"]);
@@ -193,11 +187,6 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
             }
         }
         RectTransform rectTransform = enlargedImgBackground.GetComponent<RectTransform>();
-        //enlargedImgMain = enlargedImgBackground.GetComponentInChildren<Image>();
-        //enlargedImg.enabled = true;
-        //Color color = enlargedImg.color;
-        //color.a = 1.0f;
-        //enlargedImg.color = color;
         rectTransform.SetAsLastSibling();
     }
 

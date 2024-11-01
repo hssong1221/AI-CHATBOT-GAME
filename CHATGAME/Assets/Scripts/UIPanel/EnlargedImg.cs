@@ -32,11 +32,14 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     }
     public void OnDrag(PointerEventData eventData)
     {
+        //Vector2 pos;
         Vector3 pos = imgRectTransform.position;
         pos += new Vector3(eventData.delta.x, eventData.delta.y, 0);
         pos.x = Mathf.Clamp(pos.x, imgRectTransform.rect.xMin, imgRectTransform.rect.xMax);
         pos.y = Mathf.Clamp(pos.y, imgRectTransform .rect.yMin, imgRectTransform .rect.yMax);
         imgRectTransform.position = pos;
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(imgRectTransform, eventData.position, eventData.pressEventCamera, out pos);
+        //imgRectTransform.position = pos - parentRT.position;
     }
 
     public void OnEndDrag(PointerEventData eventData)
