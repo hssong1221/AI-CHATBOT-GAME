@@ -346,7 +346,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4277372427044114347}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6200742349520608436}
+        m_TargetAssemblyTypeName: Item_GalleryScroll, Assembly-CSharp
+        m_MethodName: EnlargeImg
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4634111306175635071
 GameObject:
   m_ObjectHideFlags: 0
