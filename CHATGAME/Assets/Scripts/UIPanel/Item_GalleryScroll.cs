@@ -10,6 +10,8 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     //UI
     public Text nameLabel;
     public Image mainImg;
+    public Image enlargedImgBackground;
+    public Image enlargedImgMain;
 
     //Model
     private Item_Info _itemInfo;
@@ -172,5 +174,40 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     {
         enableBtn.SetActive(false);
         disableBtn.SetActive(true);
+    }
+
+    public void EnlargeImgSet()//확대용 이미지 컴포넌트 관련 기능
+    {
+        GameObject canvasobj = GameObject.Find("Canvas");
+        Image[] imglist = canvasobj.GetComponentsInChildren<Image>(true);
+
+        foreach (var target in imglist) 
+        {
+            if (target.name == "EnlargeImgBackground")
+            {
+                enlargedImgBackground = target;
+            }
+            else if(target.name == "EnlargeImgMain")
+            {
+                enlargedImgMain = target;
+            }
+        }
+        RectTransform rectTransform = enlargedImgBackground.GetComponent<RectTransform>();
+        //enlargedImgMain = enlargedImgBackground.GetComponentInChildren<Image>();
+        //enlargedImg.enabled = true;
+        //Color color = enlargedImg.color;
+        //color.a = 1.0f;
+        //enlargedImg.color = color;
+        rectTransform.SetAsLastSibling();
+    }
+
+    public void EnlargeImg()//갤러리 이미지 확대해서 보기
+    {
+        EnlargeImgSet();
+        Sprite sprite = Resources.Load<Sprite>(_itemInfo.imgPath);
+        if (sprite != null) 
+        {
+            enlargedImgMain.sprite = sprite;
+        }
     }
 }
