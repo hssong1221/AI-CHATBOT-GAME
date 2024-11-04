@@ -30,6 +30,7 @@ public class DataManager : MonoBehaviour
     private Dictionary<string, SheetData> sheetsData;
     bool isEOF;
     bool fileReadEnd;
+    private List<string> excelFileNames = new List<string> { "dialogue.xlsx", "UI text.xlsx" };
 
     void Awake()
     {
@@ -49,6 +50,7 @@ public class DataManager : MonoBehaviour
     {
         isEOF = false;
         fileReadEnd = false;
+        sheetsData = new Dictionary<string, SheetData>();
         ReadExcelFile();
         //PrintSheetData();
     }
@@ -57,8 +59,11 @@ public class DataManager : MonoBehaviour
     {
 #if UNITY_EDITOR
         //string filePath = "./Assets/Data/dialogue.xlsx";
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Excel\\dialogue.xlsx");
-        ExcelFileLoad(filePath);
+        foreach (string fileName in excelFileNames)
+        {
+            string filePath = Path.Combine(Application.streamingAssetsPath, "Excel", fileName);
+            ExcelFileLoad(filePath);
+        }
 #elif !UNITY_EDITOR && UNITY_ANDROID
         StartCoroutine(StreamingAssetsLoad());
 #endif
@@ -66,29 +71,30 @@ public class DataManager : MonoBehaviour
 
     IEnumerator StreamingAssetsLoad()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Excel/dialogue.xlsx");
-        Debug.Log(filePath);
-        UnityWebRequest www = UnityWebRequest.Get(filePath);
-        yield return www.SendWebRequest();
+        foreach (string fileName in excelFileNames)
+        {
+            string filePath = Path.Combine(Application.streamingAssetsPath, "Excel", fileName);
+            Debug.Log(filePath);
+            UnityWebRequest www = UnityWebRequest.Get(filePath);
+            yield return www.SendWebRequest();
 
-        if(www.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log("데이터 들어옴");
-            var data = www.downloadHandler.data;
-            ExcelFileLoad(data);
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("데이터 들어옴");
+                var data = www.downloadHandler.data;
+                ExcelFileLoad(data);
+            }
+            else
+            {
+                Debug.Log("데이터 안들어옴");
+            }
+            yield return null;
         }
-        else
-        {
-            Debug.Log("데이터 안들어옴");
-        }
-        yield return null;
     }
 
     // 유니티 에디터에서
     void ExcelFileLoad(string filePath)
     {
-        sheetsData = new Dictionary<string, SheetData>();
-
         using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
         {
             using (var reader = ExcelReaderFactory.CreateOpenXmlReader(stream))
@@ -129,39 +135,14 @@ public class DataManager : MonoBehaviour
                     }
                     sheetsData[table.TableName] = sheetData;
                 }
-                // 첫 번째 시트의 데이터를 읽습니다.
-                {
-                    /*
-                    DataTable table = result.Tables[0];
-
-                    for (int i = 1; i < table.Rows.Count; i++) // 첫 번째 행은 헤더이므로 건너뜁니다.
-                    {
-                        var column1 = table.Rows[i][0];
-
-                        if (column1.Equals("EOF"))
-                            break;
-                        else
-                            column1 = int.Parse(table.Rows[i][1].ToString());
-
-                        int column2 = int.Parse(table.Rows[i][1].ToString());
-                        string column3 = table.Rows[i][2].ToString();
-                        int column4 = int.Parse(table.Rows[i][3].ToString());
-                        string column5 = table.Rows[i][4].ToString();
-                        Debug.Log($"Column1: {column1}, Column2: {column2}, Column3: {column3}, Column4: {column4}, Column5: {column5}");
-                    }
-                    */
-                }
             }
-            Waifu.Instance.SheetLoadAction?.Invoke();
-            fileReadEnd = true;
+            CheckAllFilesLoaded();
         }
     }
 
     // 안드로이드 환경에서
     void ExcelFileLoad(byte[] fileData)
     {
-        sheetsData = new Dictionary<string, SheetData>();
-
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         using (var stream = new MemoryStream(fileData))
@@ -209,11 +190,20 @@ public class DataManager : MonoBehaviour
                     sheetsData[table.TableName] = sheetData;
                 }
             }
+            CheckAllFilesLoaded();
+        }
+    }
+
+    private int loadedFileCount = 0;
+    public void CheckAllFilesLoaded()
+    {
+        loadedFileCount++;
+        if(loadedFileCount == excelFileNames.Count)
+        {
             Waifu.Instance.SheetLoadAction?.Invoke();
             fileReadEnd = true;
         }
     }
-
 
     public IEnumerator WaitDataLoading(Action action)
     {

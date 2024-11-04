@@ -84,5 +84,6 @@ public class Item_MenuPopup2 : MonoBehaviour
     {
         Data.LanguageOpt = (int)GameManager.Instance.language;
         //UI_MenuPopup.backAction?.Invoke();
+        LocalizationUI.reloadAction?.Invoke();
     }
 }
