@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.98039216}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -313,8 +313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2202f7ad4bb2ae3469f792bdfc98276b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgRectTransform: {fileID: 3931435805905722755}
-  parentRT: {fileID: 4105028839315997222}
+  mainimg: {fileID: 8232723490325341867}
+  backgroundimg: {fileID: 5294292197245590152}
   zoomSpeed: 0.1
   minScale: 1
   maxScale: 3

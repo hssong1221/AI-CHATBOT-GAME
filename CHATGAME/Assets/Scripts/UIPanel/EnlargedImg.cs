@@ -6,20 +6,22 @@ using UnityEngine.EventSystems;
 
 public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IScrollHandler
 {
-    public RectTransform imgRectTransform;
-    public RectTransform parentRT;
+    public Image mainimg;
+    public Image backgroundimg;
     public float zoomSpeed = 0.1f;
     public float minScale = 1.0f;
     public float maxScale = 3.0f;
     public Button hidebtn;
     public GameObject quitbtn;
+    private Vector3 initpos;
 
     // Start is called before the first frame update
     void Start()
     {
-        if(imgRectTransform.localScale.x<minScale)
+        initpos = mainimg.transform.position;
+        if(mainimg.rectTransform.localScale.x<minScale)
         {
-            imgRectTransform.localScale=new Vector3(minScale,minScale,1);
+            mainimg.rectTransform.localScale=new Vector3(minScale, minScale,1);
         }
     }
 
@@ -32,14 +34,9 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     }
     public void OnDrag(PointerEventData eventData)
     {
-        //Vector2 pos;
-        Vector3 pos = imgRectTransform.position;
-        pos += new Vector3(eventData.delta.x, eventData.delta.y, 0);
-        pos.x = Mathf.Clamp(pos.x, imgRectTransform.rect.xMin, imgRectTransform.rect.xMax);
-        pos.y = Mathf.Clamp(pos.y, imgRectTransform .rect.yMin, imgRectTransform .rect.yMax);
-        imgRectTransform.position = pos;
-        //RectTransformUtility.ScreenPointToLocalPointInRectangle(imgRectTransform, eventData.position, eventData.pressEventCamera, out pos);
-        //imgRectTransform.position = pos - parentRT.position;
+        Vector2 localpos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(mainimg.rectTransform.parent as RectTransform, eventData.position, eventData.pressEventCamera, out localpos);
+        mainimg.rectTransform.localPosition = localpos;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -53,10 +50,10 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public void OnScroll(PointerEventData eventData)
     {
         float scrollDelta = eventData.scrollDelta.y;
-        float newScale = imgRectTransform.localScale.x + scrollDelta * zoomSpeed;
+        float newScale = mainimg.rectTransform.localScale.x + scrollDelta * zoomSpeed;
 
         newScale = Mathf.Clamp(newScale, minScale, maxScale);
-        imgRectTransform.localScale = new Vector3(newScale, newScale, 1);
+        mainimg.rectTransform.localScale = new Vector3(newScale, newScale, 1);
     }
 
     public void Hide()
@@ -66,6 +63,14 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
 
     public void Dislarge()
     {
-        parentRT.SetAsFirstSibling();
+        Color mainalpha = mainimg.color;
+        Color bgalpha = backgroundimg.color;
+        quitbtn.SetActive(false);
+        mainalpha.a = 0f;
+        bgalpha.a = 0f;
+        mainimg.color = mainalpha;
+        backgroundimg.color = bgalpha;
+        mainimg.transform.position = initpos;
+        backgroundimg.rectTransform.SetAsFirstSibling();
     }
 }

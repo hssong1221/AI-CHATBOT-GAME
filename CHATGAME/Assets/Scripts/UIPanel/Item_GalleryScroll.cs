@@ -193,9 +193,15 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     public void EnlargeImg()//갤러리 이미지 확대해서 보기
     {
         EnlargeImgSet();
+        Color mainalpha = enlargedImgMain.color;
+        Color bgalpha = enlargedImgBackground.color;
         Sprite sprite = Resources.Load<Sprite>(_itemInfo.imgPath);
         if (sprite != null) 
         {
+            mainalpha.a = 1f;
+            bgalpha.a = 0.9f;
+            enlargedImgMain.color = mainalpha;
+            enlargedImgBackground.color = bgalpha;
             enlargedImgMain.sprite = sprite;
         }
     }
