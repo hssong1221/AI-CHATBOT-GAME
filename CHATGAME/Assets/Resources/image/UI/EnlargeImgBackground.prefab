@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2809582735281994818
 RectTransform:
   m_ObjectHideFlags: 0
@@ -454,8 +454,8 @@ MonoBehaviour:
   maxScale: 3
   originalScale: 1
   hidebtn: {fileID: 6362886816952904654}
-  frontbtn: {fileID: 3500782812482193808}
-  backbtn: {fileID: 6222712036308940215}
+  frontbtn: {fileID: 1493560900102117161}
+  backbtn: {fileID: 8006886933466104327}
   quitbtn: {fileID: 6161814670652943890}
   gallobj: {fileID: 0}
 --- !u!114 &6362886816952904654
@@ -532,7 +532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8917830181450296940
 RectTransform:
   m_ObjectHideFlags: 0
@@ -550,7 +550,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 2}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4247879735276903359
 CanvasRenderer:

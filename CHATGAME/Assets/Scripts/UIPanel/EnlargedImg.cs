@@ -14,8 +14,8 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public float maxScale = 3.0f;
     public float originalScale = 1.0f;
     public Button hidebtn;
-    public Button frontbtn;
-    public Button backbtn;
+    public GameObject frontbtn;
+    public GameObject backbtn;
     public GameObject quitbtn;
     private Vector3 initpos;
     public GameObject gallobj;
@@ -119,6 +119,8 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public void Hide()
     {
         quitbtn.SetActive(!quitbtn.activeSelf);
+        frontbtn.SetActive(!frontbtn.activeSelf);
+        backbtn.SetActive(!backbtn.activeSelf);
     }
 
     public void Dislarge()//확대 보기 종료
@@ -126,6 +128,8 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         Color mainalpha = mainimg.color;
         Color bgalpha = backgroundimg.color;
         quitbtn.SetActive(false);
+        frontbtn.SetActive(false);
+        backbtn.SetActive(false);
         mainalpha.a = 0f;
         bgalpha.a = 0f;
         mainimg.color = mainalpha;
@@ -150,7 +154,8 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             cell_idx = restore;
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
-        Debug.Log("move front" + cell_idx);
+        mainimg.transform.position = initpos;
+        //Debug.Log("move front" + cell_idx);
     }
 
     public void Moveback() 
@@ -169,7 +174,8 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             cell_idx = restore;
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
-        Debug.Log("move back" + cell_idx);
+        mainimg.transform.position = initpos;
+        //Debug.Log("move back" + cell_idx);
     }
     #endregion
 }
