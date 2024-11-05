@@ -10,20 +10,22 @@ public struct Item_Info
     //public Image mainImg;
     public string mainText;
     public string imgPath;
+    public int cell_idx;
+    public bool isunlock;
 }
 
 public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
 {
     #region Values
     [SerializeField]
-    RecyclableScrollRect _recyclableScrollRect;
+    RecyclableScrollRect _recyclableScrollRect;//재활용 스크롤 영역 지정
 
     [SerializeField]
-    private int _dataLength;
+    private int _dataLength;//재활용 스크롤 데이터 크기
 
     [SerializeField]
-    private List<Item_Info> _contactList = new List<Item_Info>();
-    public List<string> date_img_id = new List<string>();
+    public List<Item_Info> _contactList = new List<Item_Info>();//cell list
+    public List<string> date_img_id = new List<string>();//date 상호작용 이미지 경로
 
     public enum Category_status
     {
@@ -32,7 +34,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         Pat,
         Date
     }
-    public Category_status category_status;
+    public Category_status category_status;//경로 카테고리 결정
 
     #endregion
 
@@ -287,6 +289,8 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
             Item_Info obj = new Item_Info();
             obj.mainText = i.ToString();
             obj.imgPath = CombineImgPath(i);
+            obj.cell_idx = i;
+            obj.isunlock = false;
             _contactList.Add(obj);
         }
     }
@@ -307,9 +311,13 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     {
         //string imgpath = CombineImgPath(index);
         //Casting to the implemented Cell
+        Item_Info restore = _contactList[index];
         var item = cell as Item_GalleryScroll;
-        item.ConfigureCell(_contactList[index], index, /*imgpath,*/ category_status.ToString(), date_img_id[index % date_img_id.Count]);
+        item.ConfigureCell(_contactList[index],/* index,*/ category_status.ToString(), date_img_id[index % date_img_id.Count]);
+        restore.isunlock = item.GetIsOpen();
+        _contactList[index] = restore;
     }
+
     #endregion
 
     #region Buttons

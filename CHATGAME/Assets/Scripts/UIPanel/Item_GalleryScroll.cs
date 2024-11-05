@@ -15,18 +15,17 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
 
     //Model
     private Item_Info _itemInfo;
-    private int _itemIdx;
+    //private int _itemIdx;
     private string _category;
     private string _imgId;
 
     //Action
-    public Button button;
     public GameObject enableBtn;
     public GameObject disableBtn;
 
-    public void ConfigureCell(Item_Info itemInfo, int itemIndex, string category, string imgId)
+    public void ConfigureCell(Item_Info itemInfo, /*int itemIndex,*/ string category, string imgId)//cell 내용 채우기
     {
-        _itemIdx = itemIndex;
+        //_itemIdx = itemIndex;
         _itemInfo = itemInfo;
         _category = category;
         _imgId = imgId;
@@ -40,7 +39,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
         CheckUnlockGallery();
     }
 
-    public void CheckUnlockGallery()
+    public void CheckUnlockGallery()//cell 활성화 상태 판별
     {
         int temp = 0;
 
@@ -50,6 +49,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
             {
                 if (temp == 1)
                 {
+                    _itemInfo.isunlock = true;
                     EnableBtn();
                 }
                 else
@@ -59,68 +59,10 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
             }
         }
         else if((_category == "Poke"))
-        {/*
-            var str = Waifu.Instance.dialogueData[_itemIdx]["category"];
-            var afflv = int.Parse(Waifu.Instance.dialogueData[_itemIdx]["affection"]);
-            var col = int.Parse(Waifu.Instance.dialogueData[_itemIdx]["number"])-1;
-
-            if (str == "Poke" && afflv < 2)
-            {
-                if (GameManager.Instance.poke_event_gallery_list[afflv * 2][col] == 1)
-                {
-                    EnableBtn();
-                }
-                else
-                {
-                    DisableBtn();
-                }
-            }
-            else if(str == "Poke" && afflv >= 2)
-            {
-                if (GameManager.Instance.poke_event_gallery_list[4][col] == 1)
-                {
-                    EnableBtn();
-                }
-                else
-                {
-                    DisableBtn();
-                }
-            }
-            else if(str == "Event" && afflv == 0)
-            {
-                if (GameManager.Instance.poke_event_gallery_list[1][col] == 1)
-                {
-                    EnableBtn();
-                }
-                else
-                {
-                    DisableBtn();
-                }
-            }
-            else if (str == "Event" && afflv == 1)
-            {
-                if (GameManager.Instance.poke_event_gallery_list[3][col] == 1)
-                {
-                    EnableBtn();
-                }
-                else
-                {
-                    DisableBtn();
-                }
-            }
-            else if (str == "Event" && afflv >= 2)
-            {
-                if (GameManager.Instance.poke_event_gallery_list[afflv+3][col] == 1)
-                {
-                    EnableBtn();
-                }
-                else
-                {
-                    DisableBtn();
-                }
-            }*/
+        {
             int row = 0;
-            int restore = _itemIdx;
+            //int restore = _itemIdx;
+            int restore = _itemInfo.cell_idx;
             var poke_event_data = GameManager.Instance.poke_event_gallery_list;
             
             while(row < poke_event_data.Count)
@@ -138,6 +80,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
 
             if (poke_event_data[row][restore] == 1)
             {
+                _itemInfo.isunlock = true;
                 EnableBtn();
             }
             else
@@ -147,8 +90,9 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
         }
         else
         {
-            if( (_category == "Twitter" && GameManager.Instance.twt_gallery_idx[_itemIdx] == 1) || (_category == "Pat" && GameManager.Instance.pat_gallery_idx[_itemIdx] == 1))
+            if( (_category == "Twitter" && GameManager.Instance.twt_gallery_idx[_itemInfo.cell_idx] == 1) || (_category == "Pat" && GameManager.Instance.pat_gallery_idx[_itemInfo.cell_idx] == 1))
             {
+                _itemInfo.isunlock = true;
                 EnableBtn();
             }
             else
@@ -156,6 +100,11 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
                 DisableBtn();
             }
         }
+    }
+
+    public bool GetIsOpen()
+    {
+        return _itemInfo.isunlock;
     }
 
     public void EnableBtn()
@@ -174,6 +123,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     {
         GameObject canvasobj = GameObject.Find("Canvas");
         Image[] imglist = canvasobj.GetComponentsInChildren<Image>(true);
+        EnlargedImg enlargedImg;
 
         foreach (var target in imglist) 
         {
@@ -186,8 +136,18 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
                 enlargedImgMain = target;
             }
         }
+        
         RectTransform rectTransform = enlargedImgBackground.GetComponent<RectTransform>();
         rectTransform.SetAsLastSibling();
+        enlargedImg = enlargedImgMain.GetComponentInParent<EnlargedImg>();
+        if(enlargedImg != null)
+        {
+            enlargedImg.Initlarge(_itemInfo.cell_idx);
+        }
+        else
+        {
+            Debug.Log("Cannot find enlargedimg class");
+        }
     }
 
     public void EnlargeImg()//갤러리 이미지 확대해서 보기
