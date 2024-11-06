@@ -8,7 +8,7 @@ using System;
 public struct Item_Info
 {
     //public Image mainImg;
-    public string mainText;
+    //public string mainText;
     public string imgPath;
     public int cell_idx;
     public bool isunlock;
@@ -64,31 +64,10 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
             _dataLength += GameManager.Instance.poke_event_gallery_list[_cnt].Count;
             _cnt++;
         }
-        /*
-        while (_cnt < 6)
-        {
-            _dataLength += affection_barrel[_cnt];
-            _cnt++;
-        }*/
     }
 
     public string CheckCategory(int idx)
-    {/*
-        if (Waifu.Instance.dialogueData.Count <= 0)
-        {
-            return "Error";
-        }
-
-        var poke_event_data = Waifu.Instance.dialogueData[idx];
-
-        if (poke_event_data.TryGetValue("category", out var category))
-        {
-            return category.ToString();
-        }
-        else
-        {
-            return "Error";
-        }*/
+    {
         if(GameManager.Instance.poke_event_gallery_list.Count <= 0)
         {
             return "Error";
@@ -287,12 +266,81 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         for (int i = 0; i < _dataLength; i++)
         {
             Item_Info obj = new Item_Info();
-            obj.mainText = i.ToString();
+            //obj.mainText = i.ToString();
             obj.imgPath = CombineImgPath(i);
             obj.cell_idx = i;
-            obj.isunlock = false;
+            //obj.isunlock = false;
+            obj.isunlock = CheckUnlockCell(i);
             _contactList.Add(obj);
         }
+    }
+
+    public bool CheckUnlockCell(int index)//Cell 활성화 상태 판별
+    {
+        int temp = 0;
+        int row = 0;
+        int restoreCnt = index;// _contactList[index].cell_idx;
+        var poke_event_data = GameManager.Instance.poke_event_gallery_list;
+        bool isunlock = false;
+        //Item_Info restoreInfo = _contactList[index];
+        if (category_status.Equals(Category_status.Date))
+        {
+            if (GameManager.Instance.date_gallery_idx.TryGetValue(date_img_id[index % date_img_id.Count], out temp))
+            {
+                if (temp == 1)
+                {
+                    //restoreInfo.isunlock = true;
+                    isunlock = true;
+                }
+                else
+                {
+                    //restoreInfo.isunlock = false;
+                    isunlock= false;
+                }
+                //_contactList[index] = restoreInfo;
+            }
+        }
+        else if (category_status == Category_status.Poke) 
+        {
+            while (row < poke_event_data.Count) 
+            {
+                if(restoreCnt - poke_event_data[row].Count < 0)
+                {
+                    break;
+                }
+                else
+                {
+                    restoreCnt -= poke_event_data[row].Count;
+                    row++;
+                }
+            }
+
+            if (poke_event_data[row][restoreCnt] == 1)
+            {
+                //restoreInfo.isunlock=true;
+                isunlock = true;
+            }
+            else
+            {
+                //restoreInfo.isunlock = false;
+                isunlock = false;
+            }
+            //_contactList[index] = restoreInfo;
+        }
+        else
+        {
+            if( (category_status.Equals(Category_status.Twitter) && GameManager.Instance.twt_gallery_idx[index] == 1) || (category_status.Equals(Category_status.Pat) && GameManager.Instance.pat_gallery_idx[index] == 1 ) )
+            {
+                isunlock = true;
+            }
+            else
+            {
+                isunlock = false;
+            }
+            //_contactList[index] = restoreInfo ;
+        }
+
+        return isunlock;
     }
 
     /// <summary>
@@ -309,13 +357,9 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     /// </summary>
     public void SetCell(ICell cell, int index)
     {
-        //string imgpath = CombineImgPath(index);
         //Casting to the implemented Cell
-        Item_Info restore = _contactList[index];
         var item = cell as Item_GalleryScroll;
-        item.ConfigureCell(_contactList[index],/* index,*/ category_status.ToString(), date_img_id[index % date_img_id.Count]);
-        restore.isunlock = item.GetIsOpen();
-        _contactList[index] = restore;
+        item.ConfigureCell(_contactList[index]/*, index, category_status.ToString(), date_img_id[index % date_img_id.Count]*/);
     }
 
     #endregion
