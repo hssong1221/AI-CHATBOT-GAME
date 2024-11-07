@@ -7,8 +7,9 @@ using System;
 
 public class Item_GalleryScroll : MonoBehaviour, ICell
 {
+    #region Values
     //UI
-    public Text nameLabel;
+    //public Text nameLabel;
     public Image mainImg;
     public Image enlargedImgBackground;
     public Image enlargedImgMain;
@@ -16,23 +17,27 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     //Model
     private Item_Info _itemInfo;
     //private int _itemIdx;
-    private string _category;
-    private string _imgId;
+    //private string _category;
+    //private string _imgId;
 
     //Action
     public GameObject enableBtn;
     public GameObject disableBtn;
+    #endregion
 
-    public void ConfigureCell(Item_Info itemInfo, /*int itemIndex,*/ string category, string imgId)//cell 내용 채우기
+    #region Scroll Cell
+    public void ConfigureCell(Item_Info itemInfo /*, int itemIndex, string category, string imgId*/)//Cell 내용 채우기
     {
         //_itemIdx = itemIndex;
+        //_category = category;
+        //_imgId = imgId;
         _itemInfo = itemInfo;
-        _category = category;
-        _imgId = imgId;
 
         Sprite sprite = Resources.Load<Sprite>(_itemInfo.imgPath);
         if (sprite != null)
+        {
             mainImg.sprite = sprite;
+        }
         else
             Debug.LogWarning("경로에 사진 없음");
 
@@ -40,7 +45,7 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     }
 
     public void CheckUnlockGallery()//cell 활성화 상태 판별
-    {
+    {/*
         int temp = 0;
 
         if(_category == "Date")
@@ -100,11 +105,15 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
                 DisableBtn();
             }
         }
-    }
-
-    public bool GetIsOpen()
-    {
-        return _itemInfo.isunlock;
+        */
+        if(_itemInfo.isunlock)
+        {
+            EnableBtn();
+        }
+        else
+        {
+            DisableBtn();
+        }
     }
 
     public void EnableBtn()
@@ -118,7 +127,10 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
         enableBtn.SetActive(false);
         disableBtn.SetActive(true);
     }
+    
+    #endregion
 
+    #region Enlarge
     public void EnlargeImgSet()//확대용 이미지 컴포넌트 관련 기능
     {
         GameObject canvasobj = GameObject.Find("Canvas");
@@ -165,4 +177,5 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
             enlargedImgMain.sprite = sprite;
         }
     }
+    #endregion
 }

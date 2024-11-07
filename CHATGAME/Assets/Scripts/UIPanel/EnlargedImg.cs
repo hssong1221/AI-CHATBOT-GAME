@@ -147,6 +147,7 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             {
                 break;
             }
+            //Debug.Log("looking for front");
             cell_idx++;
         }
         if(cell_idx >= gallclass._contactList.Count)//not exist
@@ -155,7 +156,7 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
         mainimg.transform.position = initpos;
-        //Debug.Log("move front" + cell_idx);
+        //Debug.Log("move front " + cell_idx + ", size of list " + gallclass._contactList.Count);
     }
 
     public void Moveback() 
@@ -167,6 +168,7 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
             {
                 break;
             }
+            //Debug.Log("looking for back");
             cell_idx--;
         }
         if (cell_idx < 0)//not exist
@@ -175,7 +177,7 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
         mainimg.transform.position = initpos;
-        //Debug.Log("move back" + cell_idx);
+        //Debug.Log("move back " + cell_idx + ", size of list " + gallclass._contactList.Count);
     }
     #endregion
 }
