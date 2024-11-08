@@ -120,7 +120,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1426435655088125408}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EnlargedImg, Assembly-CSharp
         m_MethodName: Movefront
         m_Mode: 1
@@ -143,6 +143,7 @@ GameObject:
   - component: {fileID: 4105028839315997222}
   - component: {fileID: 7162974843575871144}
   - component: {fileID: 5294292197245590152}
+  - component: {fileID: 3869100143176014827}
   - component: {fileID: 2680830053366372818}
   m_Layer: 5
   m_Name: UI_EnlargeImgBackground
@@ -212,6 +213,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3869100143176014827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977950668167596438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2202f7ad4bb2ae3469f792bdfc98276b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackBtn: {fileID: 4816879429774365244}
+  mainimg: {fileID: 8232723490325341867}
+  backgroundimg: {fileID: 5294292197245590152}
+  zoomSpeed: 0.1
+  minScale: 1
+  maxScale: 3
+  originalScale: 1
+  hidebtn: {fileID: 6362886816952904654}
+  frontbtn: {fileID: 1493560900102117161}
+  backbtn: {fileID: 8006886933466104327}
+  quitbtn: {fileID: 6161814670652943890}
+  gallobj: {fileID: 0}
 --- !u!114 &2680830053366372818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +382,6 @@ GameObject:
   - component: {fileID: 3931435805905722755}
   - component: {fileID: 6836856241359365812}
   - component: {fileID: 8232723490325341867}
-  - component: {fileID: 1426435655088125408}
   - component: {fileID: 6362886816952904654}
   m_Layer: 5
   m_Name: EnlargeImgMain
@@ -423,30 +447,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1426435655088125408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6572208297770375956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2202f7ad4bb2ae3469f792bdfc98276b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BackBtn: {fileID: 4816879429774365244}
-  mainimg: {fileID: 8232723490325341867}
-  backgroundimg: {fileID: 5294292197245590152}
-  zoomSpeed: 0.1
-  minScale: 1
-  maxScale: 3
-  originalScale: 1
-  hidebtn: {fileID: 6362886816952904654}
-  frontbtn: {fileID: 1493560900102117161}
-  backbtn: {fileID: 8006886933466104327}
-  quitbtn: {fileID: 6161814670652943890}
-  gallobj: {fileID: 0}
 --- !u!114 &6362886816952904654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,7 +491,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1426435655088125408}
+      - m_Target: {fileID: 3869100143176014827}
         m_TargetAssemblyTypeName: EnlargedImg, Assembly-CSharp
         m_MethodName: Hide
         m_Mode: 1
@@ -623,7 +623,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1426435655088125408}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EnlargedImg, Assembly-CSharp
         m_MethodName: Moveback
         m_Mode: 1

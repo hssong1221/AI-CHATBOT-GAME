@@ -150,8 +150,8 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     public void EnlargeImgSet()//확대용 이미지 컴포넌트 관련 기능
     {
         UICtrl.Instance.ShowPanel("image/UI/UI_EnlargeImgBackground", UI.Instance.gameObject.transform);
-        var enlargeImgPanel = GameObject.Find("UI_EnlargeImgBackground(Clone)");//go.GetComponentInChildren<EnlargedImg>();
-        var enlargeMain = enlargeImgPanel.GetComponentInChildren<EnlargedImg>();
+        var enlargeImgPanel = GameObject.Find("UI_EnlargeImgBackground(Clone)");
+        var enlargeMain = enlargeImgPanel.GetComponent<EnlargedImg>();
         enlargeMain.InitPath(_itemInfo.imgPath);
 
         /*GameObject canvasobj = GameObject.Find("Canvas");
