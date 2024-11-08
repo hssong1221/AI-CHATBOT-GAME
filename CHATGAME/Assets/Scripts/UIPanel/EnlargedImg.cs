@@ -149,7 +149,7 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
         mainimg.color = mainalpha;
         backgroundimg.color = bgalpha;
         mainimg.transform.position = initpos;
-        backgroundimg.rectTransform.SetAsFirstSibling();
+        //backgroundimg.rectTransform.SetAsFirstSibling();
 
         base.OnClickBackBtn();
     }
