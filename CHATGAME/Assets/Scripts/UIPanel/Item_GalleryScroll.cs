@@ -127,55 +127,59 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
         enableBtn.SetActive(false);
         disableBtn.SetActive(true);
     }
-    
+
     #endregion
 
     #region Enlarge
-    public void EnlargeImgSet()//확대용 이미지 컴포넌트 관련 기능
-    {
-        GameObject canvasobj = GameObject.Find("Canvas");
-        Image[] imglist = canvasobj.GetComponentsInChildren<Image>(true);
-        EnlargedImg enlargedImg;
-
-        foreach (var target in imglist) 
-        {
-            if (target.name == "EnlargeImgBackground")
-            {
-                enlargedImgBackground = target;
-            }
-            else if(target.name == "EnlargeImgMain")
-            {
-                enlargedImgMain = target;
-            }
-        }
-        
-        RectTransform rectTransform = enlargedImgBackground.GetComponent<RectTransform>();
-        rectTransform.SetAsLastSibling();
-        enlargedImg = enlargedImgMain.GetComponentInParent<EnlargedImg>();
-        if(enlargedImg != null)
-        {
-            enlargedImg.Initlarge(_itemInfo.cell_idx);
-        }
-        else
-        {
-            Debug.Log("Cannot find enlargedimg class");
-        }
-    }
-
-    public void EnlargeImg()//갤러리 이미지 확대해서 보기
+    public void OnClickEnlargeImg()//갤러리 이미지 확대해서 보기
     {
         EnlargeImgSet();
-        Color mainalpha = enlargedImgMain.color;
+        /*Color mainalpha = enlargedImgMain.color;
         Color bgalpha = enlargedImgBackground.color;
         Sprite sprite = Resources.Load<Sprite>(_itemInfo.imgPath);
-        if (sprite != null) 
+        if (sprite != null)
         {
             mainalpha.a = 1f;
             bgalpha.a = 0.9f;
             enlargedImgMain.color = mainalpha;
             enlargedImgBackground.color = bgalpha;
             enlargedImgMain.sprite = sprite;
+        }*/
+    }
+
+    public void EnlargeImgSet()//확대용 이미지 컴포넌트 관련 기능
+    {
+        UICtrl.Instance.ShowPanel("image/UI/UI_EnlargeImgBackground", UI.Instance.gameObject.transform);
+        var enlargeImgPanel = GameObject.Find("UI_EnlargeImgBackground(Clone)");//go.GetComponentInChildren<EnlargedImg>();
+        var enlargeMain = enlargeImgPanel.GetComponentInChildren<EnlargedImg>();
+        enlargeMain.InitPath(_itemInfo.imgPath);
+
+        /*GameObject canvasobj = GameObject.Find("Canvas");
+        Image[] imglist = canvasobj.GetComponentsInChildren<Image>(true);
+        EnlargedImg enlargedImg;
+
+        foreach (var target in imglist)
+        {
+            if (target.name == "EnlargeImgBackground")
+            {
+                enlargedImgBackground = target;
+            }
+            else if (target.name == "EnlargeImgMain")
+            {
+                enlargedImgMain = target;
+            }
         }
+        RectTransform rectTransform = enlargedImgBackground.GetComponent<RectTransform>();
+        rectTransform.SetAsLastSibling();
+        enlargedImg = enlargedImgMain.GetComponentInParent<EnlargedImg>();
+        if (enlargedImg != null)
+        {
+            enlargedImg.Initlarge(_itemInfo.cell_idx);
+        }
+        else
+        {
+            Debug.Log("Cannot find enlargedimg class");
+        }*/
     }
     #endregion
 }

@@ -349,7 +349,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6200742349520608436}
         m_TargetAssemblyTypeName: Item_GalleryScroll, Assembly-CSharp
-        m_MethodName: EnlargeImg
+        m_MethodName: OnClickEnlargeImg
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
