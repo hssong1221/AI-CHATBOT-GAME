@@ -95,28 +95,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     }
 
     public string CheckAffectionLevel(int idx)
-    {/*
-        if (Waifu.Instance.dialogueData.Count <= 0)
-        {
-            return "Error";
-        }
-
-        List<string> aff_str = new List<string>() { "Intruder", "Suspicious", "Member", "Intimate", "More", "Boyfriend"};
-
-        var poke_event_data = Waifu.Instance.dialogueData[idx];
-
-        if (poke_event_data.TryGetValue("affection", out var affection))
-        {
-            if (int.Parse(affection) >= 2 && poke_event_data["category"] == "Poke")//member 이상의 poke 인 경우
-            {
-                return "Member";
-            }
-            return aff_str[int.Parse((affection.ToString()))];
-        }
-        else
-        {
-            return "Error";
-        }*/
+    {
         if(GameManager.Instance.poke_event_gallery_list.Count <= 0)
         {
             return "Error";
@@ -178,17 +157,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     }
 
     public int CalculateCorrection(int idx)
-    {/*
-        int restore = 0;
-        var poke_event_data = Waifu.Instance.dialogueData[idx];
-
-        if (poke_event_data.TryGetValue("number", out var num))
-        {
-            restore = int.Parse(num.ToString());
-        }
-
-        return restore;*/
-
+    {
         int row = 0;
         var poke_event_data = GameManager.Instance.poke_event_gallery_list;
 
@@ -259,17 +228,15 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
 
     #region Recycle scroll
     //Initialising _contactList with dummy data 
-    private void InitData()
+    private void InitData()//_ContactList 초기화
     {
         if (_contactList != null) _contactList.Clear();
 
         for (int i = 0; i < _dataLength; i++)
         {
             Item_Info obj = new Item_Info();
-            //obj.mainText = i.ToString();
             obj.imgPath = CombineImgPath(i);
             obj.cell_idx = i;
-            //obj.isunlock = false;
             obj.isunlock = CheckUnlockCell(i);
             _contactList.Add(obj);
         }
@@ -279,25 +246,22 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     {
         int temp = 0;
         int row = 0;
-        int restoreCnt = index;// _contactList[index].cell_idx;
+        int restoreCnt = index;
         var poke_event_data = GameManager.Instance.poke_event_gallery_list;
         bool isunlock = false;
-        //Item_Info restoreInfo = _contactList[index];
+
         if (category_status.Equals(Category_status.Date))
         {
             if (GameManager.Instance.date_gallery_idx.TryGetValue(date_img_id[index % date_img_id.Count], out temp))
             {
                 if (temp == 1)
                 {
-                    //restoreInfo.isunlock = true;
                     isunlock = true;
                 }
                 else
                 {
-                    //restoreInfo.isunlock = false;
                     isunlock= false;
                 }
-                //_contactList[index] = restoreInfo;
             }
         }
         else if (category_status == Category_status.Poke) 
@@ -317,15 +281,12 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
 
             if (poke_event_data[row][restoreCnt] == 1)
             {
-                //restoreInfo.isunlock=true;
                 isunlock = true;
             }
             else
             {
-                //restoreInfo.isunlock = false;
                 isunlock = false;
             }
-            //_contactList[index] = restoreInfo;
         }
         else
         {
@@ -337,7 +298,6 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
             {
                 isunlock = false;
             }
-            //_contactList[index] = restoreInfo ;
         }
 
         return isunlock;
@@ -359,7 +319,7 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
     {
         //Casting to the implemented Cell
         var item = cell as Item_GalleryScroll;
-        item.ConfigureCell(_contactList[index]/*, index, category_status.ToString(), date_img_id[index % date_img_id.Count]*/);
+        item.ConfigureCell(_contactList[index]);
     }
 
     #endregion
@@ -371,7 +331,6 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Poke;
         PokeEventDataLength();
         InitData();
-        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
         GetItemCount();
     }
 
@@ -381,7 +340,6 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Twitter;
         _dataLength = Interact_cnt(2, "Twt");
         InitData();
-        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
     }
 
     public void SetCategoryPatBtn()
@@ -390,7 +348,6 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Pat;
         _dataLength = Interact_cnt(3, "Pat");
         InitData();
-        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
     }
 
     public void SetCategoryDateBtn()
@@ -399,7 +356,6 @@ public class UI_GalleryPanel : BasePanel, IRecyclableScrollRectDataSource
         category_status = Category_status.Date;
         _dataLength = Interact_cnt(3, "Date");
         InitData();
-        //Item_GalleryScroll.CheckUnlockGalleryAction?.Invoke();
     }
     #endregion
 }

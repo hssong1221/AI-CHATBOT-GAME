@@ -252,7 +252,6 @@ public class AffectionDate : MonoBehaviour, ICategory
             return "Error";
         }
 
-        //var data = dateData[_interact_idx];
         var data = dateData[gameManager.date_sequence];
 
         if (data.TryGetValue("category", out var cate))
@@ -274,16 +273,11 @@ public class AffectionDate : MonoBehaviour, ICategory
 
         if(!gameManager.isDate)//데이트 첫 진입
         {
-            //_date_temp = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];
-            //gameManager.date_interact.Remove(_date_temp);
             gameManager.date_sequence = gameManager.date_interact[UnityEngine.Random.Range(0, gameManager.date_interact.Count)];
             gameManager.date_interact.Remove(gameManager.date_sequence);
             gameManager.isDate = true;
         }
-        //_interact_idx = _date_temp + gameManager.date_sequence;        
-        //_interact_idx = gameManager.date_sequence;
         Debug.Log("random date idx : " + gameManager.date_sequence);
-        //gameManager.date_sequence++;
     }
 
     public void Interact_Init()
@@ -293,14 +287,7 @@ public class AffectionDate : MonoBehaviour, ICategory
             return;
         }
 
-        int _cnt = 0;
-        /*
-        while (_cnt < Affection_sheet(3, "Date"))
-        {
-            gameManager.date_interact.Add(_cnt);
-            _cnt++;
-        }
-        */
+        int _cnt = 0;        
         var situation_temp = "";
         var iter = dateData.GetEnumerator();
 
@@ -334,13 +321,11 @@ public class AffectionDate : MonoBehaviour, ICategory
             return "Error";
         }
 
-        //var data = dateData[_interact_idx];
         var data = dateData[gameManager.date_sequence];
 
         if (data.TryGetValue("image_id", out var cate))
         {
             gameManager.date_gallery_idx[cate.ToString()] = 1;
-            //Debug.Log(cate.ToString() + " : " + gameManager.date_gallery_idx[cate.ToString()]);
             return cate.ToString();
         }
         else
@@ -351,7 +336,6 @@ public class AffectionDate : MonoBehaviour, ICategory
 
     public int Check_Current_Date()
     {
-        //var data = dateData[_interact_idx];
         var data = dateData[gameManager.date_sequence];
         if (data.TryGetValue("situation", out var num))
         {

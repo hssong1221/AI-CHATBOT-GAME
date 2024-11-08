@@ -157,18 +157,7 @@ public class Waifu : MonoBehaviour, ICategory
     {
         int _cnt = 0;
         int col = 0;
-        /*
-        if(gameManager.poke_event_gallery_idx.Count <= 0)
-        {
-            while (_cnt < dialogueData.Count)
-            {
-                gameManager.poke_event_gallery_idx.Add(0);
-                _cnt++;
-            }
-        }*/
-
-        _cnt = 0;
-        //bool isEmpty = !gameManager.poke_event_gallery_list.Any();//빈 리스트인가
+        
         bool isEmpty = !GameManager.Instance.poke_event_gallery_list.Any();//빈 리스트인가
         if (isEmpty)//특수상황
         {
@@ -181,7 +170,6 @@ public class Waifu : MonoBehaviour, ICategory
                     row.Add(0);
                     col++;
                 }
-                //gameManager.poke_event_gallery_list.Add(row);
                 GameManager.Instance.poke_event_gallery_list.Add(row);
                 _cnt++;
             }
@@ -297,7 +285,7 @@ public class Waifu : MonoBehaviour, ICategory
 
         if (gameManager.affection_lv >= 10)
         {
-            gameManager.Correction_number = 76;//특이 케이스
+            gameManager.Correction_number = 76;//엔딩을 본 후 Correction_number 보정치를 lv8 인 경우와 동일하게 고정함
         }
 
         _I_P_N = gameManager.Correction_number;
@@ -316,7 +304,7 @@ public class Waifu : MonoBehaviour, ICategory
         else if (gameManager.affection_lv >= 4 && gameManager.affection_lv % 2 == 0)//호감도 상태가 Member 이상인 경우 임의의 중복되지 않는 대사 인덱스를 전달함
         {
             _restore_rand = gameManager.affection_interact[UnityEngine.Random.Range(0, gameManager.affection_interact.Count)];
-            gameManager.affection_interact.Remove(_restore_rand);
+            gameManager.affection_interact.Remove(_restore_rand);//제거 하는것으로 중복을 피함
             _I_P_N += _restore_rand;
         }
 
@@ -361,14 +349,13 @@ public class Waifu : MonoBehaviour, ICategory
 
     public int Interact_img_path()
     {
-        return int.Parse(dialogueData[gameManager.Interact_idx/* - gameManager.Correction_number*/]["number"]);
+        return int.Parse(dialogueData[gameManager.Interact_idx]["number"]);
     }
 
     public int Interact_txt_path()
     {
-        int id = int.Parse(dialogueData[gameManager.Interact_idx/* - gameManager.Correction_number*/]["number"])-1;
+        int id = int.Parse(dialogueData[gameManager.Interact_idx]["number"])-1;
 
-        //gameManager.poke_event_gallery_idx[gameManager.Interact_idx] = 1;
         if(gameManager.affection_lv < 4)//member 미만인 경우
         {
             gameManager.poke_event_gallery_list[gameManager.affection_lv][id] = 1;
