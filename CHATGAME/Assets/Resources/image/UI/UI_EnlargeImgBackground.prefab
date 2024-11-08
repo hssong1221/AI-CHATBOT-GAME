@@ -144,7 +144,6 @@ GameObject:
   - component: {fileID: 7162974843575871144}
   - component: {fileID: 5294292197245590152}
   - component: {fileID: 3869100143176014827}
-  - component: {fileID: 2680830053366372818}
   m_Layer: 5
   m_Name: UI_EnlargeImgBackground
   m_TagString: Untagged
@@ -171,7 +170,7 @@ RectTransform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -237,20 +236,6 @@ MonoBehaviour:
   backbtn: {fileID: 8006886933466104327}
   quitbtn: {fileID: 6161814670652943890}
   gallobj: {fileID: 0}
---- !u!114 &2680830053366372818
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1977950668167596438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 4
-  m_AspectRatio: 1.75
 --- !u!1 &6161814670652943890
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,8 +269,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4105028839315997222}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.95}
-  m_AnchorMax: {x: 1, y: 0.95}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 1, y: 1}
@@ -383,6 +368,7 @@ GameObject:
   - component: {fileID: 6836856241359365812}
   - component: {fileID: 8232723490325341867}
   - component: {fileID: 6362886816952904654}
+  - component: {fileID: 7401485059756073554}
   m_Layer: 5
   m_Name: EnlargeImgMain
   m_TagString: Untagged
@@ -405,7 +391,7 @@ RectTransform:
   m_Father: {fileID: 4105028839315997222}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -503,6 +489,20 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7401485059756073554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6572208297770375956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 4
+  m_AspectRatio: 1.75
 --- !u!1 &8006886933466104327
 GameObject:
   m_ObjectHideFlags: 0
