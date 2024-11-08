@@ -120,9 +120,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3869100143176014827}
         m_TargetAssemblyTypeName: EnlargedImg, Assembly-CSharp
-        m_MethodName: Movefront
+        m_MethodName: OnClickMovefront
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -493,7 +493,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3869100143176014827}
         m_TargetAssemblyTypeName: EnlargedImg, Assembly-CSharp
-        m_MethodName: Hide
+        m_MethodName: OnClickHide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -623,9 +623,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 3869100143176014827}
         m_TargetAssemblyTypeName: EnlargedImg, Assembly-CSharp
-        m_MethodName: Moveback
+        m_MethodName: OnClickMoveback
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

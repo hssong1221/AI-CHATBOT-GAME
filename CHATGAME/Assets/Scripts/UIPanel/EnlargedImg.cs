@@ -17,32 +17,33 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
     public GameObject frontbtn;
     public GameObject backbtn;
     public GameObject quitbtn;
-    private Vector3 initpos;
-    public GameObject gallobj;
-    private int cell_idx;
+    private Vector3 initpos = new Vector3(0,0,0);
+    public GameObject gallobj;/// <summary>
+    /// UI_GalleryPanel class 의 _contactList 를 가져오기 위함
+    /// </summary>
+    private int cell_idx;//_contactList 원소 인덱스
     private UI_GalleryPanel gallclass;
-    private string img_Path;
+    private string img_Path;//_contactList 원소 경로
     #endregion
 
-    //void Start()
+    void Update()//detect touch
+    {
+        if (Input.touchCount >= 2)
+        {
+            OnTouchScroll();
+        }
+    }
+
+    #region Initialize
     public override void InitChild()    
     {
-        initpos = mainimg.transform.position;//이미지 드래그 전 초기 위치 저장
         if(mainimg.rectTransform.localScale.x<minScale)
         {
             mainimg.rectTransform.localScale=new Vector3(minScale, minScale,1);
         }
     }
 
-    void Update()
-    {
-        if(Input.touchCount>=2)
-        {
-            OnTouchScroll();
-        }
-    }
-
-    public void InitPath(string _imgPath)
+    public void InitPath(string _imgPath, int _imgindex)
     {
         Color bgcolor = backgroundimg.color;
         Color maincolor = mainimg.color;
@@ -52,7 +53,24 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
         maincolor.a = 1f;
         backgroundimg.color = bgcolor;
         mainimg.color = maincolor;
+
+        Initlarge(_imgindex);
     }
+
+    public void Initlarge(int cellcnt)
+    {
+        if (gallobj == null)
+        {
+            gallobj = UICtrl.Instance.panelInstance["UI_GalleryPanel"];
+        }
+        gallclass = gallobj.GetComponent<UI_GalleryPanel>();
+        if (gallclass == null)
+        {
+            Debug.Log("Cannot find UGP class");
+        }
+        cell_idx = cellcnt;
+    }
+    #endregion
 
     #region Drag action
     public void OnBeginDrag(PointerEventData eventData)
@@ -116,21 +134,8 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
     #endregion
 
     #region Button action
-    public void Initlarge(int cellcnt)
-    {
-        if(gallobj == null)
-        {
-            gallobj = GameObject.Find("UI_GalleryPanel(Clone)");
-        }
-        gallclass = gallobj.GetComponent<UI_GalleryPanel>();
-        if (gallclass == null) 
-        {
-            Debug.Log("Cannot find UGP class");
-        }
-        cell_idx = cellcnt;
-    }
-
-    public void Hide()
+    
+    public void OnClickHide()
     {
         quitbtn.SetActive(!quitbtn.activeSelf);
         frontbtn.SetActive(!frontbtn.activeSelf);
@@ -149,12 +154,11 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
         mainimg.color = mainalpha;
         backgroundimg.color = bgalpha;
         mainimg.transform.position = initpos;
-        //backgroundimg.rectTransform.SetAsFirstSibling();
 
         base.OnClickBackBtn();
     }
 
-    public void Movefront()
+    public void OnClickMovefront()
     {
         int restore = cell_idx;
         while(cell_idx < gallclass._contactList.Count)
@@ -163,7 +167,6 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
             {
                 break;
             }
-            //Debug.Log("looking for front");
             cell_idx++;
         }
         if(cell_idx >= gallclass._contactList.Count)//not exist
@@ -172,10 +175,9 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
         mainimg.transform.position = initpos;
-        //Debug.Log("move front " + cell_idx + ", size of list " + gallclass._contactList.Count);
     }
 
-    public void Moveback() 
+    public void OnClickMoveback() 
     {
         int restore = cell_idx;
         while (cell_idx >= 0)
@@ -184,7 +186,6 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
             {
                 break;
             }
-            //Debug.Log("looking for back");
             cell_idx--;
         }
         if (cell_idx < 0)//not exist
@@ -193,7 +194,6 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
         mainimg.transform.position = initpos;
-        //Debug.Log("move back " + cell_idx + ", size of list " + gallclass._contactList.Count);
     }
     #endregion
 }
