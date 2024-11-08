@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IScrollHandler, IPointerDownHandler, IPointerUpHandler
+public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragHandler, IScrollHandler, IPointerDownHandler, IPointerUpHandler
 {
     #region Values
     public Image mainimg;
@@ -21,9 +21,11 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
     public GameObject gallobj;
     private int cell_idx;
     private UI_GalleryPanel gallclass;
+    private string img_Path;
     #endregion
-    
-    void Start()
+
+    //void Start()
+    public override void InitChild()    
     {
         initpos = mainimg.transform.position;//이미지 드래그 전 초기 위치 저장
         if(mainimg.rectTransform.localScale.x<minScale)
@@ -38,6 +40,18 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         {
             OnTouchScroll();
         }
+    }
+
+    public void InitPath(string _imgPath)
+    {
+        Color bgcolor = backgroundimg.color;
+        Color maincolor = mainimg.color;
+        img_Path = _imgPath;
+        mainimg.sprite = Resources.Load<Sprite>(img_Path);
+        bgcolor.a = 0.9f;
+        maincolor.a = 1f;
+        backgroundimg.color = bgcolor;
+        mainimg.color = maincolor;
     }
 
     #region Drag action
@@ -123,7 +137,7 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         backbtn.SetActive(!backbtn.activeSelf);
     }
 
-    public void Dislarge()//확대 보기 종료
+    public override void OnClickBackBtn()//확대 보기 종료
     {
         Color mainalpha = mainimg.color;
         Color bgalpha = backgroundimg.color;
@@ -136,6 +150,8 @@ public class EnlargedImg : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndD
         backgroundimg.color = bgalpha;
         mainimg.transform.position = initpos;
         backgroundimg.rectTransform.SetAsFirstSibling();
+
+        base.OnClickBackBtn();
     }
 
     public void Movefront()
