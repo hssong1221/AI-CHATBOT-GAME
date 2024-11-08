@@ -8,6 +8,12 @@ using UnityEngine.Advertisements;
 public class LogoManager : MonoBehaviour
 {
     public Canvas logocanvas;
+    public static Canvas logocanvas2;
+
+    private void Awake()
+    {
+        logocanvas2 = logocanvas;
+    }
 
     public void OnClickNewBtn()
     {

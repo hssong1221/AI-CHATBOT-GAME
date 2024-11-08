@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using PolyAndCode.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Item_GalleryScroll : MonoBehaviour, ICell
 {
@@ -66,7 +67,15 @@ public class Item_GalleryScroll : MonoBehaviour, ICell
     #region Enlarge
     public void OnClickEnlargeImg()//갤러리 이미지 확대해서 보기
     {
-        UICtrl.Instance.ShowPanel("image/UI/UI_EnlargeImgBackground", UI.Instance.gameObject.transform);
+        if (SceneManager.GetActiveScene().name.CompareTo("Logo") != 0)
+        {
+            UICtrl.Instance.ShowPanel("image/UI/UI_EnlargeImgBackground", UI.Instance.gameObject.transform);
+        }
+        else
+        {
+            UICtrl.Instance.ShowPanel("image/UI/UI_EnlargeImgBackground", LogoManager.logocanvas2.transform);
+        }
+
         var enlargeImgPanel = UICtrl.Instance.panelInstance["UI_EnlargeImgBackground"];
         var enlargeMain = enlargeImgPanel.GetComponent<EnlargedImg>();
         enlargeMain.InitPath(_itemInfo.imgPath, _itemInfo.cell_idx);

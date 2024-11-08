@@ -153,7 +153,7 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
         bgalpha.a = 0f;
         mainimg.color = mainalpha;
         backgroundimg.color = bgalpha;
-        mainimg.transform.position = initpos;
+        mainimg.transform.localPosition = initpos;
 
         base.OnClickBackBtn();
     }
@@ -174,7 +174,7 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
             cell_idx = restore;
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
-        mainimg.transform.position = initpos;
+        mainimg.transform.localPosition = initpos;
     }
 
     public void OnClickMoveback() 
@@ -193,7 +193,7 @@ public class EnlargedImg : BasePanel, IDragHandler, IBeginDragHandler, IEndDragH
             cell_idx = restore;
         }
         mainimg.sprite = Resources.Load<Sprite>(gallclass._contactList[cell_idx].imgPath);
-        mainimg.transform.position = initpos;
+        mainimg.transform.localPosition = initpos;
     }
     #endregion
 }
