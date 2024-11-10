@@ -34,7 +34,8 @@ public class LogoManager : MonoBehaviour
         //Debug.Log("구현 안했음");
         if (!PlayerPrefs.HasKey("PlayerData"))
         {
-            Debug.Log("아직 플레이어 데이터가 없습니다 라는 alert창을 띄울 계획");
+            //Debug.Log("아직 플레이어 데이터가 없습니다 라는 alert창을 띄울 계획");
+            UICtrl.Instance.ShowPanel("image/UI/AlertPanel", logocanvas.transform);
             return;
         }
 
