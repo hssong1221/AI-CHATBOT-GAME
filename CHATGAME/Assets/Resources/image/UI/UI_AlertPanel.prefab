@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4950510754181589}
   - component: {fileID: -8056699070174923679}
   m_Layer: 5
-  m_Name: AlertPanel
+  m_Name: UI_AlertPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BackBtn: {fileID: 223805444264753433}
   alertPanelImg: {fileID: 4950510754181589}
+  alertText: {fileID: 4854124037719510624}
 --- !u!1 &4332136710746097014
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,7 +238,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6103912153463416949}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -280,8 +281,8 @@ MonoBehaviour:
   m_text: "\uC544\uC9C1 \uD560 \uC218 \uC5C6\uB2E4\uAD6C!\n\uB0B4 \uC598\uAE30 \uC0C1\uB300\uB97C
     \uB354 \uD574\uC8FC\uBA74 \uD5C8\uB77D\uD560\uAED8"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8247e2ab5d9aaba4dac5a46d7503cfeb, type: 2}
+  m_sharedMaterial: {fileID: 48046741065122722, guid: 8247e2ab5d9aaba4dac5a46d7503cfeb, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -305,7 +306,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50.35
+  m_fontSize: 47.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
