@@ -23,7 +23,7 @@ public class UICtrl : MonoBehaviour
 
     public Dictionary<string, GameObject> panelInstance = new Dictionary<string, GameObject>();
 
-    public GameObject CurrentPanel;
+    GameObject CurrentPanel;
 
     void Awake()
     {
