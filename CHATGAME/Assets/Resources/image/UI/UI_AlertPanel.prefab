@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 4854124037719510624}
   - component: {fileID: 3989900853372824531}
   m_Layer: 5
-  m_Name: TestText
+  m_Name: AlertText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -307,7 +307,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32.75
+  m_fontSize: 47.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

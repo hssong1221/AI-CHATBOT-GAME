@@ -472,6 +472,11 @@ public class UI : MonoBehaviour
         GameManager.Instance.SaveData();
     }
 
+    public void OnclickDeactiveBtn()
+    {
+        UICtrl.Instance.ShowPanel("image/UI/UI_AlertPanel", this.transform);
+    }
+
     #endregion
 
     public void SetCategoryState(CategoryState state)
