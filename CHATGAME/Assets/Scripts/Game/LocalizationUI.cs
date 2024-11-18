@@ -21,13 +21,19 @@ public class LocalizationUI : MonoBehaviour
             return;
 
         uiText = GetComponent<TextMeshProUGUI>();
-        GetTextHelper();
+        //GetTextHelper();
         reloadAction += GetTextHelper;
     }
-   
+
+    private void OnEnable()
+    {
+        reloadAction?.Invoke();
+    }
+
     public void GetTextHelper()
     {
-        StartCoroutine(GetText());
+        if(gameObject.activeInHierarchy)
+            StartCoroutine(GetText());
     }
     IEnumerator GetText()
     {
