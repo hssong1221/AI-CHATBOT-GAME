@@ -235,8 +235,6 @@ public class UI : MonoBehaviour
         if (data == null)
             return;
 
-        nameText.text = "¸®ÄÚ";
-
         var txt = GameManager.Instance.GetText(data);
 
         textState = TextUIState.Typing;
