@@ -15,19 +15,19 @@ public class LocalizationUI : MonoBehaviour
 
     public static Action reloadAction;
 
+    private void OnEnable()
+    {
+        reloadAction?.Invoke();
+    }
+
     void Start()
     {
         if (id == 0)
             return;
 
         uiText = GetComponent<TextMeshProUGUI>();
-        //GetTextHelper();
+        GetTextHelper();
         reloadAction += GetTextHelper;
-    }
-
-    private void OnEnable()
-    {
-        reloadAction?.Invoke();
     }
 
     public void GetTextHelper()

@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
 
         // Setting Data
         language = (Language)PlayerPrefs.GetInt("languageOpt", 1);
-
     }
 
 
