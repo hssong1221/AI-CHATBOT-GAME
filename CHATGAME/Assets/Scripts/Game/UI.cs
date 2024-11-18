@@ -178,6 +178,9 @@ public class UI : MonoBehaviour
 
     public void ReLoad()
     {
+        if (typingCoroutine != null)
+            StopTypingEffect();
+
         SettingAction?.Invoke();
     }
 
