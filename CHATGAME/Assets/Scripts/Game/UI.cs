@@ -287,7 +287,7 @@ public class UI : MonoBehaviour
             waifu.Interaction_Path();
 
             //n번의 행동 후에 광고가 나오는 부분
-            ShowAdvertisement();
+            //ShowAdvertisement();
 
             string temp = waifu.Check_Category();
             if (temp.Equals("Poke"))
@@ -301,8 +301,8 @@ public class UI : MonoBehaviour
                 stateChange = true;
 
             // 이벤트 씬 종료 후 광고 재생
-            if (categoryState == CategoryState.Poke && lastState == CategoryState.Event && GameManager.Instance.affection_lv > 2)
-                ShowAdvertisement(isForce: true);
+            /*if (categoryState == CategoryState.Poke && lastState == CategoryState.Event && GameManager.Instance.affection_lv > 2)
+                ShowAdvertisement(isForce: true);*/
 
             lastState = categoryState;
                 
