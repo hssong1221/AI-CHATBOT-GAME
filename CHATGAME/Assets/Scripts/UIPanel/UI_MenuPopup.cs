@@ -71,7 +71,7 @@ public class UI_MenuPopup : BasePanel
     public override void OnClickBackBtn()
     {
         // 저장 안하고 끄면 처음 들어왔던 설정으로 바뀌는 거임
-        GameManager.Instance.soundManager.SoundSetting(Data.SoundOpt);
+        GameManager.Instance.soundManager.SoundSetting(item_popup1.tempSoundOpt);
         GameManager.Instance.language = (GameManager.Language)Data.LanguageOpt;
         EndPanel();
     }

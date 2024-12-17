@@ -11,9 +11,12 @@ public class Item_MenuPopup1 : MonoBehaviour
 
     public Button SaveBtn;
 
+    public float tempSoundOpt;
+
     private void Start()
     {
         slider1.onValueChanged.AddListener(OnSlider1Changed);
+        tempSoundOpt = slider1.value;
     }
 
     public void Init(float[] valList)
@@ -37,6 +40,7 @@ public class Item_MenuPopup1 : MonoBehaviour
     public void OnClickSaveBtn()
     {
         Data.SoundOpt = slider1.value;
+        tempSoundOpt = slider1.value;
         //UI_MenuPopup.backAction?.Invoke();
     }
 }
