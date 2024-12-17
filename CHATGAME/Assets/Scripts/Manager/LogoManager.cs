@@ -10,9 +10,22 @@ public class LogoManager : MonoBehaviour
     public Canvas logocanvas;
     public static Canvas logocanvas2;
 
+    public GameObject logoObj;
+    public GameObject btnObj;
+
     private void Awake()
     {
         logocanvas2 = logocanvas;
+    }
+    void Start()
+    {
+        btnObj.SetActive(false);
+        Invoke("SecDelay", 1f);
+    }
+
+    void SecDelay()
+    {
+        btnObj.SetActive(true);
     }
 
     public void OnClickNewBtn()
@@ -31,10 +44,8 @@ public class LogoManager : MonoBehaviour
 
     public void OnClickGalleryBtn()
     {
-        //Debug.Log("구현 안했음");
         if (!PlayerPrefs.HasKey("PlayerData"))
         {
-            //Debug.Log("아직 플레이어 데이터가 없습니다 라는 alert창을 띄울 계획");
             UICtrl.Instance.ShowPanel("image/UI/UI_AlertPanel", logocanvas.transform);
             return;
         }
