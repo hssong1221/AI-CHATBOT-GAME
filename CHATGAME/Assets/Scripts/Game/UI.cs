@@ -320,6 +320,27 @@ public class UI : MonoBehaviour
 
             
         }
+
+        if(GameManager.Instance.affection_lv == 1 && !GameManager.Instance.isTutorialPoke)
+        {
+            UICtrl.Instance.ShowPanel("image/UI/UI_PokeTutorialPanel", transform);
+            GameManager.Instance.isTutorialPoke = true;
+        }
+        if (GameManager.Instance.affection_lv == 2 && !GameManager.Instance.isTutorialTwt)
+        {
+            UICtrl.Instance.ShowPanel("image/UI/UI_SnsTutorialPanel", transform);
+            GameManager.Instance.isTutorialTwt = true;
+        }
+        if (GameManager.Instance.affection_lv == 4 && !GameManager.Instance.isTutorialDate)
+        {
+            UICtrl.Instance.ShowPanel("image/UI/UI_DateTutorialPanel", transform);
+            GameManager.Instance.isTutorialDate = true;
+        }
+        if (GameManager.Instance.affection_lv == 6 && !GameManager.Instance.isTutorialPat)
+        {
+            UICtrl.Instance.ShowPanel("image/UI/UI_PatTutorialPanel", transform);
+            GameManager.Instance.isTutorialPat = true;
+        }
     }
 
     public void PokeBtnEvent()
